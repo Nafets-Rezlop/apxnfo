@@ -1,6 +1,6 @@
-# Mindmap-Test KI (Branch test/diagramme)
+# Oracle APEX – KI und Generative AI Features
 
-Varianten, um Optik und klickbare Links auf GitHub zu prüfen.
+KI-Features der Releases 24.1 bis 26.2 als Mindmap und als Diagramm. Jedes Feature verlinkt direkt auf seinen Abschnitt in den Oracle Release Notes.
 
 ## A. Mindmap ohne Release-Ebene (ohne Links)
 
