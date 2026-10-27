@@ -288,7 +288,7 @@
 
 ## KI und Generative AI
 
-Als Mindmap und Diagramm mit Direktlinks: [ki-features.md](ki-features.md)
+Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
