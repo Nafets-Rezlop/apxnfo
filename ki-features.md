@@ -2,7 +2,7 @@
 
 KI-Features der Releases 24.1 bis 26.2 als Mindmap und als Diagramm. Jedes Feature verlinkt direkt auf seinen Abschnitt in den Oracle Release Notes.
 
-## A. Mindmap ohne Release-Ebene (ohne Links)
+## Mindmap
 
 ```mermaid
 ---
@@ -63,7 +63,7 @@ mindmap
     f21("Generative AI Support (24.1)")
 ```
 
-## C3. Mindmap ohne Release-Ebene, mit Links
+## Mindmap mit Links
 
 ```mermaid
 ---
@@ -124,7 +124,7 @@ mindmap
     f21("<a href='https://docs.oracle.com/en/database/oracle/apex/24.1/htmrn/new-features.html#GUID-58986BEB-A222-4976-A48E-E364DAD38406'>Generative AI<br/>Support (24.1)</a>")
 ```
 
-## D. Flowchart ohne Release-Ebene, mit Links
+## Diagramm mit Links
 
 ```mermaid
 ---

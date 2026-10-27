@@ -288,6 +288,8 @@
 
 ## KI und Generative AI
 
+Als Mindmap und Diagramm mit Direktlinks: [ki-features.md](ki-features.md)
+
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
 | [Reasoning Effort for AI Agents](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-E3EC1EE4-8A4E-4CBE-9303-D5C170FA6DC9) | 26.2 | AI Agents haben eine deklarative Einstellung „Reasoning Effort“, die steuert, wie viel ein Modell vor der Antwort „nachdenkt“. Mehr Aufwand kann komplexe Aufgaben verbessern, erhöht aber Latenz und Token-Verbrauch; der Wert lässt sich auch im AI Request Handler oder über APEX_AI setzen. |
