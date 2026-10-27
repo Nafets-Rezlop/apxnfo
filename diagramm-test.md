@@ -101,6 +101,35 @@ mindmap
       n86["22.1 · 1"]
 ```
 
+## 3. Fehlersuche Mindmap 2a (Varianten)
+
+### 3a. Mit Mittelpunkt ·
+
+```mermaid
+mindmap
+  root(("Test"))
+    c1["Administration und Betrieb"]
+      n2["26.2 · 2"]
+```
+
+### 3b. Mit Doppelpunkt
+
+```mermaid
+mindmap
+  root(("Test"))
+    c1["Administration und Betrieb"]
+      n2["26.2: 2"]
+```
+
+### 3c. Mit Bindestrich
+
+```mermaid
+mindmap
+  root(("Test"))
+    c1["Administration und Betrieb"]
+      n2["26.2 - 2 Features"]
+```
+
 ## 2b. Mindmap: KI und Generative AI → Release → Feature
 
 ```mermaid
