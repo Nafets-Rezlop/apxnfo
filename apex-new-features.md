@@ -1,4 +1,4 @@
-# Oracle APEX – New Features 18.1 bis 26.2
+# Oracle APEX – New Features von 26.2 bis 18.1
 
 Übersicht aller Abschnitte aus den *New Features*-Kapiteln der Oracle APEX Release Notes, gruppiert nach Themen. Featurenamen stehen im englischen Original, damit die Browser-Suche (Strg+F / Cmd+F) dieselben Begriffe findet wie die Oracle-Doku. Jeder Name verlinkt direkt auf seinen Abschnitt in den Release Notes.
 
