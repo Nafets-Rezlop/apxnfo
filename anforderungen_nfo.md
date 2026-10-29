@@ -90,16 +90,16 @@ anforderungen
 |980| gegen diese view laufen alle DML Operationen um die tabelle t_nfo_releases zu befüllen. Die view ist updatable. |
 |990 | jedes DML package bekommt als übergabeparameter den recordtype der zugehörigen view, z.B. v_nfo_ui_categories%rowtype|
 |1000 | das system soll innerhalb der DML packages das lost-update problem verhindern, indem es dieselbe Logik verwendet, wie sie im APEX backend unter SQL Workshop → Utilities → Methods on Tables verwendet wird (mit MD5 Prüfsummen ) 
-|1010 | von einer APEX Seite aus sollen die TAPI-Prozeduren so aufgerufen werden Beispiel für eine delete prozedur siehe unten |
+|1010 | von einer APEX Seite, die einen Datensatz auf einer modalen Seite bearbeitet oder neu anlegt, sollen die TAPI-Prozeduren so aufgrufen werden. Beispiel für eine delete prozedur siehe unten |
 |1020 | die TAPI-Prozeduren sollen nur mit MERGE und DELETE arbeiten.|
 |1030| DAs system soll das MERGE so implementieren, dass es im Fall eines leeren Primärschlüssels, bspw. falls feat_id NULL ist, ein INSERT ausgeführt wird, ansonsten ein UPDATE.|
 
 # weiter mit:
-- 1010 korrigieren
-- ER Modell auf Vollständigkeit prüfen
-- überlegen wie die Views die Sprachumstellung machen sollen
-  - gibt es ein APEX Appl. variable für die Sprache, die dann an die view übergeben werden muss?
-- soll ich die Daten über SQL Makros auf die Views implementieren lassen damit ich die SQL Makros einfach testen kann?
+Offene Punkte werden als GitHub Issues geführt: https://github.com/nafets-rezlop/apxnfo/issues
+- [#3](https://github.com/Nafets-Rezlop/apxnfo/issues/3) MD5-Fehler (Lost Update) in APEX abfangen und anzeigen
+- [#5](https://github.com/Nafets-Rezlop/apxnfo/issues/5) ER Modell auf Vollständigkeit prüfen
+- [#6](https://github.com/Nafets-Rezlop/apxnfo/issues/6) Sprachumstellung in den Views (APEX Appl. Variable für die Sprache?)
+- [#7](https://github.com/Nafets-Rezlop/apxnfo/issues/7) SQL Makros auf die Views (Testbarkeit)
 
 # Code-Beispiele
 ## Übergabe von Parametern von Page items an die TAPI-Prozeduren
@@ -114,18 +114,22 @@ begin
 end;
 ```
 ### Anlegen und Ändern eines Features (MERGE)
--- ist :P1_FEAT_ID leer, wird ein neues Feature angelegt, sonst das vorhandene geändert (Anf. 1030).
--- :P1_FEAT_MD5 enthält die Prüfsumme aus dem Laden der Seite und ist beim Anlegen leer.
+Regeln: 
+1) Ist :P1_FEAT_ID leer, wird ein neues Feature angelegt, sonst das vorhandene geändert (Anf. 1030).
+2) :P1_FEAT_MD5 wird beim Laden des des Feature-Datensatzes aus der Datenbank berechnet und in einem versteckten Page Item gespeichert.Beim Speichern des Datensatz wird die MD5 Prüfsumme an die TAPI-Prozedur übergeben. Die TAPI-Prozedur prüft, ob der Datensatz in der Datenbank noch die gleiche Prüfsumme hat. Ist dies nicht der Fall, wird ein Fehler ausgegeben und der Datensatz nicht gespeichert.
+
 ```sql
+-- KLÄREN (#3): hier nicht berücksichtig ist das Reagieren auf den Fehler, falls die MD5 Prüfsumme nicht mehr stimmt. Wie dies am besten in APEX umgesetzt werden kann, muss noch geklärt werden.
 declare
    lo_rec_feature v_nfo_ui_features%rowtype;
-   l_md5          varchar2(32767) := :P1_FEAT_MD5;
+   lo_md5          varchar2(32767);
 begin
    lo_rec_feature.feat_id      := :P1_FEAT_ID;
    lo_rec_feature.feat_desc_de := :P1_FEAT_DESC_DE;
    lo_rec_feature.feat_desc_en := :P1_FEAT_DESC_EN;
-   pkg_nfo_feat_dml.mrg(lo_rec_feature, l_md5);
-   :P1_FEAT_ID  := lo_rec_feature.feat_id;
-   :P1_FEAT_MD5 := l_md5;
+   lo_rec_feature.feat_catg_id := :P1_FEAT_CATG_ID;
+   lo_rec_feature.feat_rel_id  := :P1_FEAT_REL_ID;
+   lo_md5 := :P1_FEAT_MD5; 
+   pkg_nfo_feat_dml.mrg(lo_rec_feature, lo_md5);   
 end;
 ```
