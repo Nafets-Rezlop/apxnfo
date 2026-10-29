@@ -10,19 +10,19 @@
 
 ## Kategorien
 
-- [Administration und Betrieb](#administration-und-betrieb)
-- [APIs und JavaScript-Bibliotheken](#apis-und-javascript-bibliotheken)
-- [Charts, Maps und Kalender](#charts-maps-und-kalender)
-- [Entwicklung und Lifecycle](#entwicklung-und-lifecycle)
-- [Items, Formulare und Dynamic Actions](#items-formulare-und-dynamic-actions)
-- [KI und Generative AI](#ki-und-generative-ai)
-- [Reports, Grids und Suche](#reports-grids-und-suche)
-- [REST, Datenquellen und Daten-Import](#rest-datenquellen-und-daten-import)
-- [Security und Authentifizierung](#security-und-authentifizierung)
-- [Universal Theme, UI und PWA](#universal-theme-ui-und-pwa)
-- [Workflow, Tasks und Automations](#workflow-tasks-und-automations)
+- 🧰 [Administration und Betrieb](#-administration-und-betrieb)
+- 🧩 [APIs und JavaScript-Bibliotheken](#-apis-und-javascript-bibliotheken)
+- 📊 [Charts, Maps und Kalender](#-charts-maps-und-kalender)
+- 🚀 [Entwicklung und Lifecycle](#-entwicklung-und-lifecycle)
+- 📝 [Items, Formulare und Dynamic Actions](#-items-formulare-und-dynamic-actions)
+- 🤖 [KI und Generative AI](#-ki-und-generative-ai)
+- 📋 [Reports, Grids und Suche](#-reports-grids-und-suche)
+- 🔌 [REST, Datenquellen und Daten-Import](#-rest-datenquellen-und-daten-import)
+- 🔐 [Security und Authentifizierung](#-security-und-authentifizierung)
+- 🎨 [Universal Theme, UI und PWA](#-universal-theme-ui-und-pwa)
+- 🔄 [Workflow, Tasks und Automations](#-workflow-tasks-und-automations)
 
-## Administration und Betrieb
+## 🧰 Administration und Betrieb
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -55,7 +55,7 @@
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## APIs und JavaScript-Bibliotheken
+## 🧩 APIs und JavaScript-Bibliotheken
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -106,7 +106,7 @@
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## Charts, Maps und Kalender
+## 📊 Charts, Maps und Kalender
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -136,7 +136,7 @@
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## Entwicklung und Lifecycle
+## 🚀 Entwicklung und Lifecycle
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -233,7 +233,7 @@
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## Items, Formulare und Dynamic Actions
+## 📝 Items, Formulare und Dynamic Actions
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -286,7 +286,7 @@
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## KI und Generative AI
+## 🤖 KI und Generative AI
 
 Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
@@ -316,7 +316,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## Reports, Grids und Suche
+## 📋 Reports, Grids und Suche
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -371,7 +371,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## REST, Datenquellen und Daten-Import
+## 🔌 REST, Datenquellen und Daten-Import
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -415,7 +415,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## Security und Authentifizierung
+## 🔐 Security und Authentifizierung
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -446,7 +446,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## Universal Theme, UI und PWA
+## 🎨 Universal Theme, UI und PWA
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
@@ -510,7 +510,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 <sub>[↑ Kategorien](#kategorien)</sub>
 
-## Workflow, Tasks und Automations
+## 🔄 Workflow, Tasks und Automations
 
 | Feature | Release | Zusammenfassung |
 |:--|:-:|:--|
