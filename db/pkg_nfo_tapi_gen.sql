@@ -5,27 +5,30 @@
 -- APEX Builder > SQL Workshop > Utilities > Methods on Tables, aber mit dem
 -- Recordtype der UI-View als Übergabeparameter (Anf. 990, 1010):
 --
---   ins (p_rec in out v_nfo_ui_<x>%rowtype, p_md5 in out varchar2)
---   upd (p_rec in     v_nfo_ui_<x>%rowtype, p_md5 in out varchar2)
+--   mrg (p_rec in out v_nfo_ui_<x>%rowtype, p_md5 in out varchar2)
 --   del (p_rec in     v_nfo_ui_<x>%rowtype)
 --   get (p_rec in out v_nfo_ui_<x>%rowtype, p_md5 out varchar2)
 --   build_md5 (p_row in t_nfo_<x>%rowtype) return varchar2
 --
+-- DML nur mit MERGE und DELETE (Anf. 1020):
+--   - mrg: ist der PK leer, wird er aus s_nfo_<tabelle ohne t_nfo_>_<pk> gezogen
+--     und die Zeile eingefügt (Anf. 1030); sonst wird die Zeile aktualisiert.
+--     Der PK kommt in p_rec zurück
+--   - del: delete from <tabelle> where <pk> = p_rec.<pk>
+--
 -- Prüfsumme (Anf. 1000), Ablauf wie im Wizard:
---   - ins und upd liefern in p_md5 die Prüfsumme des gespeicherten Stands zurück
---   - get liefert sie ebenfalls
---   - upd sperrt die Zeile und vergleicht die übergebene p_md5 mit dem aktuellen
---     Stand der Tabelle; bei Abweichung ORA-20001. Ist p_md5 leer, wird nicht
---     geprüft (wie im Wizard)
+--   - mrg liefert in p_md5 die Prüfsumme des gespeicherten Stands zurück,
+--     get liefert sie ebenfalls
+--   - mrg sperrt eine vorhandene Zeile und vergleicht die übergebene p_md5 mit
+--     dem aktuellen Stand der Tabelle; bei Abweichung ORA-20001. Ist p_md5
+--     leer, wird nicht geprüft (wie im Wizard)
 --   - gehasht werden alle Tabellenspalten, nicht nur die Spalten der View
 --
 -- Zuordnung View -> Tabelle:
 --   - Es werden nur Spalten geschrieben, die in View UND Tabelle gleich heißen
 --     (aufgelöste Namensspalten der View werden ignoriert)
---   - Audit-Spalten (_ins_date, _ins_user, _upd_date, _upd_user) und _deleted
---     setzt die API selbst (Anf. 850/860)
---   - del setzt <kürzel>_deleted, wenn die Spalte existiert, sonst delete
---   - ins zieht den PK aus s_nfo_<tabelle ohne t_nfo_>_<pk>, wenn er leer ist
+--   - Audit-Spalten (_ins_date, _ins_user, _upd_date, _upd_user) setzt die API
+--     selbst (Anf. 850)
 --
 -- Aufruf:
 --   exec pkg_nfo_tapi_gen.compile_api('T_NFO_FEATURES');
@@ -62,7 +65,7 @@ create or replace package body pkg_nfo_tapi_gen is
    type t_col is record (
       name      user_tab_cols.column_name%type,
       data_type user_tab_cols.data_type%type,
-      role      varchar2(10),  -- PK, DATA, INS_DATE, INS_USER, UPD_DATE, UPD_USER, DELETED
+      role      varchar2(10),  -- PK, DATA, INS_DATE, INS_USER, UPD_DATE, UPD_USER
       in_view   boolean        -- Spalte gibt es mit gleichem Namen in der View
    );
    type t_cols  is table of t_col index by pls_integer;
@@ -143,7 +146,6 @@ create or replace package body pkg_nfo_tapi_gen is
                                when g_abbr || '_INS_USER'  then 'INS_USER'
                                when g_abbr || '_UPD_DATE'  then 'UPD_DATE'
                                when g_abbr || '_UPD_USER'  then 'UPD_USER'
-                               when g_abbr || '_DELETED'   then 'DELETED'
                                else 'DATA'
                             end;
          g_cols(g_cols.count + 1) := l_col;
@@ -164,27 +166,6 @@ create or replace package body pkg_nfo_tapi_gen is
          g_col_pad := greatest(g_col_pad, length(g_cols(i).name));
       end loop;
    end init;
-
-   function has_role (p_role in varchar2) return boolean is
-   begin
-      for i in 1 .. g_cols.count loop
-         if g_cols(i).role = p_role then
-            return true;
-         end if;
-      end loop;
-      return false;
-   end has_role;
-
-   function col_of_role (p_role in varchar2) return t_col is
-      l_none t_col;
-   begin
-      for i in 1 .. g_cols.count loop
-         if g_cols(i).role = p_role then
-            return g_cols(i);
-         end if;
-      end loop;
-      return l_none;
-   end col_of_role;
 
    ---------------------------------------------------------------------------
    -- Namen und Code-Bausteine
@@ -207,14 +188,6 @@ create or replace package body pkg_nfo_tapi_gen is
    function pkg_name return varchar2 is begin return 'pkg_nfo_' || lower(g_abbr) || '_dml'; end;
    function pk       return varchar2 is begin return lower(g_pk); end;
    function rec (p_col in varchar2) return varchar2 is begin return 'p_rec.' || lower(p_col); end;
-
-   function deleted_value (p_deleted in boolean) return varchar2 is
-   begin
-      if col_of_role('DELETED').data_type = 'BOOLEAN' then
-         return case when p_deleted then 'true' else 'false' end;
-      end if;
-      return case when p_deleted then '1' else '0' end;
-   end deleted_value;
 
    -- Wert einer Spalte als Text für die Prüfsumme; null = Typ wird nicht gehasht
    function hash_expr (p_col in t_col) return varchar2 is
@@ -245,7 +218,7 @@ create or replace package body pkg_nfo_tapi_gen is
       end;
    end hash_expr;
 
-   -- p_mode: INS, UPD, DEL, GET, MD5
+   -- p_mode: MRG, DEL, GET, MD5
    function param_list (p_mode in varchar2) return t_lines is
       l_lines t_lines := t_lines();
 
@@ -256,11 +229,8 @@ create or replace package body pkg_nfo_tapi_gen is
       end p;
    begin
       case p_mode
-         when 'INS' then
+         when 'MRG' then
             p('p_rec in out ' || vw || '%rowtype');
-            p('p_md5 in out varchar2');
-         when 'UPD' then
-            p('p_rec in     ' || vw || '%rowtype');
             p('p_md5 in out varchar2');
          when 'DEL' then
             p('p_rec in     ' || vw || '%rowtype');
@@ -295,8 +265,7 @@ create or replace package body pkg_nfo_tapi_gen is
 
       add('create or replace package ' || pkg_name || ' is');
       add('-- Generiert von pkg_nfo_tapi_gen (Muster: SQL Workshop > Methods on Tables)');
-      add_signature('procedure', 'ins', 'INS', 'create procedure', ';');
-      add_signature('procedure', 'upd', 'UPD', 'update procedure', ';');
+      add_signature('procedure', 'mrg', 'MRG', 'merge procedure', ';');
       add_signature('procedure', 'del', 'DEL', 'delete procedure', ';');
       add_signature('procedure', 'get', 'GET', 'get procedure', ';');
       add_signature('function', 'build_md5', 'MD5', 'build MD5 function', ';');
@@ -310,9 +279,16 @@ create or replace package body pkg_nfo_tapi_gen is
    -- Body
    ---------------------------------------------------------------------------
 
-   procedure gen_ins is
+   procedure gen_mrg is
+      l_set    t_lines := t_lines();
       l_cols   t_lines := t_lines();
       l_values t_lines := t_lines();
+
+      procedure s (p_col in varchar2, p_value in varchar2) is
+      begin
+         l_set.extend;
+         l_set(l_set.count) := rpad(lower(p_col), g_col_pad) || ' = ' || p_value;
+      end s;
 
       procedure v (p_col in varchar2, p_value in varchar2) is
       begin
@@ -322,122 +298,82 @@ create or replace package body pkg_nfo_tapi_gen is
    begin
       for i in 1 .. g_cols.count loop
          case g_cols(i).role
-            when 'PK'       then v(g_cols(i).name, rec(g_cols(i).name));
+            when 'PK'       then v(g_cols(i).name, 'src.' || lower(g_cols(i).name));
             when 'DATA'     then
                if g_cols(i).in_view then
+                  s(g_cols(i).name, rec(g_cols(i).name));
                   v(g_cols(i).name, rec(g_cols(i).name));
                end if;
             when 'INS_DATE' then v(g_cols(i).name, 'sysdate');
             when 'INS_USER' then v(g_cols(i).name, c_user_expr);
-            when 'DELETED'  then v(g_cols(i).name, deleted_value(false));
-            else null;
-         end case;
-      end loop;
-
-      add_signature('procedure', 'ins', 'INS', 'create procedure');
-      add('   is');
-      add('      l_row ' || tab || '%rowtype;');
-      add('   begin');
-      if g_seq is not null then
-         add('      if ' || rec(g_pk) || ' is null then');
-         add('         ' || rec(g_pk) || ' := ' || lower(g_seq) || '.nextval;');
-         add('      end if;');
-         add;
-      end if;
-      add('      insert into ' || tab || ' (');
-      add_lines(l_cols, '         ');
-      add('      ) values (');
-      add_lines(l_values, '         ');
-      add('      );');
-      add;
-      add('      select *');
-      add('        into l_row');
-      add('        from ' || tab);
-      add('       where ' || pk || ' = ' || rec(g_pk) || ';');
-      add('      p_md5 := build_md5(l_row);');
-      add('   end ins;');
-      add;
-   end gen_ins;
-
-   procedure gen_upd is
-      l_set t_lines := t_lines();
-
-      procedure s (p_col in varchar2, p_value in varchar2) is
-      begin
-         l_set.extend;
-         l_set(l_set.count) := rpad(lower(p_col), g_col_pad) || ' = ' || p_value;
-      end s;
-   begin
-      for i in 1 .. g_cols.count loop
-         case g_cols(i).role
-            when 'DATA'     then
-               if g_cols(i).in_view then
-                  s(g_cols(i).name, rec(g_cols(i).name));
-               end if;
             when 'UPD_DATE' then s(g_cols(i).name, 'sysdate');
             when 'UPD_USER' then s(g_cols(i).name, c_user_expr);
-            else null;
          end case;
       end loop;
 
-      add_signature('procedure', 'upd', 'UPD', 'update procedure');
+      add_signature('procedure', 'mrg', 'MRG', 'merge procedure');
       add('   is');
       add('      l_row ' || tab || '%rowtype;');
       add('      l_md5 varchar2(32767);');
       add('   begin');
-      add('      select *');
-      add('        into l_row');
-      add('        from ' || tab);
-      add('       where ' || pk || ' = ' || rec(g_pk));
-      add('         for update;');
+      add('      if ' || rec(g_pk) || ' is null then');
+      if g_seq is not null then
+         add('         -- leerer Primärschlüssel: INSERT (Anf. 1030)');
+         add('         ' || rec(g_pk) || ' := ' || lower(g_seq) || '.nextval;');
+      else
+         add('         raise_application_error(-20002, ''Primärschlüssel ' || pk || ' darf nicht leer sein (keine Sequenz gefunden).'');');
+      end if;
+      add('      else');
+      add('         -- vorhandene Zeile sperren und Prüfsumme vergleichen');
+      add('         begin');
+      add('            select *');
+      add('              into l_row');
+      add('              from ' || tab);
+      add('             where ' || pk || ' = ' || rec(g_pk));
+      add('               for update;');
       add;
-      add('      l_md5 := build_md5(l_row);');
-      add('      if p_md5 is not null and l_md5 != p_md5 then');
-      add('         raise_application_error(-20001, ''Current version of data in database has changed since user initiated update process. current checksum = "''');
-      add('            || l_md5 || ''", item checksum = "'' || p_md5 || ''".'');');
+      add('            l_md5 := build_md5(l_row);');
+      add('            if p_md5 is not null and l_md5 != p_md5 then');
+      add('               raise_application_error(-20001, ''Current version of data in database has changed since user initiated update process. current checksum = "''');
+      add('                  || l_md5 || ''", item checksum = "'' || p_md5 || ''".'');');
+      add('            end if;');
+      add('         exception');
+      add('            when no_data_found then');
+      add('               null; -- Zeile gibt es noch nicht: MERGE fügt sie ein');
+      add('         end;');
       add('      end if;');
       add;
-      if l_set.count = 0 then
-         add('      null; -- keine änderbaren Spalten');
-      else
-         add('      update ' || tab);
-         add('         set');
+      add('      merge into ' || tab || ' tgt');
+      add('      using (select ' || rec(g_pk) || ' as ' || pk || ' from dual) src');
+      add('         on (tgt.' || pk || ' = src.' || pk || ')');
+      if l_set.count > 0 then
+         add('      when matched then');
+         add('         update set');
          add_lines(l_set, '            ');
-         add('       where ' || pk || ' = ' || rec(g_pk) || ';');
       end if;
+      add('      when not matched then');
+      add('         insert (');
+      add_lines(l_cols, '            ');
+      add('         ) values (');
+      add_lines(l_values, '            ');
+      add('         );');
       add;
       add('      select *');
       add('        into l_row');
       add('        from ' || tab);
       add('       where ' || pk || ' = ' || rec(g_pk) || ';');
       add('      p_md5 := build_md5(l_row);');
-      add('   end upd;');
+      add('   end mrg;');
       add;
-   end gen_upd;
+   end gen_mrg;
 
    procedure gen_del is
-      l_set t_lines := t_lines();
    begin
       add_signature('procedure', 'del', 'DEL', 'delete procedure');
       add('   is');
       add('   begin');
-      if has_role('DELETED') then
-         l_set.extend; l_set(l_set.count) := rpad(lower(col_of_role('DELETED').name), g_col_pad) || ' = ' || deleted_value(true);
-         if has_role('UPD_DATE') then
-            l_set.extend; l_set(l_set.count) := rpad(lower(col_of_role('UPD_DATE').name), g_col_pad) || ' = sysdate';
-         end if;
-         if has_role('UPD_USER') then
-            l_set.extend; l_set(l_set.count) := rpad(lower(col_of_role('UPD_USER').name), g_col_pad) || ' = ' || c_user_expr;
-         end if;
-         add('      -- Soft Delete (Anf. 860)');
-         add('      update ' || tab);
-         add('         set');
-         add_lines(l_set, '            ');
-         add('       where ' || pk || ' = ' || rec(g_pk) || ';');
-      else
-         add('      delete from ' || tab);
-         add('       where ' || pk || ' = ' || rec(g_pk) || ';');
-      end if;
+      add('      delete from ' || tab);
+      add('       where ' || pk || ' = ' || rec(g_pk) || ';');
       add('   end del;');
       add;
    end gen_del;
@@ -501,8 +437,7 @@ create or replace package body pkg_nfo_tapi_gen is
 
       add('create or replace package body ' || pkg_name || ' is');
       add;
-      gen_ins;
-      gen_upd;
+      gen_mrg;
       gen_del;
       gen_get;
       gen_md5;
