@@ -1,0 +1,4 @@
+{
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|--|>|\\*\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
+  "todo-tree.filtering.includeGlobs": ["**/*.md", "**/*.sql", "**/*.py"]
+}

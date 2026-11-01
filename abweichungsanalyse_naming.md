@@ -1,6 +1,6 @@
 # Abweichungsanalyse: Namenskonventionen
 
-Verglichen werden die Namensregeln in [anforderungen_nfo.md](anforderungen_nfo.md) (Abschnitt „datenmodell", Anf. 820–1030 und Code-Beispiele) mit [naming_conventions.md](naming_conventions.md) (abgeleitet aus PIT).
+Verglichen werden die Namensregeln in [nfo_specification.md](nfo_specification.md) (Abschnitt „datenmodell", Anf. 820–1030 und Code-Beispiele) mit [pit_naming_conventions.md](pit_naming_conventions.md) (abgeleitet aus PIT).
 
 Legende: ✅ konform · ⚠️ Abweichung · ❓ Lücke (in den Anforderungen nicht geregelt) · ➕ Erweiterung (in PIT nicht vorhanden, kein Konflikt)
 
@@ -70,7 +70,7 @@ PIT: genau 3 Buchstaben (`pms`, `pmt`). Hier: `feat`, `catg` (4) und `rel` (3).
 - Die Spaltenpräfixe bleiben erhalten (`feat_…`), PIT-konform.
 - `feat_link_feature_oracle_doc` enthält „feature" doppelt (Kürzel + Name); vorzugsweise `feat_link_oracle_doc`, `feat_link_youtube`.
 - Anf. 930 sagt, die View löse IDs in **Namen** auf, listet aber nur `feat_catg_id`/`feat_rel_id`. Namensspalten (`catg_name`, `rel_name`) sind nicht benannt. PIT-Konvention wäre die Spalte mit dem Kürzel der aufgelösten Tabelle (`catg_name`, `rel_name`), obwohl sie in der View-Zeile von einer fremden Tabelle stammt. Dies macht das `%rowtype` für DML (Anf. 990) uneinheitlich, weil Join-Spalten nicht schreibbar sind.
-- Die View-Spalten `desc_de`/`desc_en`: PIT normalisiert Sprachtexte in einer eigenen Tabelle (`pit_message_text`, Schlüssel Sprache). Sprachsuffix als Spalte ist eine bewusste Abweichung (ggf. mit Issue #6 abstimmen).
+- Die View-Spalten `feat_summary_de`/`feat_summary_en`: PIT normalisiert Sprachtexte in einer eigenen Tabelle (`pit_message_text`, Schlüssel Sprache). Sprachsuffix als Spalte ist eine bewusste Abweichung (ggf. mit Issue #6 abstimmen).
 
 ### 2.8 DML-Packages und Prozeduren (Anf. 910, 990, 1010) ⚠️
 - `pkg_nfo_feat_dml`: `pkg_` ist in PIT unüblich. PIT: `<projekt>_<bereich>` (`pit_admin`). **Empfehlung:** `nfo_feat_dml` oder `nfo_feature_api`.

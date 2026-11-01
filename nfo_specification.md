@@ -14,6 +14,7 @@ anforderungen
 | 140 | kategorieänderung 2: löschen einer kategorie, dabei müssen alle features in eine andere verschoben werden, erst danach ist das löschen möglich |
 | 150 | kategorieänderung 3: anlage einer kategorie |
 | 160 | kategorieänderung 4 : umbenennen einer kategorie |
+| 170 | der name einer kategorie muss eindeutig sein, jeweils für den deutschen und den englischen namen. anlage oder umbenennen auf einen bereits vorhandenen namen wird mit einer meldung abgelehnt. |
 
 # feature verlinkung zu youtube
 | Nr. | Anforderung |
@@ -22,6 +23,7 @@ anforderungen
 | 210 | das system soll pro apex release ein hauptlink zu dem youtube film abspeichern können. Hintergrund: zu diesem Video gibt es fast immer sprungmarken |
 | 220 | das system soll nach verlinkung des release films auf youtube automatisch nach in der Beschreibung nach den sprungmarken innerhalb des videos suchen und diese separat auflisten. |
 | 230 | falls keine sprungmarken gefunden wurden soll das system ausgeben: Keine sprungmarken gefunden |
+| 240 | jeder youtube link darf nur einmal gespeichert werden: das gilt für den link des release films (210) und für die links der sprungmarken (220). |
 
 # berechtigungen
 | Nr. | Anforderung |
@@ -29,14 +31,15 @@ anforderungen
 | 300 | das system hat 2 rollen: contributor, admin |
 | 310 | der contributor kann neue features anlegen, kategorisieren und youtube links hinterlegen |
 | 320 | der admin kann zusätzlich kategorien löschen |
-| 330 | der zugang zur app ist frei im internet |
+| 330 | der zugang zur app ist frei im internet, daher ist keine Reader rolle nötig. |
 
 # aufnahme neuer releases
 | Nr. | Anforderung |
 |----:|-------------|
 |420 | das system soll die neuen features aus einer csv datei importieren können. Hintergrund: die CSV Datei wird per KI generiert und enthält die neuen features, die in der new feature seite des releases enthalten sind. |
 |430 | Die CSV Datei wird vom contributor hochgeladen und das System prüft die Datei auf korrekte Syntax. Im Erfolgsfall wird eine Meldung ausgegeben, die die release nummer enthält, Beispiel: "CSV Datei für release 26.2 erfolgreich importiert" |
-| 440 | das system soll CSV Datei prüfen auf die spalten: "Feature", "desc_de", "desc_en", "category", "link_feature_oracle_doc" | "link_feature_youtube" |
+| 440 | das system soll CSV Datei prüfen auf die spalten: "Feature", "feature_summary_de", "feature_summary_en", "category", "link_feature_oracle_doc" | "link_feature_youtube" |
+| 450 | die feature-beschreibungen feature_summary_de und feature_summary_en (je max. 4000 zeichen) müssen jeweils eindeutig sein. ein feature mit einer bereits vorhandenen beschreibung wird beim import und bei der manuellen anlage mit einer meldung abgelehnt. |
 
 
 # sprachen
@@ -64,27 +67,26 @@ anforderungen
 | 720 | das system soll die neuen features in einer interaktiven grid anzeigen |
 
 # migration zur befüllung
-Grober Ansatz: Quelle soll die apex-new-features seite sein, die csv datei wird mit dem python script erstellt und dann in das system importiert.
-vermutlich muss die CSV in eine staging tabelle importiert werden, die dann die daten in die produktiven tabellen überträgt.
+| Nr. | Anforderung |
+|----:|-------------|
+|900 | Grober Ansatz: Quelle soll die apex-new-features seite sein https://github.com/Nafets-Rezlop/apxnfo/blob/master/apex-new-features.md, die csv datei wird mit dem python script erstellt und dann in das system importiert. vermutlich muss die CSV in eine staging tabelle importiert werden, die dann die daten in die produktiven tabellen überträgt.
+Wichtig ist die korrekte Reihenfolge der Befüllung der Tabellen.
 
 # datenmodell
 | Nr. | Anforderung |
 |----:|-------------|
 | 800 | das system soll die neuen features in einer relationalen Datenbank speichern |
-| 810 | das system soll basierend auf dem ER Modell er_model_nfo.md entwickelt werden|
-| 820 | alle tabellen sollen mit präfix "t_nfo" angelegt werden |
-| 822 | jede tabelle hat einen künstlichen primärschlüssel, der aus tabellenkürzel + _id besteht, z.B. feat_id für die features tabelle. |
-| 825|  jeder primärschlüssel wird von einer eigenen erstellten sequenz versorgt, namenskonvention: s_nfo_features_feat_id|
-| 830 | alle spalten haben das tabellenkürzel als präfix, z.B. feat_id, feat_desc_de |
-| 835 | alle tabellen haben englischen pluralnamen, z.B. t_nfo_features, t_nfo_categories, t_nfo_releases |
-| 840 | constraints haben die namenskonvention cf_nfo_<tabellenkürzel elterntabelle>_<tabellenkürzel kindtabelle><spaltenname ohne tabellenkürzel>, z.B. cf_nfo_catg_feat_feat_id |
+| 810 | das system soll basierend auf dem ER Modell [er_model_nfo.md](er_model_nfo.md) entwickelt werden|
+| 820 | alle datenbankobjekte folgen den namenskonventionen in [nfo_naming_conventions.md](nfo_naming_conventions.md) (tabellen, spalten, sequenzen, constraints, indizes, domänen, packages, views) |
+| 822 | jede tabelle hat einen künstlichen primärschlüssel (tabellenkürzel + _id, z.B. feat_id). |
+| 825|  jeder primärschlüssel wird von einer eigenen erstellten sequenz versorgt.|
 | 850 | jede tabelle hat auditspalten <tab_kürzel>_ins_date (default sysdate, verpflichtend), <tab_kürzel>_ins_user (verpflichtend), <tab_kürzel>_upd_date (optional), <tab_kürzel>_upd_user (optional) | 
 |870 | das system erstellt für die auditspalten _user eine Domäne mit VARCHAR2(128bytes) und dem Namen dom_nfo_user, die in allen tabellen verwendet wird. |
-|890 | das system erstellt für die auditspalten _ins_date und _upd_date eine Domäne mit DATE und dem Namen dom_nfo_date, die in allen tabellen verwendet wird. |
+|890 | das system erstellt für die auditspalten _ins_date und _upd_date eine Domäne mit DATE und dem Namen dom_nfo_date, die in allen tabellen verwendet wird. Hinweis: damit kann ich einfach von date auf timestamp wechseln, falls notwendig |
 |900 | alle DML Operationen sollen über eigene packages erfolgen und nicht über den DML Prozess von APEX.|
-|910 | das system soll für jede tabelle ein eigenes package erstellen, das die DML Operationen kapselt. Namenskonvention: pkg_nfo_<tabellenkürzel>_dml, z.B. pkg_nfo_feat_dml |
+|910 | das system soll für jede tabelle ein eigenes package erstellen, das die DML Operationen kapselt, z.B. pkg_nfo_feat_dml |
 |920 | um das datenmodell nicht in der UI zu zeigen, sollen views erstellt werden, die die tabellen kapseln. |
-|930 | es soll eine view v_nfo_ui_features geben, die die tabelle t_nfo_features kapselt und die spalten feat_id, feat_desc_de, feat_desc_en, feat_link_feature_oracle_doc, feat_link_feature_youtube, feat_catg_id, feat_rel_id enthält. Sie löst die IDs der Kategorien und Releases auf und zeigt die Namen an |
+|930 | es soll eine view v_nfo_ui_features geben, die die tabelle t_nfo_features kapselt und die spalten feat_id, feat_summary_de, feat_summary_en, feat_link_feature_oracle_doc, feat_catg_id, feat_rel_id, feat_chap_id enthält. Sie löst die IDs der Kategorien, Releases und Sprungmarken auf und zeigt die Namen bzw. den YouTube-Link der Sprungmarke an (chap_link_url). Aufgelöste Spalten heißen wie die Spalte in der Quelltabelle. |
 |940 | gegen diese view laufen alle DML Operationen um die tabelle t_nfo_features zu befüllen. Die view ist updatable. |
 |950 | es soll eine view v_nfo_ui_categories geben, die die tabelle t_nfo_categories kapselt und die spalten catg_id, catg_name enthält. |
 |960 | gegen diese view laufen alle DML Operationen um die tabelle t_nfo_categories zu befüllen. Die view ist updatable. |
@@ -96,13 +98,28 @@ vermutlich muss die CSV in eine staging tabelle importiert werden, die dann die 
 |1020 | die TAPI-Prozeduren sollen nur mit MERGE und DELETE arbeiten.|
 |1030| DAs system soll das MERGE so implementieren, dass es im Fall eines leeren Primärschlüssels, bspw. falls feat_id NULL ist, ein INSERT ausgeführt wird, ansonsten ein UPDATE.|
 
+# APEX-Schmema Architektur
+| Nr. | Anforderung |
+|----:|-------------|
+|1100 | Der APEX Workspace darf nur auf ein Verbindungsschema zugreifen: NFO_SYS_CONN|
+|1110 | Das Verbindungsschema NFO_SYS_CONN hat nur Leserechte auf die Tabellen und Views des Schemas NFO_SYS|
+|1120 | Alle DML Operationen laufen über die TAPI-Prozeduren, die im Schema NFO_SYS liegen.|
+|1130 | Das Verbindungsschema NFO_SYS_CONN hat keine Rechte, um Objekte im Schema NFO_SYS anzulegen oder zu ändern.|
+|1140 | Das Verbindungsschema bekommt nur execute rechte auf die TAPI-Prozeduren, die im Schema NFO_SYS liegen.|
+|1150 | Das Verbindungsschema bekommt Zugriff auf alle NFO_SYS Objekte über Synonyme, die im Verbindungsschema angelegt werden.
+Hintergrund: Der Schema-Name NFO_SYS soll in APEX nicht direkt referenziert werden. Der Zugriff soll über READ und nicht SELECT erfolgen um ein SELECT UPDATE NOWAIT zuverhindern|
+|1160 | Das Verbindungsschema bekommt nur das Recht, die Synonyme zu erstellen und zu ändern. Es darf keine Objekte im Schema NFO_SYS anlegen oder ändern.|
+
+
 # weiter mit:
 Offene Punkte werden als GitHub Issues geführt: https://github.com/nafets-rezlop/apxnfo/issues
 - [#3](https://github.com/Nafets-Rezlop/apxnfo/issues/3) MD5-Fehler (Lost Update) in APEX abfangen und anzeigen
 - [#5](https://github.com/Nafets-Rezlop/apxnfo/issues/5) ER Modell auf Vollständigkeit prüfen
 - [#6](https://github.com/Nafets-Rezlop/apxnfo/issues/6) Sprachumstellung in den Views (APEX Appl. Variable für die Sprache?)
 - [#7](https://github.com/Nafets-Rezlop/apxnfo/issues/7) SQL Makros auf die Views (Testbarkeit)
-- [#8](https://github.com/Nafets-Rezlop/apxnfo/issues/8) Schema und Testfälle für die TAPI-Prozeduren erstellen: siehe apxnfo/db/test_tapi_generator.md
+- [#8](https://github.com/Nafets-Rezlop/apxnfo/issues/8) Schema und Testfälle für die TAPI-Prozeduren erstellen: siehe [db/test_tapi_generator.md](db/test_tapi_generator.md)
+- [#9](https://github.com/Nafets-Rezlop/apxnfo/issues/9) prüfen, ob ich für die KI-Features entweder die neuen DB-KOmmentarfunktionen verwenden soll oder die UI defaults in APEX. Was sind Vor- und Nachteile?
+- [#10](https://github.com/Nafets-Rezlop/apxnfo/issues/10) Features den Sprungmarken der Release-Videos zuordnen (feat_chap_id, eigenes Package)
 
 # Code-Beispiele
 ## Übergabe von Parametern von Page items an die TAPI-Prozeduren
@@ -128,8 +145,8 @@ declare
    lo_md5          varchar2(32767);
 begin
    lo_rec_feature.feat_id      := :P1_FEAT_ID;user
-   lo_rec_feature.feat_desc_de := :P1_FEAT_DESC_DE;
-   lo_rec_feature.feat_desc_en := :P1_FEAT_DESC_EN;
+   lo_rec_feature.feat_summary_de := :P1_FEAT_SUMMARY_DE;
+   lo_rec_feature.feat_summary_en := :P1_FEAT_SUMMARY_EN;
    lo_rec_feature.feat_catg_id := :P1_FEAT_CATG_ID;
    lo_rec_feature.feat_rel_id  := :P1_FEAT_REL_ID;
    lo_md5 := :P1_FEAT_MD5; 
