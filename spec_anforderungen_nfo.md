@@ -64,6 +64,8 @@ anforderungen
 | 720 | das system soll die neuen features in einer interaktiven grid anzeigen |
 
 # migration zur befüllung
+Grober Ansatz: Quelle soll die apex-new-features seite sein, die csv datei wird mit dem python script erstellt und dann in das system importiert.
+vermutlich muss die CSV in eine staging tabelle importiert werden, die dann die daten in die produktiven tabellen überträgt.
 
 # datenmodell
 | Nr. | Anforderung |
@@ -100,6 +102,7 @@ Offene Punkte werden als GitHub Issues geführt: https://github.com/nafets-rezlo
 - [#5](https://github.com/Nafets-Rezlop/apxnfo/issues/5) ER Modell auf Vollständigkeit prüfen
 - [#6](https://github.com/Nafets-Rezlop/apxnfo/issues/6) Sprachumstellung in den Views (APEX Appl. Variable für die Sprache?)
 - [#7](https://github.com/Nafets-Rezlop/apxnfo/issues/7) SQL Makros auf die Views (Testbarkeit)
+- [#8](https://github.com/Nafets-Rezlop/apxnfo/issues/8) Schema und Testfälle für die TAPI-Prozeduren erstellen: siehe apxnfo/db/test_tapi_generator.md
 
 # Code-Beispiele
 ## Übergabe von Parametern von Page items an die TAPI-Prozeduren
@@ -119,12 +122,12 @@ Regeln:
 2) :P1_FEAT_MD5 wird beim Laden des des Feature-Datensatzes aus der Datenbank berechnet und in einem versteckten Page Item gespeichert.Beim Speichern des Datensatz wird die MD5 Prüfsumme an die TAPI-Prozedur übergeben. Die TAPI-Prozedur prüft, ob der Datensatz in der Datenbank noch die gleiche Prüfsumme hat. Ist dies nicht der Fall, wird ein Fehler ausgegeben und der Datensatz nicht gespeichert.
 
 ```sql
--- KLÄREN (#3): hier nicht berücksichtig ist das Reagieren auf den Fehler, falls die MD5 Prüfsumme nicht mehr stimmt. Wie dies am besten in APEX umgesetzt werden kann, muss noch geklärt werden.
+-- TODO (#3): hier nicht berücksichtig ist das Reagieren auf den Fehler, falls die MD5 Prüfsumme nicht mehr stimmt. Wie dies am besten in APEX umgesetzt werden kann, muss noch geklärt werden.
 declare
    lo_rec_feature v_nfo_ui_features%rowtype;
    lo_md5          varchar2(32767);
 begin
-   lo_rec_feature.feat_id      := :P1_FEAT_ID;
+   lo_rec_feature.feat_id      := :P1_FEAT_ID;user
    lo_rec_feature.feat_desc_de := :P1_FEAT_DESC_DE;
    lo_rec_feature.feat_desc_en := :P1_FEAT_DESC_EN;
    lo_rec_feature.feat_catg_id := :P1_FEAT_CATG_ID;
