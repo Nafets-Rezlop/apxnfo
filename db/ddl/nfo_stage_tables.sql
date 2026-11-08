@@ -29,17 +29,17 @@ create table t_nfo_features_stg (
    constraint cp_nfo_stg primary key (stg_id)
 );
 
-comment on table  t_nfo_features_stg                       is 'Staging für den CSV-Import von Features (Anf. 900)';
-comment on column t_nfo_features_stg.stg_id                is 'Kunstschlüssel einer Staging-Zeile';
-comment on column t_nfo_features_stg.stg_feature           is 'CSV-Spalte Feature: Titel des Features';
-comment on column t_nfo_features_stg.stg_release           is 'CSV-Spalte release: Versionsnummer, z.B. 26.1';
-comment on column t_nfo_features_stg.stg_summary_de        is 'CSV-Spalte feature_summary_de';
-comment on column t_nfo_features_stg.stg_summary_en        is 'CSV-Spalte feature_summary_en';
-comment on column t_nfo_features_stg.stg_category          is 'CSV-Spalte category: deutscher Kategoriename';
-comment on column t_nfo_features_stg.stg_link_oracle_doc   is 'CSV-Spalte link_feature_oracle_doc';
-comment on column t_nfo_features_stg.stg_link_youtube      is 'CSV-Spalte link_feature_youtube';
-comment on column t_nfo_features_stg.stg_feat_id           is 'Kunstschlüssel eines Features, gesetzt nach erfolgreicher Übertragung';
-comment on column t_nfo_features_stg.stg_message           is 'Fehlermeldung, falls die Zeile nicht übertragen werden konnte';
+comment on table  t_nfo_features_stg                       is 'Staging table for the CSV import of features. Holds the CSV rows unchanged before they are transferred to T_NFO_FEATURES. Technical table, use T_NFO_FEATURES for questions about features.';
+comment on column t_nfo_features_stg.stg_id                is 'Surrogate key of the staging row.';
+comment on column t_nfo_features_stg.stg_feature           is 'CSV column Feature: title of the feature.';
+comment on column t_nfo_features_stg.stg_release           is 'CSV column release: APEX version number, for example 26.1.';
+comment on column t_nfo_features_stg.stg_summary_de        is 'CSV column feature_summary_de: feature summary in German.';
+comment on column t_nfo_features_stg.stg_summary_en        is 'CSV column feature_summary_en: feature summary in English.';
+comment on column t_nfo_features_stg.stg_category          is 'CSV column category: category name in German.';
+comment on column t_nfo_features_stg.stg_link_oracle_doc   is 'CSV column link_feature_oracle_doc: link to the feature in the Oracle documentation.';
+comment on column t_nfo_features_stg.stg_link_youtube      is 'CSV column link_feature_youtube: link to the feature in a YouTube video.';
+comment on column t_nfo_features_stg.stg_feat_id           is 'Feature created from this row. Set after a successful transfer, empty otherwise.';
+comment on column t_nfo_features_stg.stg_message           is 'Error message if the row could not be transferred. Empty otherwise.';
 
 --------------------------------------------------------------------------------
 -- Ladetabelle für SQLcl LOAD
@@ -62,11 +62,11 @@ create global temporary table t_nfo_load_features (
    ldf_link_youtube    varchar2(500 char)
 ) on commit preserve rows;
 
-comment on table  t_nfo_load_features                     is 'Temporäre Ladetabelle für SQLcl LOAD der CSV-Datei (Anf. 440)';
-comment on column t_nfo_load_features.ldf_feature         is 'CSV-Spalte Feature: Titel des Features';
-comment on column t_nfo_load_features.ldf_release         is 'CSV-Spalte release: Versionsnummer, z.B. 26.1';
-comment on column t_nfo_load_features.ldf_summary_de      is 'CSV-Spalte feature_summary_de';
-comment on column t_nfo_load_features.ldf_summary_en      is 'CSV-Spalte feature_summary_en';
-comment on column t_nfo_load_features.ldf_category        is 'CSV-Spalte category: deutscher Kategoriename';
-comment on column t_nfo_load_features.ldf_link_oracle_doc is 'CSV-Spalte link_feature_oracle_doc';
-comment on column t_nfo_load_features.ldf_link_youtube    is 'CSV-Spalte link_feature_youtube';
+comment on table  t_nfo_load_features                     is 'Temporary load table for the CSV file, filled with SQLcl LOAD. Rows exist only within the database session. Technical table, use T_NFO_FEATURES for questions about features.';
+comment on column t_nfo_load_features.ldf_feature         is 'CSV column Feature: title of the feature.';
+comment on column t_nfo_load_features.ldf_release         is 'CSV column release: APEX version number, for example 26.1.';
+comment on column t_nfo_load_features.ldf_summary_de      is 'CSV column feature_summary_de: feature summary in German.';
+comment on column t_nfo_load_features.ldf_summary_en      is 'CSV column feature_summary_en: feature summary in English.';
+comment on column t_nfo_load_features.ldf_category        is 'CSV column category: category name in German.';
+comment on column t_nfo_load_features.ldf_link_oracle_doc is 'CSV column link_feature_oracle_doc: link to the feature in the Oracle documentation.';
+comment on column t_nfo_load_features.ldf_link_youtube    is 'CSV column link_feature_youtube: link to the feature in a YouTube video.';

@@ -532,6 +532,10 @@ create or replace package body pkg_nfo_tapi_test is
 
    procedure run is
    begin
+      -- ADB (Service HIGH) arbeitet sonst mit Parallel DML: ORA-12839 und ORA-12860.
+      -- Umschalten geht nur ohne offene Transaktion (ORA-12841), daher der Rollback.
+      rollback;
+      execute immediate 'alter session disable parallel dml';
       g_passed := 0;
       g_failed := 0;
       exec_test('catg_insert');

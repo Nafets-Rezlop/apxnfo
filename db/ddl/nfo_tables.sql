@@ -21,8 +21,10 @@
 -- nur beim INSERT. Ein UPDATE auf NULL scheitert an NOT NULL (ORA-01407),
 -- dadurch kann eine leere Seite keine Werte überschreiben.
 --
--- Kommentare: jede Spalte außer den Auditspalten. FK-Spalten übernehmen den
--- Kommentar der Elternspalte.
+-- Kommentare: englisch, jede Spalte außer den Auditspalten. FK-Spalten
+-- beschreiben die Beziehung. nfo_annotations.sql übernimmt die Texte als
+-- Annotation DESCRIPTION für das AI Enrichment, daher nennen sie auch gültige
+-- Werte, Platzhalter und Formate.
 --------------------------------------------------------------------------------
 
 whenever sqlerror exit failure
@@ -45,11 +47,11 @@ create table t_nfo_releases (
    constraint c0_nfo_rel_version unique (rel_version)
 );
 
-comment on table  t_nfo_releases                      is 'APEX-Release, z.B. 26.1';
-comment on column t_nfo_releases.rel_id               is 'Kunstschlüssel eines Releases';
-comment on column t_nfo_releases.rel_version          is 'Versionsnummer, z.B. 26.1';
-comment on column t_nfo_releases.rel_new_features_url is 'URL der New-Features-Seite (Anf. 610)';
-comment on column t_nfo_releases.rel_pdf_url          is 'URL des New-Features-PDFs (Anf. 650)';
+comment on table  t_nfo_releases                      is 'Oracle APEX releases, one row per version, for example 26.1. Parent of features, videos and import runs.';
+comment on column t_nfo_releases.rel_id               is 'Surrogate key of the release.';
+comment on column t_nfo_releases.rel_version          is 'APEX version number, for example 26.1. Unique. Stored as text, so do not sort it alphabetically when numeric order matters.';
+comment on column t_nfo_releases.rel_new_features_url is 'URL of the Oracle documentation page that lists the new features of this release.';
+comment on column t_nfo_releases.rel_pdf_url          is 'URL of the Oracle new features PDF of this release. Empty if no PDF is known.';
 
 --------------------------------------------------------------------------------
 -- t_nfo_categories
@@ -70,11 +72,11 @@ create table t_nfo_categories (
    constraint c0_nfo_catg_name_en unique (catg_name_en)
 );
 
-comment on table  t_nfo_categories                 is 'Kategorie eines Features (Anf. 100-170)';
-comment on column t_nfo_categories.catg_id         is 'Kunstschlüssel einer Kategorie';
-comment on column t_nfo_categories.catg_name_de    is 'Name deutsch, eindeutig (Anf. 170)';
-comment on column t_nfo_categories.catg_name_en    is 'Name englisch, eindeutig (Anf. 170)';
-comment on column t_nfo_categories.catg_sort_order is 'Reihenfolge der Kategorie in Listen';
+comment on table  t_nfo_categories                 is 'Thematic categories used to classify APEX new features, such as "Security and Authentication". One row per category with German and English names.';
+comment on column t_nfo_categories.catg_id         is 'Surrogate key of the category.';
+comment on column t_nfo_categories.catg_name_de    is 'Category name in German. Unique.';
+comment on column t_nfo_categories.catg_name_en    is 'Category name in English. Unique.';
+comment on column t_nfo_categories.catg_sort_order is 'Position of the category in sorted lists. Lower values come first.';
 
 --------------------------------------------------------------------------------
 -- t_nfo_release_videos
@@ -103,15 +105,15 @@ create table t_nfo_release_videos (
 
 create index cf_nfo_rel_vid_rel_id on t_nfo_release_videos (vid_rel_id);
 
-comment on table  t_nfo_release_videos                 is 'YouTube-Video zu einem Release (Anf. 210)';
-comment on column t_nfo_release_videos.vid_id          is 'Kunstschlüssel eines Release-Videos';
-comment on column t_nfo_release_videos.vid_rel_id      is 'Kunstschlüssel eines Releases';
-comment on column t_nfo_release_videos.vid_title       is 'Titel des Videos auf YouTube';
-comment on column t_nfo_release_videos.vid_youtube_url is 'YouTube-Link des Videos, eindeutig (Anf. 240)';
-comment on column t_nfo_release_videos.vid_youtube_key is '11-stellige YouTube-Video-ID';
-comment on column t_nfo_release_videos.vid_is_main     is 'Y = Hauptvideo des Releases (Anf. 210)';
-comment on column t_nfo_release_videos.vid_description is 'Videobeschreibung, Quelle der Sprungmarken (Anf. 220)';
-comment on column t_nfo_release_videos.vid_fetched_at  is 'Zeitpunkt, zu dem die Beschreibung von YouTube geladen wurde';
+comment on table  t_nfo_release_videos                 is 'YouTube videos that present the new features of an APEX release. A release can have several videos.';
+comment on column t_nfo_release_videos.vid_id          is 'Surrogate key of the video.';
+comment on column t_nfo_release_videos.vid_rel_id      is 'Release this video presents.';
+comment on column t_nfo_release_videos.vid_title       is 'Title of the video on YouTube.';
+comment on column t_nfo_release_videos.vid_youtube_url is 'Full YouTube URL of the video. Unique.';
+comment on column t_nfo_release_videos.vid_youtube_key is 'YouTube video ID, always 11 characters. Unique.';
+comment on column t_nfo_release_videos.vid_is_main     is 'Main video flag. Y = main video of the release, N = additional video.';
+comment on column t_nfo_release_videos.vid_description is 'Video description text from YouTube. The video chapters are extracted from it. Empty until it has been fetched.';
+comment on column t_nfo_release_videos.vid_fetched_at  is 'Date and time the description was fetched from YouTube. Empty if it was not fetched yet.';
 
 --------------------------------------------------------------------------------
 -- t_nfo_video_chapters
@@ -135,12 +137,12 @@ create table t_nfo_video_chapters (
 
 create index cf_nfo_vid_chap_vid_id on t_nfo_video_chapters (chap_vid_id);
 
-comment on table  t_nfo_video_chapters                    is 'Sprungmarke in einem Release-Video (Anf. 220)';
-comment on column t_nfo_video_chapters.chap_id            is 'Kunstschlüssel einer Sprungmarke';
-comment on column t_nfo_video_chapters.chap_vid_id        is 'Kunstschlüssel eines Release-Videos';
-comment on column t_nfo_video_chapters.chap_start_seconds is 'Startposition im Video in Sekunden';
-comment on column t_nfo_video_chapters.chap_title         is 'Titel der Sprungmarke aus der Videobeschreibung';
-comment on column t_nfo_video_chapters.chap_link_url      is 'youtu.be/<ID>?t=<Sekunden>, eindeutig (Anf. 240)';
+comment on table  t_nfo_video_chapters                    is 'Chapters of a release video, also called timestamps or jump marks. Each chapter is a position in the video where a topic starts.';
+comment on column t_nfo_video_chapters.chap_id            is 'Surrogate key of the video chapter.';
+comment on column t_nfo_video_chapters.chap_vid_id        is 'Video this chapter belongs to.';
+comment on column t_nfo_video_chapters.chap_start_seconds is 'Start position of the chapter in the video, in seconds.';
+comment on column t_nfo_video_chapters.chap_title         is 'Chapter title taken from the video description.';
+comment on column t_nfo_video_chapters.chap_link_url      is 'Link that opens the video at the chapter start, in the format https://youtu.be/<video ID>?t=<seconds>. Unique.';
 
 --------------------------------------------------------------------------------
 -- t_nfo_features
@@ -180,17 +182,17 @@ create index cf_nfo_chap_feat_chap_id on t_nfo_features (feat_chap_id);
 create unique index c0_nfo_feat_summary_en on t_nfo_features (case when feat_summary_en != 'empty' then feat_summary_en end);
 create unique index c0_nfo_feat_summary_de on t_nfo_features (case when feat_summary_de != 'empty' then feat_summary_de end);
 
-comment on table  t_nfo_features                              is 'New Feature eines APEX-Releases';
-comment on column t_nfo_features.feat_id                      is 'Kunstschlüssel eines Features';
-comment on column t_nfo_features.feat_rel_id                  is 'Kunstschlüssel eines Releases';
-comment on column t_nfo_features.feat_catg_id                 is 'Kunstschlüssel einer Kategorie';
-comment on column t_nfo_features.feat_chap_id                 is 'Kunstschlüssel einer Sprungmarke';
-comment on column t_nfo_features.feat_chapter_match_score     is '0-1, Qualität der Zuordnung zur Sprungmarke';
-comment on column t_nfo_features.feat_title                   is 'Titel des Features (CSV-Spalte Feature)';
-comment on column t_nfo_features.feat_raw_text_en             is 'Originaltext von der Oracle-Seite';
-comment on column t_nfo_features.feat_summary_en              is 'Zusammenfassung englisch, eindeutig außer Initialwert ''empty'' (Anf. 450)';
-comment on column t_nfo_features.feat_summary_de              is 'Zusammenfassung deutsch, eindeutig außer Initialwert ''empty'' (Anf. 450)';
-comment on column t_nfo_features.feat_link_feature_oracle_doc is 'Link zur Oracle-Doku (CSV-Spalte link_feature_oracle_doc)';
+comment on table  t_nfo_features                              is 'New features of Oracle APEX releases, one row per feature. Each feature belongs to one release and one category and can be assigned to one video chapter.';
+comment on column t_nfo_features.feat_id                      is 'Surrogate key of the feature.';
+comment on column t_nfo_features.feat_rel_id                  is 'Release that introduced the feature.';
+comment on column t_nfo_features.feat_catg_id                 is 'Category of the feature.';
+comment on column t_nfo_features.feat_chap_id                 is 'Video chapter that presents the feature. Empty if the feature is not assigned to a chapter.';
+comment on column t_nfo_features.feat_chapter_match_score     is 'Quality of the assignment to the video chapter, from 0 (lowest) to 1 (highest). Empty if the feature is not assigned to a chapter.';
+comment on column t_nfo_features.feat_title                   is 'Title of the feature, in English as published by Oracle.';
+comment on column t_nfo_features.feat_raw_text_en             is 'Original English feature text from the Oracle documentation. Empty if it was not loaded.';
+comment on column t_nfo_features.feat_summary_en              is 'Short feature summary in English. Unique. The value ''empty'' is a placeholder that means no summary exists yet, so exclude it from results.';
+comment on column t_nfo_features.feat_summary_de              is 'Short feature summary in German. Unique. The value ''empty'' is a placeholder that means no summary exists yet, so exclude it from results.';
+comment on column t_nfo_features.feat_link_feature_oracle_doc is 'Link to the feature in the Oracle documentation.';
 
 --------------------------------------------------------------------------------
 -- t_nfo_import_logs
@@ -218,12 +220,12 @@ create table t_nfo_import_logs (
 
 create index cf_nfo_rel_imp_rel_id on t_nfo_import_logs (imp_rel_id);
 
-comment on table  t_nfo_import_logs                 is 'Protokoll der Importe (Anf. 430)';
-comment on column t_nfo_import_logs.imp_id          is 'Kunstschlüssel eines Imports';
-comment on column t_nfo_import_logs.imp_rel_id      is 'Kunstschlüssel eines Releases';
-comment on column t_nfo_import_logs.imp_started_by  is 'APEX-Benutzername (APP_USER), kein Fremdschlüssel';
-comment on column t_nfo_import_logs.imp_import_type is 'Art des Imports: CSV, AI_EXTRACT, AI_ENRICH';
-comment on column t_nfo_import_logs.imp_status      is 'OK, ERROR; leer solange der Import läuft';
-comment on column t_nfo_import_logs.imp_message     is 'Ergebnismeldung des Imports (Anf. 430)';
-comment on column t_nfo_import_logs.imp_started_at  is 'Beginn des Imports';
-comment on column t_nfo_import_logs.imp_finished_at is 'Ende des Imports';
+comment on table  t_nfo_import_logs                 is 'Log of import runs that load new features, one row per run.';
+comment on column t_nfo_import_logs.imp_id          is 'Surrogate key of the import run.';
+comment on column t_nfo_import_logs.imp_rel_id      is 'Release the import run processed. Empty if no release could be determined.';
+comment on column t_nfo_import_logs.imp_started_by  is 'APEX user name (APP_USER) of the person who started the import. Not a foreign key.';
+comment on column t_nfo_import_logs.imp_import_type is 'Type of import. Valid values: CSV = CSV file upload, AI_EXTRACT = AI extraction, AI_ENRICH = AI enrichment.';
+comment on column t_nfo_import_logs.imp_status      is 'Result of the import. Valid values: OK, ERROR. Empty while the import is still running.';
+comment on column t_nfo_import_logs.imp_message     is 'Result message of the import run.';
+comment on column t_nfo_import_logs.imp_started_at  is 'Date and time the import started.';
+comment on column t_nfo_import_logs.imp_finished_at is 'Date and time the import finished. Empty while it is still running.';

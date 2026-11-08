@@ -9,6 +9,10 @@
 set serveroutput on size unlimited
 set define off
 
+-- ADB (Service HIGH) arbeitet sonst mit Parallel DML: ORA-12839 und ORA-12860
+-- bei mehreren Schreibvorgängen in einer Transaktion
+alter session disable parallel dml;
+
 @ddl/nfo_tables.sql
 @ddl/nfo_stage_tables.sql
 @ddl/nfo_views.sql
@@ -46,6 +50,9 @@ set pagesize 100 linesize 200 feedback on heading on termout on
 @pkg_nfo_chapter_extractor.sql
 show errors package body pkg_nfo_chapter_extractor
 
+@pkg_nfo_chapter_matcher.sql
+show errors package body pkg_nfo_chapter_matcher
+
 @migration/pkg_nfo_migration.sql
 show errors package body pkg_nfo_migration
 
@@ -53,11 +60,14 @@ show errors package body pkg_nfo_migration
 show errors package body pkg_nfo_tapi_test
 @test/pkg_nfo_chapter_extractor_test.sql
 show errors package body pkg_nfo_chapter_extractor_test
+@test/pkg_nfo_chapter_matcher_test.sql
+show errors package body pkg_nfo_chapter_matcher_test
 
 select object_name, object_type, status from user_objects where status != 'VALID';
 
 exec pkg_nfo_tapi_test.run;
 exec pkg_nfo_chapter_extractor_test.run;
+exec pkg_nfo_chapter_matcher_test.run;
 
 -- Rechte für das Verbindungsschema (Anf. 1110-1140). Voraussetzung:
 -- admin/create_schema_nfo_sys_conn.sql. Danach als NFO_SYS_CONN
