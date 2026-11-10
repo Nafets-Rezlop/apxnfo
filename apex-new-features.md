@@ -1,12 +1,12 @@
-# Oracle APEX – New Features von 26.2 bis 18.1
+# Oracle APEX – New Features from 26.2 to 18.1
 
-Übersicht aller Abschnitte aus den *New Features*-Kapiteln der Oracle APEX Release Notes, gruppiert nach Themen. Featurenamen stehen im englischen Original, damit die Browser-Suche (Strg+F / Cmd+F) dieselben Begriffe findet wie die Oracle-Doku. Jeder Name verlinkt direkt auf seinen Abschnitt in den Release Notes.
+Overview of all sections from the *New Features* chapters of the Oracle APEX Release Notes, grouped by topic. Feature names are kept in their original English form so browser search (Ctrl+F / Cmd+F) finds the same terms as the Oracle documentation. Each name links directly to its section in the Release Notes.
 
-- **Stand:** 27.10.2026 · **Einträge:** 364 · **Releases:** 16 (ein Release 25.x gibt es nicht; auf 24.2 folgt 26.1)
-- **Sichtbar:** Releases der letzten fünf Jahre (22.1 – 26.2), absteigend sortiert
-- **Eingeklappt:** 18.1 – 21.2 je Kategorie unter *Ältere Releases*. Ob die Browser-Suche Treffer in eingeklappten Bereichen findet, hängt vom Browser ab – im Zweifel aufklappen.
-- **Aufbau:** je Kategorie eine Tabelle, absteigend nach Release sortiert
-- **Zusammenfassung:** 1–3 Sätze, sinngemäß aus dem Originaltext der Release Notes (auf Englisch und Deutsch). Ein einzelner Satz steht dort, wo schon der Originaltext nur aus einem Satz besteht.
+- **As of:** 27.10.2026 · **Entries:** 364 · **Releases:** 16 (there is no release 25.x; 24.2 is followed by 26.1)
+- **Visible:** Releases from the last five years (22.1 – 26.2), sorted descending
+- **Collapsed:** 18.1 – 21.2 per category under *Older Releases*. Whether browser search finds matches in collapsed sections depends on the browser – expand if in doubt.
+- **Structure:** One table per category, sorted descending by release
+- **Summary:** 1–3 sentences summarizing the original text of the Release Notes (in English and German). A single sentence appears where the original text consists of only one sentence.
 
 ## Categories
 
@@ -24,7 +24,7 @@
 
 ## 🎬 Release Videos
 
-Übersicht der offiziellen Videos zu neuen Funktionen der jeweiligen Oracle APEX Releases (Quelle: Kanäle *Oracle Developers* und *Oracle APEX* auf YouTube):
+Overview of official videos on new features for each Oracle APEX release (Source: *Oracle Developers* and *Oracle APEX* channels on YouTube):
 
 | Release | Video | Chapters |
 |:--:|:--|:--|
@@ -63,7 +63,7 @@
 
 ## 🧰 Administration and Operations
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Enhanced Mail Queue Reporting](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-098369DE-A6EE-4758-96B9-4C9DCEEC2207) | 26.2 | Instance administrators gain new Mail Queue metrics covering delivery health, performance, failures, and per-workspace usage. This visibility makes it easier to pinpoint and resolve mail delivery issues. | Instanzadministratoren erhalten neue Kennzahlen zur Mail Queue, etwa zu Zustellstatus, Leistung, Fehlern und Nutzung je Workspace. Damit lassen sich Zustellprobleme schneller finden. |
 | [Enhanced Manage Service Wizard](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-4C0962C4-B7B2-4636-B558-5C34FB1379D1) | 26.2 | Workspace administrators can now request Web Service Limit increases directly from the Manage Service wizard. This self-service option streamlines and standardizes the request process. | Workspace-Administratoren können eine Erhöhung des Web-Service-Limits direkt im Manage-Service-Assistenten beantragen. Das vereinfacht und vereinheitlicht den Antragsweg. |
@@ -83,9 +83,9 @@
 | [Email Template Updates](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-DD330082-E598-418F-906F-60F6C032E586) | 22.1 | Specific email template attributes now support template directives. | Bestimmte Attribute von E-Mail-Templates unterstützen Template Directives. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (2 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (2 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Environment Setup (Environment Banner, SAML)](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-A9FE2F6F-429B-4704-AE39-54D3A28FD1E1) | 21.2 | An Environment Banner can be configured at the instance or workspace level to visually distinguish APEX environments. In addition, SAML is now supported as an authentication scheme for both the development environment and custom applications. | Ein Environment Banner unterscheidet APEX-Umgebungen auf Instanz- oder Workspace-Ebene optisch. SAML wird als Authentifizierungsschema für die Entwicklungsumgebung und eigene Anwendungen unterstützt. |
 | [Email and Email Template Enhancements](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-B96C92AF-F16B-4331-B8BC-73BB9506C8B1) | 21.2 | The Send Email process now supports email templates and can also be used within Automations. Additionally, email templates can be copied, and images can be embedded as inline attachments. | Der Prozess „Send Email“ unterstützt E-Mail-Templates und ist auch in Automations nutzbar. Templates lassen sich kopieren, und Bilder können als Inline-Anhang eingebettet werden. |
@@ -96,7 +96,7 @@
 
 ## 🧩 APIs and JavaScript Libraries
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [PL/SQL API Updates](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-39BC930D-5B8A-450D-AFEB-24E89BE1CF6C) | 26.2 | APEX_APPLICATION_ADMIN and APEX_APPLICATION_INSTALL add procedures for Deep Data Security, Supporting Objects, application locking, and working copies. Additional updates introduce GROUPS_FROM_TOKEN in APEX_AUTHENTICATION, SET_TASK_OUTCOME in APEX_HUMAN_TASK, Data Roles in APEX_SESSION, and MIGRATE_INSTANCE in APEX_WORKFLOW. | APEX_APPLICATION_ADMIN und APEX_APPLICATION_INSTALL erhalten Prozeduren für Deep Data Security, Supporting Objects, das Sperren von Anwendungen und Working Copies. Dazu kommen GROUPS_FROM_TOKEN in APEX_AUTHENTICATION, SET_TASK_OUTCOME in APEX_HUMAN_TASK, Data Roles in APEX_SESSION und MIGRATE_INSTANCE in APEX_WORKFLOW. |
 | [JavaScript API Updates](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-5E4F1950-DACE-4D55-9505-C4570FC30C38) | 26.2 | The new apex.region.multipleRefresh method refreshes Cards, Charts, Interactive Grids, and Template Component regions in a single Ajax request. Other additions include the ForegroundTimer class, a dedicated chartRegion interface, and minor fixes across existing APIs. | Mit apex.region.multipleRefresh lassen sich Cards, Charts, Interactive Grids und Template-Component-Regionen in einem einzigen Ajax-Request aktualisieren. Neu sind außerdem die Klasse ForegroundTimer und eine eigene chartRegion-Schnittstelle, dazu kleinere Korrekturen an bestehenden APIs. |
@@ -122,9 +122,9 @@
 | [PL/SQL API Updates](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-39BC930D-5B8A-450D-AFEB-24E89BE1CF6C) | 22.1 | APEX_WEB_SERVICE introduces CLEAR_REQUEST_HEADERS and CLEAR_REQUEST_COOKIES for resetting request headers and cookies. In addition, APEX_STRING adds support for CLOB arrays with the PUSH, SPLIT_CLOBS, and JOIN_CLOBS subprograms. | APEX_WEB_SERVICE erhält CLEAR_REQUEST_HEADERS und CLEAR_REQUEST_COOKIES zum Zurücksetzen von Headern und Cookies. APEX_STRING unterstützt CLOB-Arrays mit PUSH, SPLIT_CLOBS und JOIN_CLOBS. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (14 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (14 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [JavaScript Library Upgrades](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-175489FB-CC24-40F6-89EF-A4A7AAFD7770) | 21.2 | Bundled JavaScript libraries have been upgraded, including jQuery 3.6.0, MarkedJS 3.0.0, Oracle JET 11.0.0, and PrismJS 1.24.1. | Mitgelieferte Bibliotheken wurden aktualisiert: jQuery 3.6.0, MarkedJS 3.0.0, Oracle JET 11.0.0 und PrismJS 1.24.1. |
 | [JavaScript (jsDoc) Updates](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-5E4F1950-DACE-4D55-9505-C4570FC30C38) | 21.2 | This update introduces new namespaces apex.date and apex.pwa, alongside new interfaces for colorPickerItem, facetsRegion, mapRegion, and numberFieldItem. Additionally, apex.util.applyTemplate features an enhanced if directive, and new additions include apex.items, apex.regions, apex.env, and the item methods isReady and whenReady. | Neu sind die Namespaces apex.date und apex.pwa sowie Schnittstellen für colorPickerItem, facetsRegion, mapRegion und numberFieldItem. apex.util.applyTemplate erhält eine verbesserte if-Direktive, dazu kommen apex.items, apex.regions, apex.env und die Item-Methoden isReady und whenReady. |
@@ -147,7 +147,7 @@
 
 ## 📊 Charts, Maps and Calendars
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Lazy Loading for JET Charts](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-B06C63DA-FBD5-4DDC-A852-11061C46266E) | 26.2 | A new Lazy Loading property allows developers to determine whether chart data is fetched during server-side rendering or asynchronously when the region becomes visible. Lazy loading remains enabled by default for existing applications, though custom visibility controls may delay initial chart rendering. | Eine neue Eigenschaft „Lazy Loading“ legt fest, ob Chart-Daten beim serverseitigen Rendern oder erst beim Sichtbarwerden der Region geladen werden. Für bestehende Anwendungen bleibt Lazy Loading aktiv; bei eigenen Sichtbarkeitssteuerungen kann sich die erste Anzeige verzögern. |
 | [Improved Refreshes and Accessibility Improvements](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-1454D8F0-2EF7-42B7-97F8-D7D754950DE5) | 26.2 | New APIs allow developers to start, stop, and set chart refresh intervals while eliminating redundant processing during resize and visibility changes. Additionally, chart animations upon data changes now respect the operating system's reduced-motion preference. | Neue APIs starten, stoppen und setzen Refresh-Intervalle von Charts, und unnötige Verarbeitung bei Größen- und Sichtbarkeitsänderungen entfällt. Animationen bei Datenänderungen respektieren die Einstellung des Betriebssystems für reduzierte Bewegung. |
@@ -157,9 +157,9 @@
 | [Vector-Based Map Support](https://docs.oracle.com/en/database/oracle/apex/22.2/htmrn/new-features.html#GUID-FDAB3A97-30FC-4F3E-BE39-D6E6FA89798C) | 22.2 | Map regions now support vector-based map tiles with three OpenStreetMap styles. New applications use vector layers by default, while existing applications can be switched to vector layers in Component Settings. | Map-Regionen unterstützen vektorbasierte Kartenkacheln mit drei OpenStreetMap-Stilen. Neue Anwendungen nutzen standardmäßig Vector Layer, bestehende können in den Component Settings umgestellt werden. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (9 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (9 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Geocoding and Map Items](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-0FE8C1A9-1FCD-41D9-B266-F5B994948050) | 21.2 | A new page item converts entered addresses into coordinates and normalized addresses using geocoding without requiring an API key. Additionally, the new Display Map item enables quick visualization of a single point as a mini map. | Ein neues Item wandelt eingegebene Adressen per Geocoding in Koordinaten und normalisierte Adressen um, ohne API-Schlüssel. Das Item „Display Map“ zeigt einen einzelnen Punkt als kleine Karte. |
 | [Native Map Region Type](https://docs.oracle.com/en/database/oracle/application-express/21.1/htmrn/index.html#GUID-06E81168-001D-4B13-A6F1-4E0AF9AF775B) | 21.1 | The native Map component visualizes location data as points, lines, polygons, heat maps, or 3D polygons on background maps without requiring an API key. It leverages Oracle Spatial, GeoJSON, or numeric columns from local or REST data sources, and integrates with Faceted Search, Dynamic Actions, and a JavaScript API. | Die native Map-Region zeigt Standortdaten als Punkte, Linien, Polygone, Heatmaps oder 3D-Polygone auf Hintergrundkarten ohne API-Schlüssel. Sie nutzt Oracle Spatial, GeoJSON oder Zahlenspalten aus lokalen oder REST-Quellen und unterstützt Faceted Search, Dynamic Actions und eine JavaScript-API. |
@@ -177,7 +177,7 @@
 
 ## 🚀 Development and Lifecycle
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [APEXlang Deployment Files](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-2B1C0CA8-EE71-4E99-B48C-16C56BB38E7A) | 26.2 | Deployment-related configurations for applications, workspaces, subscriptions, and themes can now be defined in a dedicated APEXlang JSON deployment file. This cleanly separates environment-specific deployment details from core .apx app definition files. | Deployment-relevante Werte für Anwendung, Workspace, Subscriptions und Theme lassen sich in einer eigenen JSON-Deployment-Datei festlegen. Damit sind Umgebungsdetails von den eigentlichen .apx-Definitionsdateien getrennt. |
 | [APEXlang APEX Upgrade Process](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-480F96D8-3AB4-4866-AA72-27A39EFC83FC) | 26.2 | For development teams maintaining APEXlang files in Git as their definitive source of truth, Oracle provides a documented upgrade workflow to update each application following an APEX release upgrade. Detailed instructions are available in the Oracle APEX Developer's Companion. | Für Teams, die APEXlang-Dateien in Git als maßgebliche Quelle führen, beschreibt Oracle einen eigenen Ablauf, um jede Anwendung nach einem APEX-Upgrade nachzuziehen. Details stehen im Oracle APEX Developer's Companion. |
@@ -240,9 +240,9 @@
 | [Code Editor Enhancements](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-023EDFE4-77AA-441D-921D-FEDF7604B301) | 22.1 | The code editor features bracket pair colorization and highlights uncommon invisible characters by default. Furthermore, page-level JavaScript function and variable declarations are provided as autocomplete suggestions across all JavaScript editors on the page. | Der Code-Editor kann Klammerpaare farbig hervorheben und markiert ungewöhnliche unsichtbare Zeichen. JavaScript aus Funktions- und Variablendeklarationen der Seite steht in allen JavaScript-Editoren für die Autovervollständigung bereit. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (23 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (23 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Improved Editors](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-F6AFB9CF-122A-4767-AC5A-D0F5E2BD1009) | 21.2 | Static files can now be created and edited directly in the browser with automatic minification and LESS compilation. In addition, the Breadcrumb Editor has been improved, and SQL Commands now supports statements exceeding 32 KB. | Statische Dateien lassen sich direkt im Browser anlegen und bearbeiten, mit automatischer Minifizierung und LESS-Kompilierung. Der Breadcrumb-Editor wurde verbessert, und SQL Commands verarbeitet Anweisungen über 32 KB. |
 | [Additional Features](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-82D6B172-9B19-4F46-BF92-E808E92ED6B7) | 21.2 | A Data Packager enables table data to be included in application exports, and Popup LOVs now automatically populate display values when set. Other additions include a 'Show On' attribute for the Date Picker, a dialog cancel event, and new PL/SQL and JavaScript APIs. | Ein Data Packager nimmt Tabellendaten in den Anwendungsexport auf, und Popup LOVs setzen beim Wertsetzen automatisch den Anzeigewert. Dazu kommen ein „Show On“-Attribut für den Date Picker, ein Dialog-Ereignis für Abbruch und neue PL/SQL- und JavaScript-APIs. |
@@ -274,7 +274,7 @@
 
 ## 📝 Items, Forms and Dynamic Actions
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Page Item Session State Data Type - BOOLEAN](https://docs.oracle.com/en/database/oracle/apex/26.1/htmrn/new-features.html#GUID-3FEDC338-745A-4CE9-82C9-C539E088287E) | 26.1 | Checkbox, Switch, and Hidden page items can now utilize the BOOLEAN session state data type, aligning with the SQL BOOLEAN type introduced in Oracle Database 26ai. Native Boolean values are handled across PL/SQL and JavaScript, and creation wizards automatically map BOOLEAN columns appropriately. | Checkbox-, Switch- und Hidden-Items können den Session-State-Datentyp BOOLEAN verwenden, passend zum SQL-Datentyp BOOLEAN ab Database 26ai. In PL/SQL und JavaScript werden dann echte Boolean-Werte verarbeitet; Assistenten bilden BOOLEAN-Spalten automatisch passend ab. |
 | [New Dynamic Actions](https://docs.oracle.com/en/database/oracle/apex/26.1/htmrn/new-features.html#GUID-647FF5DD-5B2A-4EA6-8986-6AD2FFD7243C) | 26.1 | New dynamic actions allow developers to declaratively show success or error messages and clear displayed errors. This eliminates the need to write custom JavaScript to manage runtime messages. | Neue dynamische Aktionen zeigen Erfolgs- und Fehlermeldungen an oder entfernen angezeigte Fehler. JavaScript ist dafür nicht mehr nötig. |
@@ -307,9 +307,9 @@
 | [Markdown and Rich Text Enhancements](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-424F8D04-F2CF-4FB4-9E7C-A0C93C5A3CF7) | 22.1 | Markdown and Rich Text content now share consistent styling across all components, and Interactive Grids can display rich text in read-only mode. Additionally, the Rich Text Editor adopts CKEditor5 v32 with raw HTML embedding, and apex_markdown.to_html now accepts CLOB input. | Markdown und Rich Text werden in allen Komponenten einheitlich dargestellt, und Interactive Grids können Rich Text auch schreibgeschützt anzeigen. Der Rich Text Editor nutzt CKEditor5 v32 mit HTML-Embed, apex_markdown.to_html akzeptiert CLOBs. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (9 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (9 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Native Markdown Support](https://docs.oracle.com/en/database/oracle/application-express/21.1/htmrn/index.html#GUID-B1A8E8B9-DF08-47DC-8C72-9CDD5B98756D) | 21.1 | The new APEX_MARKDOWN PL/SQL API converts CommonMark markdown into HTML on the server. Display Only items and report columns can render formatted markdown, and the Markdown report column type has been renamed to Rich Text. | Die neue PL/SQL-API APEX_MARKDOWN wandelt Markdown nach CommonMark serverseitig in HTML um. Display-Only-Items und Berichtsspalten können Markdown formatiert anzeigen, die Spaltenart „Markdown“ heißt jetzt „Rich Text“. |
 | [New Date Picker Item Type](https://docs.oracle.com/en/database/oracle/application-express/21.1/htmrn/index.html#GUID-9AC341C1-42BF-4FD1-8322-153A6187DF85) | 21.1 | The new Date Picker item type is based on Oracle JET and supports popup, inline, and native HTML display modes, each with optional time support. Minimum and maximum dates can be defined dynamically to enforce date ranges such as from-and-to fields. | Der neue Date Picker basiert auf Oracle JET und bietet Popup-, Inline- und native HTML-Darstellung, jeweils mit optionaler Uhrzeit. Minimal- und Maximaldaten können dynamisch sein, etwa für Von-bis-Bereiche. |
@@ -327,9 +327,9 @@
 
 ## 🤖 AI and Generative AI
 
-Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
+As a mind map with direct links: [ki-features.md](ki-features.md)
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Reasoning Effort for AI Agents](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-E3EC1EE4-8A4E-4CBE-9303-D5C170FA6DC9) | 26.2 | AI Agents now feature a declarative Reasoning Effort setting that controls how much a model reasons before generating a response. While higher effort can improve results for complex tasks at the cost of latency and token consumption, the value can also be inspected in the AI Request Handler or passed via APEX_AI. | AI Agents haben eine deklarative Einstellung „Reasoning Effort“, die steuert, wie viel ein Modell vor der Antwort „nachdenkt“. Mehr Aufwand kann komplexe Aufgaben verbessern, erhöht aber Latenz und Token-Verbrauch; der Wert lässt sich auch im AI Request Handler oder über APEX_AI setzen. |
 | [New Provider API Setting for Generative AI Services](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-31C88C7A-697C-46D6-AA1B-8C61D73A3607) | 26.2 | Generative AI services for OpenAI, Ollama, generic OpenAI-compatible providers, OCI Generative AI, and Google Gemini now feature a Provider API setting to determine endpoints and payload formats. Newer Responses and Interactions APIs are now the defaults, while legacy APIs are deprecated. | Generative-AI-Services für OpenAI, Ollama, OpenAI-kompatible Anbieter, OCI Generative AI und Google Gemini haben eine Einstellung „Provider API“, die Endpunkt und Request-Format bestimmt. Neuer Standard sind die Responses- bzw. Interactions-APIs, die bisherigen APIs gelten als veraltet. |
@@ -357,7 +357,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 ## 📋 Reports, Grids and Search
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Search Interactive Reports Using Key Phrases](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-F58E038C-2D6A-4A69-B17F-941F9511A73E) | 26.2 | Interactive Report search bars now recognize predefined key phrases such as "filter status by ..." or "sort by ... descending" to execute actions locally without invoking an LLM. This functionality is supported across all Interactive Reports, even without Natural Language enabled. | Die Suchleiste von Interactive Reports versteht feste Schlüsselphrasen wie „filter status by …“ oder „sort by … descending“ und führt sie lokal ohne LLM aus. Das funktioniert in allen Interactive Reports, auch ohne aktivierte Natural-Language-Funktion. |
 | [Translating Default Reports for Interactive Reports and Interactive Grids](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-FE5BB388-17D7-469F-8251-DEE2C0A3A9D1) | 26.2 | Saved report metadata for Interactive Reports and Interactive Grids can now be translated using text messages. | Die Metadaten gespeicherter Berichte von Interactive Reports und Interactive Grids lassen sich über Text Messages übersetzen. |
@@ -383,9 +383,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 | [Plug-In Support for Faceted Search/Smart Filters](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-C34AD7DF-D111-418E-9C89-13F675A4970F) | 22.1 | Region plug-ins can now be made compatible with Faceted Search and Smart Filters. Once connected, the plug-in region automatically filters data and refreshes whenever filter criteria change. | Region-Plug-ins können mit Faceted Search und Smart Filters zusammenarbeiten. Die Region wird dann automatisch gefiltert und bei Filteränderungen aktualisiert. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (18 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (18 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Smart Filters](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-B6D5B570-AADE-40B9-B02F-C08F8C494633) | 21.2 | Smart Filters is a new search component featuring a search bar that provides auto-complete filter suggestions. Top filter suggestions appear as chips beneath the search bar, enabling users to instantly narrow down data with a single click. | Smart Filters ist eine neue Suchkomponente mit einer Suchleiste, die Filter per Autovervollständigung vorschlägt. Häufige Filter erscheinen als Chips unter der Suchleiste und grenzen die Daten mit einem Klick ein. |
 | [Faceted Search Enhancements](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-FF619F90-B3FA-4C12-911E-970C03E18C41) | 21.2 | Faceted Search now supports multi-value columns stored as separated strings or JSON arrays. It also offers enhanced control over facet labels and icons, alongside usability and accessibility improvements. | Faceted Search unterstützt mehrwertige Spalten als getrennte Zeichenkette oder JSON-Array. Facetten-Labels und Icons sind besser steuerbar, und die Barrierefreiheit wurde verbessert. |
@@ -412,7 +412,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 ## 🔌 REST, Data Sources and Data Loading
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Enhanced Fusion Applications Starter App](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-B63CEBF2-3D22-49F5-9126-F1BDB2CF224C) | 26.2 | The Fusion Applications starter app has been enhanced to support both ADF and BOSS scopes. Updates include changes to the authentication scheme, web credentials, REST data sources, and authentication logic. | Die Starter-App für Fusion Applications unterstützt sowohl ADF- als auch BOSS-Scopes. Angepasst wurden dafür Authentifizierungsschema, Web Credentials, REST Data Sources und Anmeldelogik. |
 | [REST Data Sources Dynamic Values](https://docs.oracle.com/en/database/oracle/apex/26.1/htmrn/new-features.html#GUID-2DF885BE-C596-4E58-94F3-D8013C99C508) | 26.1 | Parameters for REST Data Sources can now be set dynamically using a variety of value types. Options include static values, page items, SQL queries, or expressions and function bodies written in PL/SQL or JavaScript. | Parameter von REST Data Sources können ihren Wert dynamisch erhalten. Zur Wahl stehen statische Werte, Seitenelemente, SQL-Abfragen sowie Ausdrücke oder Funktionen in PL/SQL oder JavaScript. |
@@ -433,9 +433,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 | [REST Sources (REST Enabled SQL Query)](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-1D9E3439-B5DD-41BF-8F04-33D96453460E) | 22.1 | The new REST Enabled SQL Query source type allows creating REST Sources on top of REST Enabled SQL. These sources can be utilized for REST catalogs, synchronization, and abstracting SQL queries from APEX components. | Der neue REST-Source-Typ „REST Enabled SQL Query“ legt REST Sources über REST Enabled SQL an. Sie lassen sich für REST-Kataloge, Synchronisation oder zur Kapselung der SQL-Abfrage nutzen. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (12 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (12 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [REST Catalogs and Improvements](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-C528F3EB-3887-4941-9FC5-BED7D146D3B6) | 21.2 | REST Service Catalogs store REST service metadata to facilitate creating APEX REST Data Sources. Catalogs can be shared across an entire workspace, exported, and refreshed via URL, while Simple HTTP sources now support pagination. | REST-Service-Kataloge enthalten Metadaten zu REST-Diensten, aus denen sich REST Data Sources anlegen lassen. Kataloge sind workspaceweit nutzbar, exportierbar und per URL aktualisierbar; Simple-HTTP-Quellen unterstützen Paginierung. |
 | [New Application Data Loading](https://docs.oracle.com/en/database/oracle/application-express/21.1/htmrn/index.html#GUID-D2FE9163-AEE6-4C4D-A074-A1AA600BF3A6) | 21.1 | A new data loading feature imports CSV, XLSX, XML, and JSON files into tables or collections with design-time column mapping. It provides data transformation rules, append, merge, or replace modes with error handling, a dedicated process type, and the APEX_DATA_LOADING API. | Eine neue Datenladefunktion importiert CSV, XLSX, XML und JSON in Tabellen oder Collections, mit Spaltenzuordnung zur Entwurfszeit. Es gibt Transformationsregeln, Append/Merge/Replace mit Fehlerbehandlung, einen Prozesstyp und die API APEX_DATA_LOADING. |
@@ -456,7 +456,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 ## 🔐 Security and Authentication
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Deep Data Security Integration](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-9EE8D812-B0EE-447A-B037-15FC56757888) | 26.2 | APEX applications can now leverage Oracle Deep Data Security from Database 26ai to enforce data access controls directly in the database. The authenticated end-user identity is passed through to the database kernel, where Data Roles and Data Grants apply to all SQL execution. | APEX-Anwendungen können Oracle Deep Data Security aus Database 26ai nutzen, um den Datenzugriff direkt in der Datenbank zu erzwingen. Die Identität des angemeldeten Benutzers wird an die Datenbank durchgereicht, wo Data Roles und Data Grants für jedes SQL greifen. |
 | [Support for Resource Principal Authentication in Web Service Calls](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-D80FAD48-713B-47E4-8FC8-B1FE5883B93C) | 26.2 | Outbound web service calls can now authenticate using OCI Resource Principals, such as when connecting to OCI Generative AI. This eliminates the need to provision, store, and manage API keys. | Ausgehende Web-Service-Aufrufe können sich per OCI Resource Principal authentifizieren, etwa gegenüber OCI Generative AI. API-Schlüssel müssen dafür nicht mehr angelegt, gespeichert und verwaltet werden. |
@@ -474,9 +474,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 | [Persistent Authentication](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-708FE0BD-7BA5-4157-A501-7B13D69806F1) | 22.1 | Persistent Authentication keeps users signed in via a Remember Me checkbox on the login page. The feature is enabled at the instance level, and persistent sessions can be revoked individually or in bulk via API. | Mit Persistent Authentication bleiben Benutzer angemeldet, angeboten über eine „Remember Me“-Checkbox auf der Login-Seite. Die Funktion wird auf Instanzebene aktiviert; dauerhafte Anmeldungen lassen sich per API einzeln oder gesammelt widerrufen. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (2 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (2 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [New Web Credential Types](https://docs.oracle.com/en/database/oracle/application-express/20.2/htmrn/index.html#GUID-4C17B10F-865E-42CF-8AC1-ABE3B3C654F1) | 20.2 | Web Credentials can now pass secrets as URL query strings or HTTP headers without writing them to logs. In addition, an optional URL pattern restricts which endpoints a credential can be used for. | Web Credentials können Schlüssel auch als URL-Parameter oder HTTP-Header übergeben, ohne dass diese in Logs erscheinen. Ein URL-Muster beschränkt, für welche Adressen ein Credential verwendet werden darf. |
 | [Social Login](https://docs.oracle.com/database/apex-18.1/HTMRN/toc.htm#GUID-34617927-2EDF-49A8-BD73-9704E8EB15E8) | 18.1 | The new Social Login authentication scheme provides built-in support for Google, Facebook, OpenID Connect, and OAuth2. It also introduces a Switch in Session attribute to switch schemes within an active session. | Das neue Authentifizierungsschema Social Login unterstützt Google, Facebook, OpenID Connect und OAuth2. Schemata können per „Switch in Session“ in der laufenden Session umgeschaltet werden. |
@@ -487,7 +487,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 ## 🎨 Universal Theme, UI and PWA
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Universal Theme Enhancements](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-846F567C-E003-4772-8808-DD0B08CCD74B) | 26.2 | Universal Theme 26.2 expands Iris Theme Roller options and renames Redwood Light to Redwood Light [Legacy]. It also introduces expanded design tokens, CSS logical properties for RTL, and improvements to layout, accessibility, and loading spinners. | Universal Theme 26.2 erweitert die Iris-Optionen in Theme Roller und benennt Redwood Light in „Redwood Light [Legacy]“ um. Dazu kommen mehr Design-Tokens, logische CSS-Eigenschaften für RTL sowie Verbesserungen an Layout, Barrierefreiheit und Ladeanimationen. |
 | [APEX Utility CSS Framework Reference](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-9D8C53DD-6735-4D11-992C-7DA81E2836A0) | 26.2 | A new token-driven set of utility classes for layout, spacing, and sizing, such as u-flex and u-padding-4, is now automatically available on every page. This provides developers and AI tools with a consistent styling vocabulary while minimizing custom CSS. | Ein neues tokenbasiertes Set von Utility-Klassen für Layout, Abstände und Größen wie u-flex oder u-padding-4 steht auf jeder Seite automatisch bereit. Es gibt Entwicklern und KI-Werkzeugen ein einheitliches Styling-Vokabular und reduziert individuelles CSS. |
@@ -522,9 +522,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 | [Application Icons](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-36C5A5FD-0215-45CB-B619-27DA78EB4EAE) | 22.1 | Application icons have been redesigned so custom icons can be uploaded once and propagated throughout the app at runtime. Icons can be cropped and resized in the icon editor and managed directly from Shared Components or the Runtime Developer Toolbar. | Anwendungs-Icons sind neu gestaltet: Ein eigenes Icon wird einmal hochgeladen und von APEX zur Laufzeit verwendet. Es lässt sich im Icon-Editor zuschneiden und auch über die Runtime Developer Toolbar bearbeiten. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (18 Einträge)</summary>
+<summary>Older Releases 21.2 – 18.1 (18 entries)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Progressive Web Apps](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-D5FD5B6E-53BF-48A3-A6CD-9114094B0D70) | 21.2 | Applications can now be configured as Progressive Web Apps (PWAs) to benefit from improved caching and faster page loading times. Users can install them directly to their smartphone home screens and take advantage of a customizable offline page. | Anwendungen lassen sich als Progressive Web App definieren, mit besserem Caching und schnelleren Ladezeiten. Sie können auf Smartphones installiert werden und haben eine anpassbare Offline-Seite. |
 | [Universal Theme & UI Updates](https://docs.oracle.com/en/database/oracle/application-express/21.2/htmrn/index.html#GUID-377BC025-9373-48A2-AFCF-A31F188E57A2) | 21.2 | Page templates offer more component positioning options, and modal dialogs can now be rendered as slide-in drawers. These updates also introduce accessibility enhancements, faster page rendering, and an updated Reference App with live template option previews. | Page Templates bieten mehr Positionen für Komponenten, und Modal Dialogs können als seitlich einfahrende Drawer erscheinen. Dazu kommen bessere Barrierefreiheit, schnelleres Rendern und eine erweiterte Referenz-App mit Template-Option-Vorschau. |
@@ -551,7 +551,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 ## 🔄 Workflow, Tasks and Automations
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Custom Outcomes for Action Tasks](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-6AB2FA91-A557-4F45-BB24-66A4C2955A42) | 26.2 | Action Tasks can now define custom outcomes such as YES, NO, or UNDECIDED. These outcomes drive workflow decisions and branching, and can be configured declaratively or set at runtime. | Action Tasks können eigene Ergebnisse wie YES, NO oder UNDECIDED definieren. Diese steuern Entscheidungen und Verzweigungen im Workflow und lassen sich deklarativ oder zur Laufzeit setzen. |
 | [Improved Task Error Handling](https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-2AD4490E-4772-49FA-A2F6-E5C0F184E4D7) | 26.2 | Human tasks now raise a Fail event when transitioning to the Errored state. You can configure Task Actions, such as sending emails or running PL/SQL code, in response to these failures. | Human Tasks lösen beim Wechsel in den Status „Errored“ ein Fail-Ereignis aus. Darauf lassen sich Task Actions konfigurieren, etwa eine E-Mail oder PL/SQL-Code. |
@@ -574,9 +574,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 | [Approvals and Unified Task List](https://docs.oracle.com/en/database/oracle/apex/22.1/htmrn/index.html#GUID-D427B40D-FB12-43F0-B311-6791913EE7EC) | 22.1 | Approval tasks can be configured using task definitions with static or dynamic owners and administrators. A new Unified Task List centralizes task management, while a generated Task Details page and a sample application facilitate getting started. | Genehmigungsaufgaben lassen sich über Task Definitions mit statischen oder dynamischen Ownern und Administratoren konfigurieren. Eine Unified Task List bündelt alle Aufgaben zentral, eine generierte Task-Details-Seite und eine Beispiel-App erleichtern den Einstieg. |
 
 <details>
-<summary>Ältere Releases 21.2 – 18.1 (1 Eintrag)</summary>
+<summary>Older Releases 21.2 – 18.1 (1 entry)</summary>
 
-| Feature | Release | Summary (english) | Zusammenfassung |
+| Feature | Release | Summary (English) | Summary (German) |
 |:--|:-:|:--|:--|
 | [Automations](https://docs.oracle.com/en/database/oracle/application-express/20.2/htmrn/index.html#GUID-13F8ABFF-C240-49B1-B6E9-2EFA1512070D) | 20.2 | Automations execute a sequential set of PL/SQL actions triggered by query results, enabling tasks such as auto-approving requests or sending email alerts. They run on schedule or on demand via the APEX_AUTOMATION package and can utilize local, REST Enabled SQL, or REST data sources. | Automations führen PL/SQL-Aktionen aus, ausgelöst durch Abfrageergebnisse, etwa um Anträge automatisch zu genehmigen oder Warnmails zu senden. Sie laufen nach Zeitplan oder auf Abruf über APEX_AUTOMATION und können lokale, REST-Enabled-SQL- oder REST-Quellen nutzen. |
 
@@ -584,9 +584,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 <sub>[↑ Categories](#categories)</sub>
 
-## Quellen
+## Sources
 
-| Release | New-Features-Seite der Release Notes | Einträge |
+| Release | Release Notes New Features Page | Entries |
 |:--|:--|--:|
 | 26.2 | <https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html> | 30 |
 | 26.1 | <https://docs.oracle.com/en/database/oracle/apex/26.1/htmrn/new-features.html> | 65 |
@@ -605,4 +605,4 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 | 18.2 | <https://docs.oracle.com/en/database/oracle/application-express/18.2/htmrn/index.html#GUID-D6D545CB-3ECD-468A-9E7F-8CC09F7F478B> | 6 |
 | 18.1 | <https://docs.oracle.com/database/apex-18.1/HTMRN/toc.htm#GUID-D6D545CB-3ECD-468A-9E7F-8CC09F7F478B> | 11 |
 
-Bis 22.1 stehen die Release Notes auf einer einzigen Seite; ab 22.2 hat das Kapitel *New Features* eine eigene Seite. Die Zuordnung zu Kategorien ist eine eigene Einteilung und nicht Teil der Oracle-Doku.
+Up to 22.1, release notes were published on a single page; starting with 22.2, the *New Features* chapter has its own dedicated page. The categorization is a custom classification and not part of the official Oracle documentation.

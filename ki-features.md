@@ -1,6 +1,6 @@
-# Oracle APEX – KI und Generative AI Features
+# Oracle APEX – AI and Generative AI Features
 
-KI-Features der Releases 24.1 bis 26.2 als Mindmap. Jedes Feature verlinkt direkt auf seinen Abschnitt in den Oracle Release Notes.
+AI features of releases 24.1 to 26.2 as a mind map. Each feature links directly to its section in the Oracle Release Notes.
 
 ## Mindmap
 
@@ -63,7 +63,7 @@ mindmap
     f21("Generative AI Support (24.1)")
 ```
 
-## Mindmap mit Links
+## Mindmap with Links
 
 ```mermaid
 ---
