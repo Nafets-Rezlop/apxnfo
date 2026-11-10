@@ -26,7 +26,7 @@
 
 Übersicht der offiziellen Videos zu neuen Funktionen der jeweiligen Oracle APEX Releases (Quelle: Kanäle *Oracle Developers* und *Oracle APEX* auf YouTube):
 
-| Release | Video | Sprungmarken |
+| Release | Video | Chapters |
 |:--:|:--|:--|
 | 26.2 | [What’s New in Oracle APEX 26.2](https://www.youtube.com/watch?v=gM-1GlVpqxI) | - |
 | 26.2 | [What’s New in Oracle APEX 26.2: APEXlang, Interactive Reports, Charts, and Accessibility](https://www.youtube.com/watch?v=ZbwxbnOhvG0) | [00:00](https://youtu.be/ZbwxbnOhvG0?t=0) Welcome and Oracle APEX 26.2 overview<br>[07:00](https://youtu.be/ZbwxbnOhvG0?t=420) APEXlang enhancements<br>[21:30](https://youtu.be/ZbwxbnOhvG0?t=1290) Interactive Reports Modernization<br>[37:15](https://youtu.be/ZbwxbnOhvG0?t=2235) Chart performance and accessibility enhancements<br>[60:00](https://youtu.be/ZbwxbnOhvG0?t=3600) Closing remarks |
