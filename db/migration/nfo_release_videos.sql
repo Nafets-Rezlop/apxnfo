@@ -6,11 +6,10 @@
 -- (Stand 01.11.2026). Hauptvideo (Anf. 210) ist jeweils Teil 1 der
 -- "What's new"-Reihe eines Releases.
 --
--- Nicht gefunden: 18.1, 18.2, 19.1, 19.2, 21.2 sowie 26.1 Teil 2,
--- 23.1 Teil 4 und 22.1 Teil 4.
+-- Nicht gefunden: 18.1, 18.2, 19.1, 19.2 sowie 23.2 Teil 3.
 --
 -- Beschreibungen (vid_description) lädt YouTube nur im Browser, sie werden
--- manuell kopiert. Vorhanden: 26.1 Teil 1.
+-- manuell kopiert. Vorhanden: 26.1 Teil 1 und Teil 2.
 --
 -- Wiederholbar: vorhandene Videos (YouTube-ID) werden aktualisiert.
 -- Voraussetzung: Releases sind migriert (run_migration.sql).
@@ -66,15 +65,23 @@ q'[In this session, we presented and demonstrated the marquee features of APEX 2
 47:55 - More on APEX 26.1 - Shakeeb Rahman
 
  53:33 - Oracle APEX 26.1 - Getting Started - Marc Sewtz Find the Q&A from the live session here: oracleapex.com/officehours/]');
+   mrg_video('26.1', 'NNmUMd6c1-s', 'APEX 26.1 - Part 2: Getting Started with APEXlang', 'N',
+q'[In this session, we presented and demonstrated the marquee features of APEX 26.1.
+
+03:48 - Introduction, Announcements and Updates - Jayson Hanes
+06:15 - Getting Started with APEXlang - Scott Spendolini
+36:33 - Conclusion. Explore APEX Ideas and More Features in APEX 26.1 - Jayson Hanes Find the Q&A from the live session here: oracleapex.com/officehours/]');
    mrg_video('26.1', 'Di3XLa9fjuA', 'APEX 26.1 Part 3: Build Intelligent AI Agents & Tools with Advanced Features and Live Demos', 'N');
    -- 24.2
    mrg_video('24.2', 'P0kTt9agzG4', 'What''s New in APEX 24.2 - Part 1', 'Y');
    mrg_video('24.2', 'Ue2YwUGoJIQ', 'What''s New in APEX 24.2 - Part 2', 'N');
    mrg_video('24.2', '_mJ3rvAelPc', 'What''s New in APEX 24.2 - Part 3', 'N');
+   mrg_video('24.2', 'MbD8-ZBoCdE', 'What''s New in APEX 24.2 - Part 4', 'N');
    -- 24.1
    mrg_video('24.1', '0F5Tu7xQuXE', 'What''s new in Oracle APEX 24.1 - Part 1', 'Y');
    mrg_video('24.1', 'i4y0BzPOfrs', 'What''s new in Oracle APEX 24.1 - Part 2', 'N');
    mrg_video('24.1', '1vlp3DN1WlU', 'What''s new in Oracle APEX 24.1 - Part 3', 'N');
+   mrg_video('24.1', 'MCc3Z0FJado', 'What''s new in Oracle APEX 24.1 - Part 4', 'N');
    -- 23.2
    mrg_video('23.2', 'JyY3p1R_ThQ', 'Part 1: What''s new in Oracle APEX 23.2 - Preview', 'Y');
    mrg_video('23.2', 'eGfyj6zPkCM', 'Part 2: What''s new in Oracle APEX 23.2 - Preview', 'N');
@@ -84,13 +91,18 @@ q'[In this session, we presented and demonstrated the marquee features of APEX 2
    mrg_video('23.1', 'mBhGBjFa1V8', 'Part 1: What''s new in Oracle APEX 23.1', 'Y');
    mrg_video('23.1', '4ZRzLK4I6aY', 'Part 2: What''s new in Oracle APEX 23.1', 'N');
    mrg_video('23.1', 'EsLoU7Jj-AU', 'Part 3: What''s new in Oracle APEX 23.1', 'N');
+   mrg_video('23.1', 'nWcSnj7eisU', 'Part 4: What''s new in Oracle APEX 23.1', 'N');
    -- 22.2 (Oracle Learning)
    mrg_video('22.2', 'aRC6YuIqrUs', 'What''s New in APEX 22.2?', 'Y');
    -- 22.1
    mrg_video('22.1', 'wEByBTc_dp0', 'New in APEX 22.1 (Part 1): Sneak Preview', 'Y');
    mrg_video('22.1', 'TbBs_ZXro-g', 'New in APEX 22.1 (Part 2): Approvals, Data Generator, and Search Enhancements', 'N');
    mrg_video('22.1', 'pbMfCECO3AU', 'New in APEX 22.1 (Part 3): Ed. Improvements, REST Enabled SQL Queries, and easy App Gallery Installs', 'N');
+   mrg_video('22.1', '7qklHBqKE3s', 'New in APEX 22.1 (Part 4): Developer Experience Updates', 'N');
    mrg_video('22.1', 'ZU2i9lSgOyk', 'New in APEX 22.1 (Part 5): UI, PWA and Mobile', 'N');
+   -- 21.2 (Oracle Developers)
+   mrg_video('21.2', 'qcg6GZw68mA', 'Oracle APEX 21.2 New Features', 'Y');
+   mrg_video('21.2', '9Wt2QtM6SDk', 'Oracle APEX 21.2 New Features (Part 2)', 'N');
    -- 21.1, 20.2, 20.1
    mrg_video('21.1', 'QVPGnb0UsZY', 'What''s new in APEX 21.1', 'Y');
    mrg_video('20.2', 'fYq-6Jd_4No', 'What''s new in APEX 20.2', 'Y');

@@ -22,6 +22,44 @@
 - 🎨 [Universal Theme, UI and PWA](#-universal-theme-ui-and-pwa)
 - 🔄 [Workflow, Tasks and Automations](#-workflow-tasks-and-automations)
 
+## 🎬 Release Videos
+
+Übersicht der offiziellen Videos zu neuen Funktionen der jeweiligen Oracle APEX Releases (Quelle: Kanäle *Oracle Developers* und *Oracle APEX* auf YouTube):
+
+| Release | Video | Typ |
+|:--:|:--|:--|
+| 26.2 | [What’s New in Oracle APEX 26.2](https://www.youtube.com/watch?v=gM-1GlVpqxI) | Hauptvideo |
+| 26.1 | [APEX 26.1 Part 1: APEXlang, AI Reporting, Data Reporter, AI Agents & Redesigned Builder](https://www.youtube.com/watch?v=w31Et4XFq7g) | Hauptvideo |
+| 26.1 | [APEX 26.1 - Part 2: Getting Started with APEXlang](https://www.youtube.com/watch?v=NNmUMd6c1-s) | Zusatzvideo |
+| 26.1 | [APEX 26.1 Part 3: Build Intelligent AI Agents & Tools with Advanced Features and Live Demos](https://www.youtube.com/watch?v=Di3XLa9fjuA) | Zusatzvideo |
+| 24.2 | [What's New in APEX 24.2 - Part 1](https://www.youtube.com/watch?v=P0kTt9agzG4) | Hauptvideo |
+| 24.2 | [What's New in APEX 24.2 - Part 2](https://www.youtube.com/watch?v=Ue2YwUGoJIQ) | Zusatzvideo |
+| 24.2 | [What's New in APEX 24.2 - Part 3](https://www.youtube.com/watch?v=_mJ3rvAelPc) | Zusatzvideo |
+| 24.2 | [What's New in APEX 24.2 - Part 4](https://www.youtube.com/watch?v=MbD8-ZBoCdE) | Zusatzvideo |
+| 24.1 | [What's new in Oracle APEX 24.1 - Part 1](https://www.youtube.com/watch?v=0F5Tu7xQuXE) | Hauptvideo |
+| 24.1 | [What's new in Oracle APEX 24.1 - Part 2](https://www.youtube.com/watch?v=i4y0BzPOfrs) | Zusatzvideo |
+| 24.1 | [What's new in Oracle APEX 24.1 - Part 3](https://www.youtube.com/watch?v=1vlp3DN1WlU) | Zusatzvideo |
+| 24.1 | [What's new in Oracle APEX 24.1 - Part 4](https://www.youtube.com/watch?v=MCc3Z0FJado) | Zusatzvideo |
+| 23.2 | [Part 1: What's new in Oracle APEX 23.2 - Preview](https://www.youtube.com/watch?v=JyY3p1R_ThQ) | Hauptvideo |
+| 23.2 | [Part 2: What's new in Oracle APEX 23.2 - Preview](https://www.youtube.com/watch?v=eGfyj6zPkCM) | Zusatzvideo |
+| 23.2 | [Part 4: What's new in Oracle APEX 23.2 - Preview](https://www.youtube.com/watch?v=5cmT8dFJkz0) | Zusatzvideo |
+| 23.2 | [Part 5: What's new in Oracle APEX 23.2 - Preview](https://www.youtube.com/watch?v=uATRJzB3VPc) | Zusatzvideo |
+| 23.1 | [Part 1: What's new in Oracle APEX 23.1](https://www.youtube.com/watch?v=mBhGBjFa1V8) | Hauptvideo |
+| 23.1 | [Part 2: What's new in Oracle APEX 23.1](https://www.youtube.com/watch?v=4ZRzLK4I6aY) | Zusatzvideo |
+| 23.1 | [Part 3: What's new in Oracle APEX 23.1](https://www.youtube.com/watch?v=EsLoU7Jj-AU) | Zusatzvideo |
+| 23.1 | [Part 4: What's new in Oracle APEX 23.1](https://www.youtube.com/watch?v=nWcSnj7eisU) | Zusatzvideo |
+| 22.2 | [What's New in APEX 22.2?](https://www.youtube.com/watch?v=aRC6YuIqrUs) | Hauptvideo |
+| 22.1 | [New in APEX 22.1 (Part 1): Sneak Preview](https://www.youtube.com/watch?v=wEByBTc_dp0) | Hauptvideo |
+| 22.1 | [New in APEX 22.1 (Part 2): Approvals, Data Generator, and Search Enhancements](https://www.youtube.com/watch?v=TbBs_ZXro-g) | Zusatzvideo |
+| 22.1 | [New in APEX 22.1 (Part 3): Ed. Improvements, REST Enabled SQL Queries, and easy App Gallery Installs](https://www.youtube.com/watch?v=pbMfCECO3AU) | Zusatzvideo |
+| 22.1 | [New in APEX 22.1 (Part 4): Developer Experience Updates](https://www.youtube.com/watch?v=7qklHBqKE3s) | Zusatzvideo |
+| 22.1 | [New in APEX 22.1 (Part 5): UI, PWA and Mobile](https://www.youtube.com/watch?v=ZU2i9lSgOyk) | Zusatzvideo |
+| 21.2 | [Oracle APEX 21.2 New Features](https://www.youtube.com/watch?v=qcg6GZw68mA) | Hauptvideo |
+| 21.2 | [Oracle APEX 21.2 New Features (Part 2)](https://www.youtube.com/watch?v=9Wt2QtM6SDk) | Zusatzvideo |
+| 21.1 | [What's new in APEX 21.1](https://www.youtube.com/watch?v=QVPGnb0UsZY) | Hauptvideo |
+| 20.2 | [What's new in APEX 20.2](https://www.youtube.com/watch?v=fYq-6Jd_4No) | Hauptvideo |
+| 20.1 | [The Top 12 New Features in APEX 20.1 that Everyone Should Know!](https://www.youtube.com/watch?v=b9MEa5Idd1s) | Hauptvideo |
+
 ## 🧰 Administration and Operations
 
 | Feature | Release | Summary (english) | Zusammenfassung |
