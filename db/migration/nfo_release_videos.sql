@@ -51,6 +51,21 @@ declare
 begin
    -- 26.2 (Oracle APEX)
    mrg_video('26.2', 'gM-1GlVpqxI', 'What’s New in Oracle APEX 26.2', 'Y');
+   mrg_video('26.2', 'ZbwxbnOhvG0', 'What’s New in Oracle APEX 26.2: APEXlang, Interactive Reports, Charts, and Accessibility', 'N',
+q'[What’s new in Oracle APEX 26.2, and which enhancements should APEX developers evaluate first?
+
+This webinar demonstrates selected APEX 26.2 features, including APEXlang enhancements and chart performance and accessibility improvements, so you can see what has changed and where these capabilities may fit in your applications.
+
+You’ll learn how to:
+- Review selected changes in Oracle APEX 26.2
+- Explore APEXlang enhancements for application development workflows
+- Understand chart performance and accessibility enhancements
+
+00:00 Welcome and Oracle APEX 26.2 overview
+07:00 APEXlang enhancements
+21:30 Interactive Reports Modernization
+37:15 Chart performance and accessibility enhancements
+60:00 Closing remarks]');
    -- 26.1 (Oracle Developers)
    -- Beschreibung manuell von YouTube kopiert (01.11.2026)
    mrg_video('26.1', 'w31Et4XFq7g', 'APEX 26.1 Part 1: APEXlang, AI Reporting, Data Reporter, AI Agents & Redesigned Builder', 'Y',
