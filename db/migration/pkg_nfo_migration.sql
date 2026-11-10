@@ -140,7 +140,7 @@ create or replace package body pkg_nfo_migration is
 
       for r in (
          select s.*,
-                (select c.catg_id from t_nfo_categories c where c.catg_name_de = s.stg_category) as catg_id,
+                (select c.catg_id from t_nfo_categories c where c.catg_name_en = s.stg_category or c.catg_name_de = s.stg_category) as catg_id,
                 (select f.feat_id from t_nfo_features f
                   where f.feat_rel_id = l_rel_id and f.feat_title = s.stg_feature) as feat_id
            from t_nfo_features_stg s

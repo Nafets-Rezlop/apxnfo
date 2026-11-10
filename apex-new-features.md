@@ -8,21 +8,21 @@
 - **Aufbau:** je Kategorie eine Tabelle, absteigend nach Release sortiert
 - **Zusammenfassung:** 1–3 Sätze, sinngemäß aus dem Originaltext der Release Notes (auf Englisch und Deutsch). Ein einzelner Satz steht dort, wo schon der Originaltext nur aus einem Satz besteht.
 
-## Kategorien
+## Categories
 
-- 🧰 [Administration und Betrieb](#-administration-und-betrieb)
-- 🧩 [APIs und JavaScript-Bibliotheken](#-apis-und-javascript-bibliotheken)
-- 📊 [Charts, Maps und Kalender](#-charts-maps-und-kalender)
-- 🚀 [Entwicklung und Lifecycle](#-entwicklung-und-lifecycle)
-- 📝 [Items, Formulare und Dynamic Actions](#-items-formulare-und-dynamic-actions)
-- 🤖 [KI und Generative AI](#-ki-und-generative-ai)
-- 📋 [Reports, Grids und Suche](#-reports-grids-und-suche)
-- 🔌 [REST, Datenquellen und Daten-Import](#-rest-datenquellen-und-daten-import)
-- 🔐 [Security und Authentifizierung](#-security-und-authentifizierung)
-- 🎨 [Universal Theme, UI und PWA](#-universal-theme-ui-und-pwa)
-- 🔄 [Workflow, Tasks und Automations](#-workflow-tasks-und-automations)
+- 🧰 [Administration and Operations](#-administration-and-operations)
+- 🧩 [APIs and JavaScript Libraries](#-apis-and-javascript-libraries)
+- 📊 [Charts, Maps and Calendars](#-charts-maps-and-calendars)
+- 🚀 [Development and Lifecycle](#-development-and-lifecycle)
+- 📝 [Items, Forms and Dynamic Actions](#-items-forms-and-dynamic-actions)
+- 🤖 [AI and Generative AI](#-ai-and-generative-ai)
+- 📋 [Reports, Grids and Search](#-reports-grids-and-search)
+- 🔌 [REST, Data Sources and Data Loading](#-rest-data-sources-and-data-loading)
+- 🔐 [Security and Authentication](#-security-and-authentication)
+- 🎨 [Universal Theme, UI and PWA](#-universal-theme-ui-and-pwa)
+- 🔄 [Workflow, Tasks and Automations](#-workflow-tasks-and-automations)
 
-## 🧰 Administration und Betrieb
+## 🧰 Administration and Operations
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -53,9 +53,9 @@
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 🧩 APIs und JavaScript-Bibliotheken
+## 🧩 APIs and JavaScript Libraries
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -104,9 +104,9 @@
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 📊 Charts, Maps und Kalender
+## 📊 Charts, Maps and Calendars
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -134,9 +134,9 @@
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 🚀 Entwicklung und Lifecycle
+## 🚀 Development and Lifecycle
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -231,9 +231,9 @@
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 📝 Items, Formulare und Dynamic Actions
+## 📝 Items, Forms and Dynamic Actions
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -284,9 +284,9 @@
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 🤖 KI und Generative AI
+## 🤖 AI and Generative AI
 
 Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
@@ -314,9 +314,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 | [Generative AI Configuration Screen Enhancements](https://docs.oracle.com/en/database/oracle/apex/24.2/htmrn/new-features.html#GUID-3E75A967-82A2-42D5-8950-4B050B47507D) | 24.2 | The Generative AI Service Details page now includes a "Test Connection" button. It pre-validates configuration parameters such as API keys, URLs, and model identifiers before saving. | Die Detailseite eines Generative-AI-Service hat einen Button „Test Connection“. Er prüft vorab Angaben wie API-Schlüssel, URL und Modellbezeichnung. |
 | [Generative AI Support](https://docs.oracle.com/en/database/oracle/apex/24.1/htmrn/new-features.html#GUID-58986BEB-A222-4976-A48E-E364DAD38406) | 24.1 | APEX introduces Generative AI support for OpenAI, Cohere, and OCI Generative AI configured at the instance and workspace levels. Key capabilities include an AI Chat Widget, natural language application creation, and an AI Assistant integrated into code editors. | APEX unterstützt erstmals Generative AI mit OpenAI, Cohere und OCI Generative AI, konfiguriert auf Instanz- und Workspace-Ebene. Dazu gehören ein KI-Chat-Widget, die Erstellung von Anwendungen per natürlicher Sprache und ein KI-Assistent in den Code-Editoren. |
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 📋 Reports, Grids und Suche
+## 📋 Reports, Grids and Search
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -369,9 +369,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 🔌 REST, Datenquellen und Daten-Import
+## 🔌 REST, Data Sources and Data Loading
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -413,9 +413,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 🔐 Security und Authentifizierung
+## 🔐 Security and Authentication
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -444,9 +444,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 🎨 Universal Theme, UI und PWA
+## 🎨 Universal Theme, UI and PWA
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -508,9 +508,9 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
-## 🔄 Workflow, Tasks und Automations
+## 🔄 Workflow, Tasks and Automations
 
 | Feature | Release | Summary (english) | Zusammenfassung |
 |:--|:-:|:--|:--|
@@ -543,7 +543,7 @@ Als Mindmap mit Direktlinks: [ki-features.md](ki-features.md)
 
 </details>
 
-<sub>[↑ Kategorien](#kategorien)</sub>
+<sub>[↑ Categories](#categories)</sub>
 
 ## Quellen
 

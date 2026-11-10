@@ -39,7 +39,7 @@ config:
     cScaleLabel11: "#1F1B18"
 ---
 mindmap
-  root(("KI und<br/>Generative AI"))
+  root(("AI and<br/>Generative AI"))
     f1("Reasoning Effort for AI Agents (26.2)")
     f2("New Provider API Setting for Generative AI Services (26.2)")
     f3("OCI Generative AI Service Settings (26.2)")
@@ -100,7 +100,7 @@ config:
     cScaleLabel11: "#1F1B18"
 ---
 mindmap
-  root(("KI und<br/>Generative AI"))
+  root(("AI and<br/>Generative AI"))
     f1("<a href='https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-E3EC1EE4-8A4E-4CBE-9303-D5C170FA6DC9'>Reasoning Effort<br/>for AI Agents<br/>(26.2)</a>")
     f2("<a href='https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-31C88C7A-697C-46D6-AA1B-8C61D73A3607'>New Provider API<br/>Setting for<br/>Generative AI<br/>Services (26.2)</a>")
     f3("<a href='https://docs.oracle.com/en/database/oracle/apex/26.2/htmrn/new-features.html#GUID-112154A3-8209-4129-A363-DCF87183818D'>OCI Generative<br/>AI Service<br/>Settings (26.2)</a>")
