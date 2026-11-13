@@ -1,0 +1,483 @@
+page 13 (
+    name: AI Feature Search
+    alias: AI-FEATURE-SEARCH
+    title: AI Feature Search
+    pageGroup: @overview
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        enableDuplicatePageSubmissions: false
+    }
+    comments {
+        comments: Interactive report with Search with AI and an AI agent. Report Context and Column Context are generated from the DESCRIPTION annotations of V_NFO_UI_FEATURES with db/tools/gen_ir_ai_context.sql. The faceted search on page 2 stays unchanged.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region ai-feature-search (
+        name: AI Feature Search
+        type: interactiveReport
+        source {
+            location: localDatabase
+            tableName: V_NFO_UI_FEATURES
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        comments {
+            comments: Search the features in natural language. Columns and report are described for the AI from the view annotations.
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No features found.
+        }
+        actionsMenu {
+            subscription: false
+        }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: New features of Oracle APEX releases, one row per feature, with resolved release version, category names and video link. Main view for questions about features. Updatable view on T_NFO_FEATURES.
+            defaultSearchMode: searchModeAI
+        }
+
+        column FEAT_ID (
+            type: hidden
+            heading {
+                heading: Feature ID
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            genAI {
+                columnContext: Surrogate key of the feature.
+            }
+        )
+
+        column FEAT_REL_ID (
+            type: hidden
+            heading {
+                heading: Release ID
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+            genAI {
+                columnContext: Release that introduced the feature.
+            }
+        )
+
+        column REL_VERSION (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+            genAI {
+                columnContext: APEX version number of the release, for example 26.1. Resolved from the release.
+                referenceDataType: sqlQuery
+                sqlQuery: select rel_version as d, rel_version as r from v_nfo_ui_releases order by rel_version
+            }
+        )
+
+        column FEAT_CATG_ID (
+            type: hidden
+            heading {
+                heading: Category ID
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+            genAI {
+                columnContext: Category of the feature.
+            }
+        )
+
+        column CATG_NAME_EN (
+            type: plainText
+            heading {
+                heading: Category
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            genAI {
+                columnContext: Category name in English. Resolved from the category.
+                referenceDataType: sqlQuery
+                sqlQuery: select catg_name_en as d, catg_name_en as r from v_nfo_ui_categories order by catg_sort_order
+            }
+        )
+
+        column CATG_NAME_DE (
+            type: plainText
+            heading {
+                heading: Category (de)
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            genAI {
+                columnContext: Category name in German. Resolved from the category.
+                referenceDataType: sqlQuery
+                sqlQuery: select catg_name_de as d, catg_name_de as r from v_nfo_ui_categories order by catg_sort_order
+            }
+        )
+
+        column CATG_ICON (
+            type: hidden
+            heading {
+                heading: Category Icon
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+            genAI {
+                columnContext: Font APEX icon class of the category, for example fa-database. Resolved from the category.
+            }
+        )
+
+        column FEAT_CHAP_ID (
+            type: hidden
+            heading {
+                heading: Chapter ID
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+            genAI {
+                columnContext: Video chapter that presents the feature. Empty if the feature is not assigned to a chapter.
+            }
+        )
+
+        column FEAT_CHAPTER_MATCH_SCORE (
+            type: hidden
+            heading {
+                heading: Chapter Match Score
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+            genAI {
+                columnContext: Quality of the assignment to the video chapter, from 0 (lowest) to 1 (highest). Empty if the feature is not assigned to a chapter.
+            }
+        )
+
+        column FEAT_TITLE (
+            type: plainText
+            heading {
+                heading: Feature
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+            genAI {
+                columnContext: Title of the feature, in English as published by Oracle.
+            }
+        )
+
+        column FEAT_RAW_TEXT_EN (
+            type: hidden
+            heading {
+                heading: Original Text
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: CLOB
+            }
+            advanced {
+                endUserAlias: K
+            }
+            genAI {
+                columnContext: Original English feature text from the Oracle documentation. Empty if it was not loaded.
+            }
+        )
+
+        column FEAT_SUMMARY_EN (
+            type: plainText
+            heading {
+                heading: Feature Summary (en)
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+            genAI {
+                columnContext: Short feature summary in English. Unique. The value 'empty' is a placeholder that means no summary exists yet, so exclude it from results.
+            }
+        )
+
+        column FEAT_SUMMARY_DE (
+            type: plainText
+            heading {
+                heading: Feature Summary (de)
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+            genAI {
+                columnContext: Short feature summary in German. Unique. The value 'empty' is a placeholder that means no summary exists yet, so exclude it from results.
+            }
+        )
+
+        column FEAT_LINK_FEATURE_ORACLE_DOC (
+            type: link
+            heading {
+                heading: Oracle Doc
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            link {
+                target: {
+                    type: url
+                    url: #FEAT_LINK_FEATURE_ORACLE_DOC#
+                }
+                linkText: Oracle Doc
+                linkAttributes: target="_blank" rel="noopener"
+            }
+            advanced {
+                endUserAlias: N
+            }
+            genAI {
+                columnContext: Link to the feature in the Oracle documentation.
+            }
+        )
+
+        column CHAP_LINK_URL (
+            type: link
+            heading {
+                heading: Video Chapter
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            link {
+                target: {
+                    type: url
+                    url: #CHAP_LINK_URL#
+                }
+                linkText: Video
+                linkAttributes: target="_blank" rel="noopener"
+            }
+            advanced {
+                endUserAlias: O
+            }
+            genAI {
+                columnContext: Link that opens the video at the chapter presenting the feature, in the format https://youtu.be/<video ID>?t=<seconds>. Empty if the feature is not assigned to a chapter.
+            }
+        )
+
+        savedReport 13001 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn REL_VERSION (
+                sequence: 1
+            )
+
+            displayColumn CATG_NAME_EN (
+                sequence: 2
+            )
+
+            displayColumn CATG_NAME_DE (
+                sequence: 3
+            )
+
+            displayColumn FEAT_TITLE (
+                sequence: 4
+            )
+
+            displayColumn FEAT_SUMMARY_EN (
+                sequence: 5
+            )
+
+            displayColumn FEAT_SUMMARY_DE (
+                sequence: 6
+            )
+
+            displayColumn FEAT_LINK_FEATURE_ORACLE_DOC (
+                sequence: 7
+            )
+
+            displayColumn CHAP_LINK_URL (
+                sequence: 8
+            )
+
+            sort (
+                column: REL_VERSION
+                sort {
+                    sequence: 1
+                    direction: desc
+                }
+            )
+
+        )
+
+    )
+
+    button ask-ai (
+        buttonName: ASK-AI
+        label: Ask AI
+        layout {
+            sequence: 10
+            region: @ai-feature-search
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            icon: fa-sparkles
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction ask-ai-click (
+        name: Ask AI - open assistant
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @ask-ai
+        }
+
+        action show-ai-assistant (
+            action: showAiAssistant
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+            appearance {
+                displayAs: dialog
+                title: Ask AI about APEX new features
+            }
+            genAI {
+                agent: @feature-search-agent
+            }
+        )
+
+    )
+
+)

@@ -208,16 +208,27 @@ page 4 (
                 type: sqlQuery
                 sqlQuery:
                     ```sql
-                    select f.CATG_NAME_EN as label
+                    select f.FEAT_CATG_ID as catg_id
+                         , f.CATG_NAME_EN as label
                          , count(*) as value
                     from V_NFO_UI_FEATURES f
-                    group by f.CATG_NAME_EN
+                    group by f.FEAT_CATG_ID, f.CATG_NAME_EN
                     order by value desc
                     ```
             }
             columnMapping {
                 label: LABEL
                 value: VALUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 2
+                    items: {
+                        P2_F_FEAT_CATG_ID: \&CATG_ID.\
+                    }
+                    clearCache: 2
+                }
             }
         )
 
@@ -274,16 +285,27 @@ page 4 (
                 type: sqlQuery
                 sqlQuery:
                     ```sql
-                    select f.REL_VERSION as label
+                    select f.FEAT_REL_ID as rel_id
+                         , f.REL_VERSION as label
                          , count(*) as value
                     from V_NFO_UI_FEATURES f
-                    group by f.REL_VERSION
+                    group by f.FEAT_REL_ID, f.REL_VERSION
                     order by label
                     ```
             }
             columnMapping {
                 label: LABEL
                 value: VALUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 2
+                    items: {
+                        P2_F_FEAT_REL_ID: \&REL_ID.\
+                    }
+                    clearCache: 2
+                }
             }
         )
 

@@ -1,6 +1,19 @@
 breadcrumb breadcrumb (
     name: Breadcrumb
 
+    entry ai-feature-search (
+        name: AI Feature Search
+        pageNumber: 13
+        execution {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
     entry categories (
         name: Categories
         pageNumber: 6

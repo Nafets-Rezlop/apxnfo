@@ -1,0 +1,10 @@
+appItem AI_LANG (
+    scope: app
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: true
+    }
+    comments {
+        comments: Content language for feature summaries and category names. de = German, empty or any other value = English. Set by the language entries in the navigation bar.
+    }
+)

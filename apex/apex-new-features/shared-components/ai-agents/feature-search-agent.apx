@@ -1,0 +1,33 @@
+aiAgent feature-search-agent (
+    name: Feature Search Agent
+    genAI {
+        service: @freetier
+        systemPrompt: You help users explore the new features of Oracle APEX releases. Use the tool feature_list to read the features. Each row is one feature with release version, category, title, English summary and a link to the Oracle documentation. Answer in the language of the user, German or English. Only use data returned by the tool, do not invent features or releases. Include the documentation link when you mention a feature.
+        welcomeMessage: Ask me about APEX new features, for example: Which AI features came with 26.1?
+    }
+    responseFormat {
+        type: text
+    }
+    comments {
+        comments: AI agent opened by the Ask AI button on page 13 (AI Feature Search).
+    }
+
+    tool feature_list (
+        name: feature_list
+        type: retrieveData
+        executionPoint: onDemand
+        description: Returns all APEX new features with release version, category, title, English summary and documentation link.
+        settings {
+            sqlQuery:
+                ```sql
+                select f.rel_version,
+                       f.catg_name_en,
+                       f.feat_title,
+                       f.feat_summary_en,
+                       f.feat_link_feature_oracle_doc
+                  from v_nfo_ui_features f
+                 order by f.rel_version desc, f.feat_title
+                ```
+        }
+    )
+)

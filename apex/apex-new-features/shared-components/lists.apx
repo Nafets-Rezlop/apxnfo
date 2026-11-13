@@ -37,6 +37,52 @@ list navigation-bar (
         }
     )
 
+    entry lang-de (
+        label: Deutsch
+        icon {
+            imageIconCssClasses: fa-language
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: &APP_PAGE_ID.
+                items: {
+                    AI_LANG: de
+                }
+            }
+        }
+        serverSideCondition {
+            type: expression
+            language: plsql
+            plsqlExpression: nvl(:AI_LANG, 'en') != 'de'
+        }
+    )
+
+    entry lang-en (
+        label: English
+        icon {
+            imageIconCssClasses: fa-language
+        }
+        layout {
+            sequence: 6
+        }
+        link {
+            target: {
+                page: &APP_PAGE_ID.
+                items: {
+                    AI_LANG: en
+                }
+            }
+        }
+        serverSideCondition {
+            type: item=value
+            item: AI_LANG
+            value: de
+        }
+    )
+
     entry sign-out (
         label: Sign Out
         icon {
@@ -121,6 +167,21 @@ list navigation-menu (
         link {
             target: {
                 page: 4
+            }
+        }
+    )
+
+    entry ai-feature-search (
+        label: AI Feature Search
+        icon {
+            imageIconCssClasses: fa-sparkles
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 13
             }
         }
     )

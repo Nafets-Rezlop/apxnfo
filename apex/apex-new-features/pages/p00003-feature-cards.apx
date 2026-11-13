@@ -182,11 +182,11 @@ page 3 (
         }
         subtitle {
             advancedFormatting: true
-            htmlExpression: &CATG_NAME_EN.
+            htmlExpression: "{case P3_LANG/}{when de/}&CATG_NAME_DE.{otherwise/}&CATG_NAME_EN.{endcase/}"
         }
         body {
             advancedFormatting: true
-            htmlExpression: Feature Summary (en): &FEAT_SUMMARY_EN.
+            htmlExpression: "{case P3_LANG/}{when de/}&FEAT_SUMMARY_DE.{otherwise/}&FEAT_SUMMARY_EN.{endcase/}"
         }
         secondaryBody {
             advancedFormatting: true
@@ -201,6 +201,18 @@ page 3 (
         pagination {
             showTotalCount: true
         }
+
+        action oracle-doc (
+            label: Oracle Doc
+            layout {
+                sequence: 5
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: &FEAT_LINK_FEATURE_ORACLE_DOC.
+                linkAttributes: target="_blank" rel="noopener"
+            }
+        )
 
         action action-button-1 (
             label: Edit
@@ -220,6 +232,23 @@ page 3 (
             }
         )
 
+    )
+
+    pageItem P3_LANG (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+        }
+        source {
+            type: item
+            item: AI_LANG
+            used: always
+        }
+        comments {
+            comments: Copy of the application item AI_LANG. The card templates are rendered in the browser and can only read page items, so the template directives use this item.
+        }
     )
 
     button create-feature (
