@@ -222,10 +222,11 @@ page 3 (
         }
 
         action oracle-doc (
-            label: Oracle Doc
+            label: Doc
             appearance {
                 displayType: textWithIcon
                 icon: fa-external-link
+                cssClasses: t-Button--small
             }
             layout {
                 sequence: 5
@@ -238,10 +239,11 @@ page 3 (
         )
 
         action release-video (
-            label: Release Video
+            label: Video
             appearance {
                 displayType: textWithIcon
                 icon: fa-youtube-play
+                cssClasses: t-Button--small
             }
             layout {
                 sequence: 7
@@ -254,10 +256,11 @@ page 3 (
         )
 
         action video-chapter (
-            label: Video Chapter
+            label: Chapter
             appearance {
                 displayType: textWithIcon
                 icon: fa-play-circle
+                cssClasses: t-Button--small
             }
             layout {
                 sequence: 8
@@ -271,6 +274,10 @@ page 3 (
 
         action action-button-1 (
             label: Edit
+            appearance {
+                displayType: text
+                cssClasses: t-Button--small
+            }
             layout {
                 sequence: 10
             }
