@@ -10,6 +10,16 @@ page 3 (
     navigation {
         cursorFocus: doNotFocusCursor
     }
+    css {
+        inline:
+            ```css
+            /* Release Video and Video Chapter buttons only when a link exists */
+            a[data-video=""],
+            a[data-chapter=""] {
+                display: none;
+            }
+            ```
+    }
     security {
         authorizationScheme: mustNotBePublicUser
         pageAccessProtection: argumentsMustHaveChecksum
@@ -19,7 +29,7 @@ page 3 (
         enableDuplicatePageSubmissions: false
     }
     comments {
-        comments: Implements requirement 860. Each card shows title, category, English summary and release.
+        comments: Implements requirement 860. Each card shows title, category, English summary and release, with buttons to the Oracle documentation, the main release video and the video chapter that presents the feature.
     }
 
     region breadcrumb (
@@ -154,7 +164,16 @@ page 3 (
         type: cards
         source {
             location: localDatabase
-            tableName: V_NFO_UI_FEATURES
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select f.*
+                     , ( select max(v.VID_YOUTUBE_URL)
+                           from V_NFO_UI_RELEASE_VIDEOS v
+                          where v.VID_REL_ID = f.FEAT_REL_ID
+                            and v.VID_IS_MAIN = 'Y' ) as MAIN_VIDEO_URL
+                from V_NFO_UI_FEATURES f
+                ```
         }
         orderBy {
             type: staticValue
@@ -215,6 +234,38 @@ page 3 (
                 type: redirectUrl
                 targetUrl: &FEAT_LINK_FEATURE_ORACLE_DOC.
                 linkAttributes: target="_blank" rel="noopener"
+            }
+        )
+
+        action release-video (
+            label: Release Video
+            appearance {
+                displayType: textWithIcon
+                icon: fa-youtube-play
+            }
+            layout {
+                sequence: 7
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: &MAIN_VIDEO_URL.
+                linkAttributes: target="_blank" rel="noopener" data-video="&MAIN_VIDEO_URL."
+            }
+        )
+
+        action video-chapter (
+            label: Video Chapter
+            appearance {
+                displayType: textWithIcon
+                icon: fa-play-circle
+            }
+            layout {
+                sequence: 8
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: &CHAP_LINK_URL.
+                linkAttributes: target="_blank" rel="noopener" data-chapter="&CHAP_LINK_URL."
             }
         )
 
