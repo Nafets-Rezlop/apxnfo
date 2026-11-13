@@ -9,7 +9,7 @@ app APEX-NEW-FEATURES (
     }
     navigation {
         homeUrl: {
-            page: 1
+            page: 2
         }
         loginUrl: {
             page: LOGIN

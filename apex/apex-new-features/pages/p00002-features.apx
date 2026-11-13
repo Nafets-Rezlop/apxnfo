@@ -248,9 +248,7 @@ page 2 (
         column FEAT_LINK_FEATURE_ORACLE_DOC (
             reportColumnQueryId: 9
             derivedColumn: N
-            heading {
-                heading: Link to Oracle Doc
-            }
+            type: hidden
             layout {
                 sequence: 90
             }
@@ -290,11 +288,20 @@ page 2 (
         column FEAT_TITLE (
             reportColumnQueryId: 7
             derivedColumn: N
+            type: link
             heading {
                 heading: Feature
             }
             layout {
                 sequence: 70
+            }
+            link {
+                target: {
+                    type: url
+                    url: #FEAT_LINK_FEATURE_ORACLE_DOC#
+                }
+                linkText: #FEAT_TITLE#
+                linkAttributes: target="_blank" rel="noopener"
             }
         )
 

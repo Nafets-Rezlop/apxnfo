@@ -252,12 +252,20 @@ page 13 (
         )
 
         column FEAT_TITLE (
-            type: plainText
+            type: link
             heading {
                 heading: Feature
             }
             layout {
                 sequence: 10
+            }
+            link {
+                target: {
+                    type: url
+                    url: #FEAT_LINK_FEATURE_ORACLE_DOC#
+                }
+                linkText: #FEAT_TITLE#
+                linkAttributes: target="_blank" rel="noopener"
             }
             source {
                 dataType: STRING
@@ -328,7 +336,7 @@ page 13 (
         )
 
         column FEAT_LINK_FEATURE_ORACLE_DOC (
-            type: link
+            type: hidden
             heading {
                 heading: Oracle Doc
             }
@@ -337,14 +345,6 @@ page 13 (
             }
             source {
                 dataType: STRING
-            }
-            link {
-                target: {
-                    type: url
-                    url: #FEAT_LINK_FEATURE_ORACLE_DOC#
-                }
-                linkText: Oracle Doc
-                linkAttributes: target="_blank" rel="noopener"
             }
             advanced {
                 endUserAlias: N
@@ -409,10 +409,6 @@ page 13 (
 
             displayColumn FEAT_SUMMARY_DE (
                 sequence: 6
-            )
-
-            displayColumn FEAT_LINK_FEATURE_ORACLE_DOC (
-                sequence: 7
             )
 
             displayColumn CHAP_LINK_URL (

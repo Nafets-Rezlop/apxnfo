@@ -124,9 +124,7 @@ page 8 (
         column REL_NEW_FEATURES_URL (
             reportColumnQueryId: 4
             derivedColumn: N
-            heading {
-                heading: New Features Page
-            }
+            type: hidden
             layout {
                 sequence: 40
             }
@@ -135,22 +133,40 @@ page 8 (
         column REL_PDF_URL (
             reportColumnQueryId: 5
             derivedColumn: N
+            type: link
             heading {
                 heading: New Features PDF
             }
             layout {
                 sequence: 50
             }
+            link {
+                target: {
+                    type: url
+                    url: #REL_PDF_URL#
+                }
+                linkText: #REL_PDF_URL#
+                linkAttributes: target="_blank" rel="noopener"
+            }
         )
 
         column REL_VERSION (
             reportColumnQueryId: 3
             derivedColumn: N
+            type: link
             heading {
                 heading: Release
             }
             layout {
                 sequence: 30
+            }
+            link {
+                target: {
+                    type: url
+                    url: #REL_NEW_FEATURES_URL#
+                }
+                linkText: #REL_VERSION#
+                linkAttributes: target="_blank" rel="noopener"
             }
         )
 

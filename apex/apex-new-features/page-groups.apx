@@ -15,7 +15,7 @@ pageGroup feature-maintenance (
 pageGroup overview (
     name: Overview
     description {
-        description: Public pages that present features, dashboard figures, release videos and video chapters.
+        description: Public pages that present features and feature statistics.
     }
 )
 

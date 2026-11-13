@@ -204,6 +204,10 @@ page 3 (
 
         action oracle-doc (
             label: Oracle Doc
+            appearance {
+                displayType: textWithIcon
+                icon: fa-external-link
+            }
             layout {
                 sequence: 5
             }

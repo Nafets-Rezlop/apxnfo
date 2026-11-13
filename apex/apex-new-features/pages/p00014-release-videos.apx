@@ -1,7 +1,7 @@
-page 1 (
-    name: Dashboard
-    alias: DASHBOARD
-    title: Dashboard
+page 14 (
+    name: Release Videos
+    alias: RELEASE-VIDEOS
+    title: Release Videos
     pageGroup: @overview
     appearance {
         pageTemplate: @/standard
@@ -19,7 +19,7 @@ page 1 (
         enableDuplicatePageSubmissions: false
     }
     comments {
-        comments: Implements requirements 200 to 230, 830 and 840. Feature counts per release and category are on the Feature Statistics page. Contributors maintain videos and chapters from this page. The embedded player for the selected video is added manually after import.
+        comments: Implements requirements 200 to 230, 830 and 840 (formerly on the dashboard page 1). Lists the releases with a link to their release notes, the YouTube videos of the selected release and their chapters. Video and chapter titles open YouTube in a new tab. Contributors maintain videos and chapters from this page. The embedded player for the selected video is added manually after import.
     }
 
     region breadcrumb (
@@ -61,12 +61,12 @@ page 1 (
                 from V_NFO_UI_VIDEO_CHAPTERS c
                 join V_NFO_UI_RELEASE_VIDEOS v
                     on v.VID_ID = c.CHAP_VID_ID
-                where v.VID_REL_ID = to_number(:P1_REL_ID)
+                where v.VID_REL_ID = to_number(:P14_REL_ID)
                 order by v.VID_IS_MAIN desc
                        , v.VID_TITLE
                        , c.CHAP_START_SECONDS
                 ```
-            pageItemsToSubmit: P1_REL_ID
+            pageItemsToSubmit: P14_REL_ID
         }
         layout {
             sequence: 30
@@ -111,9 +111,7 @@ page 1 (
         column CHAP_LINK_URL (
             reportColumnQueryId: 6
             derivedColumn: N
-            heading {
-                heading: Chapter Link
-            }
+            type: hidden
             layout {
                 sequence: 60
             }
@@ -138,11 +136,20 @@ page 1 (
         column CHAP_TITLE (
             reportColumnQueryId: 5
             derivedColumn: N
+            type: link
             heading {
                 heading: Chapter
             }
             layout {
                 sequence: 50
+            }
+            link {
+                target: {
+                    type: url
+                    url: #CHAP_LINK_URL#
+                }
+                linkText: #CHAP_TITLE#
+                linkAttributes: target="_blank" rel="noopener"
             }
         )
 
@@ -214,7 +221,7 @@ page 1 (
             maxSuggestionChips: 0
         }
 
-        filter P1_SEARCH (
+        filter P14_SEARCH (
             type: search
             label {
                 label: Search
@@ -262,8 +269,6 @@ page 1 (
         }
         settings {
             title: &REL_VERSION.
-            description: New Features Page: &REL_NEW_FEATURES_URL.
-            miscellaneous: New Features PDF: &REL_PDF_URL.
         }
 
         column REL_ID (
@@ -318,6 +323,24 @@ page 1 (
             }
         )
 
+        action release-notes (
+            position: primaryActions
+            template: button
+            label: Release Notes
+            appearance {
+                displayType: textWithIcon
+                icon: fa-external-link
+            }
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: &REL_NEW_FEATURES_URL.
+                linkAttributes: target="_blank" rel="noopener"
+            }
+        )
+
         action action-fullrowlink-1 (
             position: fullRowLink
             layout {
@@ -325,9 +348,9 @@ page 1 (
             }
             behavior {
                 target: {
-                    page: 1
+                    page: 14
                     items: {
-                        P1_REL_ID: \&REL_ID.\
+                        P14_REL_ID: \&REL_ID.\
                     }
                 }
             }
@@ -347,13 +370,27 @@ page 1 (
                      , v.VID_TITLE as VID_TITLE
                      , v.VID_YOUTUBE_URL as VID_YOUTUBE_URL
                      , v.VID_IS_MAIN as VID_IS_MAIN
-                     , v.VID_FETCHED_AT as VID_FETCHED_AT
+                     , ( select listagg(
+                                    '<a href="' || apex_escape.html(c.CHAP_LINK_URL)
+                                    || '" target="_blank" rel="noopener">'
+                                    || case
+                                          when c.CHAP_START_SECONDS >= 3600
+                                          then trunc(c.CHAP_START_SECONDS / 3600) || ':'
+                                               || to_char(trunc(mod(c.CHAP_START_SECONDS, 3600) / 60), 'fm00')
+                                          else to_char(trunc(c.CHAP_START_SECONDS / 60), 'fm00')
+                                       end
+                                    || ':' || to_char(mod(c.CHAP_START_SECONDS, 60), 'fm00')
+                                    || '</a> ' || apex_escape.html(c.CHAP_TITLE)
+                                  , '<br>' on overflow truncate '...' without count)
+                                  within group (order by c.CHAP_START_SECONDS)
+                           from V_NFO_UI_VIDEO_CHAPTERS c
+                          where c.CHAP_VID_ID = v.VID_ID ) as VID_CHAPTERS
                 from V_NFO_UI_RELEASE_VIDEOS v
-                where v.VID_REL_ID = to_number(:P1_REL_ID)
+                where v.VID_REL_ID = to_number(:P14_REL_ID)
                 order by v.VID_IS_MAIN desc
                        , v.VID_TITLE
                 ```
-            pageItemsToSubmit: P1_REL_ID
+            pageItemsToSubmit: P14_REL_ID
         }
         layout {
             sequence: 20
@@ -413,17 +450,17 @@ page 1 (
             }
         )
 
-        column VID_FETCHED_AT (
+        column VID_CHAPTERS (
             reportColumnQueryId: 6
             derivedColumn: N
             heading {
-                heading: Description Fetched At
+                heading: Video Chapters
             }
             layout {
                 sequence: 60
             }
-            appearance {
-                formatMask: YYYY-MM-DD HH24:MI
+            security {
+                escapeSpecialChars: false
             }
         )
 
@@ -455,20 +492,27 @@ page 1 (
         column VID_TITLE (
             reportColumnQueryId: 3
             derivedColumn: N
+            type: link
             heading {
                 heading: Video Title
             }
             layout {
                 sequence: 30
             }
+            link {
+                target: {
+                    type: url
+                    url: #VID_YOUTUBE_URL#
+                }
+                linkText: #VID_TITLE#
+                linkAttributes: target="_blank" rel="noopener"
+            }
         )
 
         column VID_YOUTUBE_URL (
             reportColumnQueryId: 4
             derivedColumn: N
-            heading {
-                heading: YouTube Link
-            }
+            type: hidden
             layout {
                 sequence: 40
             }
@@ -476,7 +520,7 @@ page 1 (
 
     )
 
-    pageItem P1_REL_ID (
+    pageItem P14_REL_ID (
         type: hidden
         layout {
             sequence: 10
@@ -573,9 +617,9 @@ page 1 (
             settings {
                 jsCode:
                     ```javascript-browser
-                                    if ($v('P1_REL_ID') !== '') {
+                                    if ($v('P14_REL_ID') !== '') {
                                     setTimeout(function(){
-                                        $('.t-ContentRow-item[data-id=' + $v('P1_REL_ID') + ']').click();
+                                        $('.t-ContentRow-item[data-id=' + $v('P14_REL_ID') + ']').click();
                                     }, 2000);
                                     }
                                     
@@ -726,7 +770,7 @@ page 1 (
             }
             affectedElements {
                 selectionType: items
-                items: P1_REL_ID
+                items: P14_REL_ID
             }
             execution {
                 sequence: 5
@@ -752,7 +796,7 @@ page 1 (
             action: setValue
             affectedElements {
                 selectionType: items
-                items: P1_REL_ID
+                items: P14_REL_ID
             }
             execution {
                 sequence: 10

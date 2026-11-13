@@ -27,19 +27,6 @@ breadcrumb breadcrumb (
         }
     )
 
-    entry dashboard (
-        name: Dashboard
-        pageNumber: 1
-        execution {
-            sequence: 10
-        }
-        link {
-            target: {
-                page: 1
-            }
-        }
-    )
-
     entry feature-cards (
         name: Feature Cards
         pageNumber: 3
@@ -62,6 +49,19 @@ breadcrumb breadcrumb (
         link {
             target: {
                 page: 4
+            }
+        }
+    )
+
+    entry release-videos (
+        name: Release Videos
+        pageNumber: 14
+        execution {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 14
             }
         }
     )

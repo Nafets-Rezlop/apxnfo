@@ -56,7 +56,7 @@ list navigation-bar (
         serverSideCondition {
             type: expression
             language: plsql
-            plsqlExpression: nvl(:AI_LANG, 'en') != 'de'
+            plsqlExpression: :APP_PAGE_ID = 3 and nvl(:AI_LANG, 'en') != 'de'
         }
     )
 
@@ -77,9 +77,9 @@ list navigation-bar (
             }
         }
         serverSideCondition {
-            type: item=value
-            item: AI_LANG
-            value: de
+            type: expression
+            language: plsql
+            plsqlExpression: :APP_PAGE_ID = 3 and :AI_LANG = 'de'
         }
     )
 
@@ -126,21 +126,6 @@ list navigation-menu (
         }
     )
 
-    entry dashboard (
-        label: Dashboard
-        icon {
-            imageIconCssClasses: fa-dashboard
-        }
-        layout {
-            sequence: 10
-        }
-        link {
-            target: {
-                page: 1
-            }
-        }
-    )
-
     entry feature-cards (
         label: Feature Cards
         icon {
@@ -182,6 +167,21 @@ list navigation-menu (
         link {
             target: {
                 page: 13
+            }
+        }
+    )
+
+    entry release-videos (
+        label: Release Videos
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 14
             }
         }
     )
