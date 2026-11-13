@@ -1,0 +1,19 @@
+authorization administrator (
+    name: ADMINISTRATOR
+    type: isInRoleOrGroup
+    settings {
+        names: ADMINISTRATOR
+    }
+)
+
+authorization administrator-or-contributor (
+    name: ADMINISTRATOR or CONTRIBUTOR
+    type: isInRoleOrGroup
+    settings {
+        names: [
+            ADMINISTRATOR
+            CONTRIBUTOR
+        ]
+    }
+)
+

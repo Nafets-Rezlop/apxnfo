@@ -1,0 +1,1225 @@
+# Provenance
+- Source Prompt: blueprint-prompt.md (v26.1.220)
+- Functional Requirements: specification_nfo.md
+- Schema Metadata: db/ddl/nfo_views.sql
+- UX Patterns: Built-in
+# Application Definition
+- Name: APEX New Features
+- Description: Overview of the new features of every Oracle APEX release with categories, release videos and video chapters.
+- Comments: Reads all data through the V_NFO_UI views of the parsing schema NFO_SYS_CONN. Public pages need no login, maintenance pages are restricted to the roles CONTRIBUTOR and ADMINISTRATOR. Form DML processes are replaced by the TAPI packages PKG_NFO_*_DML after import.
+- Primary Application Language: en
+- Home Page: Page 1
+- Access Controls:
+  - Roles:
+    - Role: CONTRIBUTOR
+      - Description: Creates features, assigns categories and video chapters, maintains releases, videos and chapters, imports CSV files.
+    - Role: ADMINISTRATOR
+      - Description: Has all contributor rights and additionally creates, renames and deletes categories.
+- List of Values:
+  - LOV
+    - Name: LOV_RELEASES
+    - Type: Table
+    - Table Name: V_NFO_UI_RELEASES
+    - Display: REL_VERSION
+    - Return: REL_ID
+  - LOV
+    - Name: LOV_CATEGORIES
+    - Type: SQL
+    - SQL:
+```sql
+select c.DISPLAY_VALUE_EN display
+     , c.RETURN_VALUE return
+from V_NFO_LOV_CATEGORIES c
+order by c.SORT_ORDER
+     , c.DISPLAY_VALUE_EN
+```
+    - Display: display
+    - Return: return
+  - LOV
+    - Name: LOV_RELEASE_VIDEOS
+    - Type: SQL
+    - SQL:
+```sql
+select v.REL_VERSION || ' - ' || v.VID_TITLE display
+     , v.VID_ID return
+from V_NFO_UI_RELEASE_VIDEOS v
+order by v.REL_VERSION desc
+     , v.VID_IS_MAIN desc
+     , v.VID_TITLE
+```
+    - Display: display
+    - Return: return
+  - LOV
+    - Name: LOV_VIDEO_CHAPTERS
+    - Type: SQL
+    - SQL:
+```sql
+select v.REL_VERSION || ' - ' || c.CHAP_TITLE display
+     , c.CHAP_ID return
+from V_NFO_UI_VIDEO_CHAPTERS c
+join V_NFO_UI_RELEASE_VIDEOS v
+    on v.VID_ID = c.CHAP_VID_ID
+order by v.REL_VERSION desc
+     , c.CHAP_START_SECONDS
+```
+    - Display: display
+    - Return: return
+  - LOV
+    - Name: LOV_YES_NO
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Yes
+        - Return: Y
+      - Entry:
+        - Display: No
+        - Return: N
+- Page Groups
+  - Page Group
+    - Name: Overview
+    - Description: Public pages that present features, dashboard figures, release videos and video chapters.
+  - Page Group
+    - Name: Feature Maintenance
+    - Description: Contributor pages for features, releases, videos, chapters and the CSV import log.
+  - Page Group
+    - Name: Administration
+    - Description: Administrator pages for category maintenance.
+- Menu
+  - Menu Name: Navigation Menu
+  - Entries:
+    - Entry
+      - Label: Dashboard
+      - Icon: fa-dashboard
+      - Action: Navigate
+      - Target: Page 1
+    - Entry
+      - Label: Features
+      - Icon: fa-table
+      - Action: Navigate
+      - Target: Page 2
+    - Entry
+      - Label: Feature Cards
+      - Icon: fa-th-large
+      - Action: Navigate
+      - Target: Page 3
+    - Entry
+      - Label: Feature Statistics
+      - Icon: fa-bar-chart
+      - Action: Navigate
+      - Target: Page 4
+    - Entry
+      - Label: Releases
+      - Icon: fa-rocket
+      - Action: Navigate
+      - Target: Page 8
+      - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+    - Entry
+      - Label: Import Log
+      - Icon: fa-upload
+      - Action: Navigate
+      - Target: Page 12
+      - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+    - Entry
+      - Label: Categories
+      - Icon: fa-tags
+      - Action: Navigate
+      - Target: Page 6
+      - Authorized Roles: ADMINISTRATOR
+- Breadcrumb
+  - Name: Breadcrumb
+  - Entries:
+    - Entry
+      - Name: Dashboard
+      - Page: Page 1
+    - Entry
+      - Name: Features
+      - Page: Page 2
+    - Entry
+      - Name: Feature Cards
+      - Page: Page 3
+    - Entry
+      - Name: Feature Statistics
+      - Page: Page 4
+    - Entry
+      - Name: Categories
+      - Page: Page 6
+    - Entry
+      - Name: Releases
+      - Page: Page 8
+    - Entry
+      - Name: Import Log
+      - Page: Page 12
+## Pages
+### Page 1: Dashboard
+- Description: Public dashboard that lists the releases and shows the YouTube videos and video chapters of the selected release.
+- Comments: Implements requirements 200 to 230, 830 and 840. Feature counts per release and category are on the Feature Statistics page. Contributors maintain videos and chapters from this page. The embedded player for the selected video is added manually after import.
+- Pattern: parent-child
+- Page Mode: standard
+- Menu: true
+- Page Group: Overview
+#### Regions
+##### Region: Release Selector
+- Comments: Parent list of releases that sets the release context for the video and chapter regions.
+- Position: body
+- Colstart: 1
+- Colspan: 4
+- Component:
+  - Component Type: Content Row
+  - Parent Child Role: Parent
+- Data Source:
+  - Type: View
+  - Name: V_NFO_UI_RELEASES
+  - Primary Keys: REL_ID
+  - Order By: REL_VERSION desc
+  - Summary: Release view ordered by version descending.
+- Hidden Page Items: P1_REL_ID
+- Columns:
+  - Column Name: REL_ID
+    - Label: Release ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: REL_VERSION
+    - Label: Release
+    - Datatype: varchar2
+    - Render As: title2
+    - Visible: true
+  - Column Name: REL_NEW_FEATURES_URL
+    - Label: New Features Page
+    - Datatype: varchar2
+    - Render As: description
+    - Visible: true
+  - Column Name: REL_PDF_URL
+    - Label: New Features PDF
+    - Datatype: varchar2
+    - Render As: miscellaneous
+    - Visible: true
+- Links: 
+  - Link:
+    - Link To: Page 1
+    - Link Type: fullRowLink
+    - Link Passing: REL_ID
+    - Link Target Items: P1_REL_ID
+##### Region: Videos of Selected Release
+- Comments: Child report of the YouTube videos of the selected release with the main video flag and edit navigation for contributors.
+- Position: body
+- Colstart: 5
+- Colspan: 8
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+  - Parent Child Role: Child
+- Data Source:
+  - Type: SQL
+  - Primary Keys: VID_ID
+  - SQL:
+```sql
+select v.VID_ID as VID_ID
+     , v.VID_TITLE as VID_TITLE
+     , v.VID_YOUTUBE_URL as VID_YOUTUBE_URL
+     , v.VID_IS_MAIN as VID_IS_MAIN
+     , v.VID_FETCHED_AT as VID_FETCHED_AT
+from V_NFO_UI_RELEASE_VIDEOS v
+where v.VID_REL_ID = to_number(:P1_REL_ID)
+order by v.VID_IS_MAIN desc
+       , v.VID_TITLE
+```
+  - Summary: Videos filtered by the selected release context.
+- Columns:
+  - Column Name: VID_ID
+    - Label: Video ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: VID_TITLE
+    - Label: Video Title
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: VID_YOUTUBE_URL
+    - Label: YouTube Link
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: VID_IS_MAIN
+    - Label: Main Video
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_YES_NO
+  - Column Name: VID_FETCHED_AT
+    - Label: Description Fetched At
+    - Datatype: date
+    - Render As: plainText
+    - Format Mask: YYYY-MM-DD HH24:MI
+- Links: 
+  - Link:
+    - Link To: Page 10
+    - Link Passing: VID_ID
+    - Link Target Items: P10_VID_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+- Actions:
+  - Action
+    - Label: Create Video
+    - Link To: Page 10
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+##### Region: Chapters of Selected Release
+- Comments: Child report of the video chapters of the selected release. The no data found message is set to No chapters found after import, as required by requirement 230.
+- Position: body
+- Colstart: 5
+- Colspan: 8
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+  - Parent Child Role: Child
+- Data Source:
+  - Type: SQL
+  - Primary Keys: CHAP_ID
+  - SQL:
+```sql
+select c.CHAP_ID as CHAP_ID
+     , v.VID_TITLE as VID_TITLE
+     , c.CHAP_START_SECONDS as CHAP_START_SECONDS
+     , c.CHAP_TITLE as CHAP_TITLE
+     , c.CHAP_LINK_URL as CHAP_LINK_URL
+from V_NFO_UI_VIDEO_CHAPTERS c
+join V_NFO_UI_RELEASE_VIDEOS v
+    on v.VID_ID = c.CHAP_VID_ID
+where v.VID_REL_ID = to_number(:P1_REL_ID)
+order by v.VID_IS_MAIN desc
+       , v.VID_TITLE
+       , c.CHAP_START_SECONDS
+```
+  - Summary: Chapters of all videos of the selected release ordered by video and start position.
+- Columns:
+  - Column Name: CHAP_ID
+    - Label: Chapter ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: VID_TITLE
+    - Label: Video Title
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: CHAP_START_SECONDS
+    - Label: Start Seconds
+    - Datatype: number
+    - Render As: plainText
+    - Format Mask: 999G999G990
+  - Column Name: CHAP_TITLE
+    - Label: Chapter
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: CHAP_LINK_URL
+    - Label: Chapter Link
+    - Datatype: varchar2
+    - Render As: plainText
+- Links: 
+  - Link:
+    - Link To: Page 11
+    - Link Passing: CHAP_ID
+    - Link Target Items: P11_CHAP_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+### Page 2: Features
+- Description: Public faceted search over all features with facets for release and category and a tabular result list.
+- Comments: Implements requirements 800 and 810. Contributors open the feature form from each row, administrators and contributors can also create features.
+- Pattern: faceted-search
+- Page Mode: standard
+- Menu: true
+- Page Group: Overview
+#### Regions
+##### Region: Feature Facets
+- Comments: Provides release and category facets that filter the feature list.
+- Position: left-column
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Faceted Search
+- Filtered Region: Feature List
+- Filters:
+  - Filter
+    - Name: P2_F_FEAT_REL_ID
+    - Label: Release
+    - Render As: checkboxGroup
+    - LOV: LOV_RELEASES
+    - Database Column: FEAT_REL_ID
+    - Datatype: number
+  - Filter
+    - Name: P2_F_FEAT_CATG_ID
+    - Label: Category
+    - Render As: checkboxGroup
+    - LOV: LOV_CATEGORIES
+    - Database Column: FEAT_CATG_ID
+    - Datatype: number
+##### Region: Feature List
+- Comments: Tabular feature list with title, German summary and Oracle documentation link, filtered by the facets.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: View
+  - Name: V_NFO_UI_FEATURES
+  - Primary Keys: FEAT_ID
+  - Order By: REL_VERSION desc, FEAT_TITLE
+  - Summary: Feature view with resolved release version and category names.
+- Columns:
+  - Column Name: FEAT_ID
+    - Label: Feature ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: FEAT_REL_ID
+    - Label: Release ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: FEAT_CATG_ID
+    - Label: Category ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: REL_VERSION
+    - Label: Release
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: CATG_NAME_EN
+    - Label: Category
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: FEAT_TITLE
+    - Label: Feature
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: FEAT_SUMMARY_DE
+    - Label: Feature Summary (de)
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: FEAT_LINK_FEATURE_ORACLE_DOC
+    - Label: Link to Oracle Doc
+    - Datatype: varchar2
+    - Render As: plainText
+- Links: 
+  - Link:
+    - Link To: Page 5
+    - Link Passing: FEAT_ID
+    - Link Target Items: P5_FEAT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+- Actions:
+  - Action
+    - Label: Create Feature
+    - Link To: Page 5
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+### Page 3: Feature Cards
+- Description: Public card view of the features with facets for release and category.
+- Comments: Implements requirement 860. Each card shows title, category, English summary and release.
+- Pattern: faceted-search
+- Page Mode: standard
+- Menu: true
+- Page Group: Overview
+#### Regions
+##### Region: Feature Card Facets
+- Comments: Provides release and category facets that filter the feature cards.
+- Position: left-column
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Faceted Search
+- Filtered Region: Feature Card Gallery
+- Filters:
+  - Filter
+    - Name: P3_F_FEAT_REL_ID
+    - Label: Release
+    - Render As: checkboxGroup
+    - LOV: LOV_RELEASES
+    - Database Column: FEAT_REL_ID
+    - Datatype: number
+  - Filter
+    - Name: P3_F_FEAT_CATG_ID
+    - Label: Category
+    - Render As: checkboxGroup
+    - LOV: LOV_CATEGORIES
+    - Database Column: FEAT_CATG_ID
+    - Datatype: number
+##### Region: Feature Card Gallery
+- Comments: Shows one card per feature and lets contributors open the feature form from a card button.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Cards
+- Data Source:
+  - Type: View
+  - Name: V_NFO_UI_FEATURES
+  - Primary Keys: FEAT_ID
+  - Order By: REL_VERSION desc, FEAT_TITLE
+  - Summary: Feature view with resolved release version and category names for the card gallery.
+- Columns:
+  - Column Name: FEAT_ID
+    - Label: Feature ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: FEAT_REL_ID
+    - Label: Release ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: FEAT_CATG_ID
+    - Label: Category ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: FEAT_TITLE
+    - Label: Feature
+    - Datatype: varchar2
+    - Render As: title
+    - Visible: true
+  - Column Name: CATG_NAME_EN
+    - Label: Category
+    - Datatype: varchar2
+    - Render As: subtitle
+    - Visible: true
+  - Column Name: FEAT_SUMMARY_EN
+    - Label: Feature Summary (en)
+    - Datatype: varchar2
+    - Render As: body
+    - Visible: true
+  - Column Name: REL_VERSION
+    - Label: Release
+    - Datatype: varchar2
+    - Render As: secondaryBody
+    - Visible: true
+- Links: 
+  - Link:
+    - Link To: Page 5
+    - Link Type: button
+    - Link Passing: FEAT_ID
+    - Link Target Items: P5_FEAT_ID
+    - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+    - Label: Edit
+- Actions:
+  - Action
+    - Label: Create Feature
+    - Link To: Page 5
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+### Page 4: Feature Statistics
+- Description: Public statistics page with feature, release and category counts and charts of the features per release and per category.
+- Comments: Implements requirement 820. Release videos and chapters are on the Dashboard page.
+- Pattern: analytics-workspace
+- Page Mode: standard
+- Menu: true
+- Page Group: Overview
+#### Regions
+##### Region: Features KPI
+- Comments: Shows the total number of features across all releases for a quick size indicator.
+- Position: body
+- Colstart: 1
+- Colspan: 4
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Number of features across all releases.
+- Metric Icon: fa-star
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as FEATURE_COUNT
+from V_NFO_UI_FEATURES f
+```
+  - Summary: Single count KPI over all features.
+- Columns:
+  - Column Name: FEATURE_COUNT
+    - Label: Features
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G990
+##### Region: Releases KPI
+- Comments: Shows the number of releases stored in the system so users see how far back the history goes.
+- Position: body
+- Colstart: 5
+- Colspan: 4
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Number of APEX releases in the system.
+- Metric Icon: fa-rocket
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as RELEASE_COUNT
+from V_NFO_UI_RELEASES r
+```
+  - Summary: Single count KPI over all releases.
+- Columns:
+  - Column Name: RELEASE_COUNT
+    - Label: Releases
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G990
+##### Region: Categories KPI
+- Comments: Shows the number of categories used to classify features.
+- Position: body
+- Colstart: 9
+- Colspan: 4
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Number of feature categories.
+- Metric Icon: fa-tags
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as CATEGORY_COUNT
+from V_NFO_UI_CATEGORIES c
+```
+  - Summary: Single count KPI over all categories.
+- Columns:
+  - Column Name: CATEGORY_COUNT
+    - Label: Categories
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G990
+##### Region: Features per Release Chart
+- Comments: Shows how many features each release introduced, ordered by release version.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select f.REL_VERSION as label
+     , count(*) as value
+from V_NFO_UI_FEATURES f
+group by f.REL_VERSION
+order by label
+```
+  - Summary: Bar chart of feature counts grouped by release version.
+- Columns:
+  - Column Name: label
+    - Label: Release
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Features
+    - Datatype: number
+    - Render As: value
+##### Region: Features per Category Chart
+- Comments: Shows how many features belong to each category, largest category first.
+- Position: body
+- Colstart: 7
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select f.CATG_NAME_EN as label
+     , count(*) as value
+from V_NFO_UI_FEATURES f
+group by f.CATG_NAME_EN
+order by value desc
+```
+  - Summary: Bar chart of feature counts grouped by category name.
+- Columns:
+  - Column Name: label
+    - Label: Category
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Features
+    - Datatype: number
+    - Render As: value
+### Page 5: Feature Form
+- Description: Modal form for creating, editing and deleting a feature including category and video chapter assignment.
+- Comments: Implements requirements 310, 850 and 1010. After import the generated DML process is replaced by calls to PKG_NFO_FEAT_DML.MRG and PKG_NFO_FEAT_DML.DEL with the MD5 checksum item.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Feature Maintenance
+- Security Requirements:
+  - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+  - Notes: Contributors and administrators maintain features.
+#### Regions
+##### Region: Feature Form
+- Comments: Edits the feature columns of the updatable view V_NFO_UI_FEATURES and returns to the calling page after save or cancel.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: V_NFO_UI_FEATURES
+  - Primary Keys: FEAT_ID
+  - Summary: Updatable feature view used as form source; DML goes through PKG_NFO_FEAT_DML.
+- Columns:
+  - Column Name: FEAT_ID
+    - Label: Feature ID
+    - Datatype: number
+    - Page Item Name: P5_FEAT_ID
+    - Render As: hidden
+  - Column Name: FEAT_REL_ID
+    - Label: Release
+    - Datatype: number
+    - Page Item Name: P5_FEAT_REL_ID
+    - Render As: selectList
+    - LOV: LOV_RELEASES
+    - Required: true
+  - Column Name: FEAT_CATG_ID
+    - Label: Category
+    - Datatype: number
+    - Page Item Name: P5_FEAT_CATG_ID
+    - Render As: selectList
+    - LOV: LOV_CATEGORIES
+    - Required: true
+  - Column Name: FEAT_TITLE
+    - Label: Feature
+    - Datatype: varchar2
+    - Page Item Name: P5_FEAT_TITLE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 500
+  - Column Name: FEAT_SUMMARY_EN
+    - Label: Feature Summary (en)
+    - Datatype: varchar2
+    - Page Item Name: P5_FEAT_SUMMARY_EN
+    - Render As: textarea
+    - MaxLength: 4000
+  - Column Name: FEAT_SUMMARY_DE
+    - Label: Feature Summary (de)
+    - Datatype: varchar2
+    - Page Item Name: P5_FEAT_SUMMARY_DE
+    - Render As: textarea
+    - MaxLength: 4000
+  - Column Name: FEAT_LINK_FEATURE_ORACLE_DOC
+    - Label: Link to Oracle Doc
+    - Datatype: varchar2
+    - Page Item Name: P5_FEAT_LINK_FEATURE_ORACLE_DOC
+    - Render As: textField
+    - MaxLength: 1000
+  - Column Name: FEAT_CHAP_ID
+    - Label: Video Chapter
+    - Datatype: number
+    - Page Item Name: P5_FEAT_CHAP_ID
+    - Render As: selectList
+    - LOV: LOV_VIDEO_CHAPTERS
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+### Page 6: Categories
+- Description: Administrator report of all categories with German and English names and sort order.
+- Comments: Implements requirements 120 to 170. Opens the category form for rename, create and delete.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: ADMINISTRATOR
+  - Notes: Only administrators change categories.
+#### Regions
+##### Region: Category List
+- Comments: Lists categories in sort order and links each row to the category form.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: View
+  - Name: V_NFO_UI_CATEGORIES
+  - Primary Keys: CATG_ID
+  - Order By: CATG_SORT_ORDER, CATG_NAME_EN
+  - Summary: Category view ordered by sort order and English name.
+- Columns:
+  - Column Name: CATG_ID
+    - Label: Category ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: CATG_NAME_EN
+    - Label: Name (en)
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: CATG_NAME_DE
+    - Label: Name (de)
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: CATG_SORT_ORDER
+    - Label: Sort Order
+    - Datatype: number
+    - Render As: plainText
+- Links: 
+  - Link:
+    - Link To: Page 7
+    - Link Passing: CATG_ID
+    - Link Target Items: P7_CATG_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+- Actions:
+  - Action
+    - Label: Create Category
+    - Link To: Page 7
+    - slot: CREATE
+    - Action Type: navigate
+### Page 7: Category Form
+- Description: Modal form for creating, renaming and deleting a category.
+- Comments: Implements requirements 140 to 170. After import the generated DML process is replaced by PKG_NFO_CATG_DML.MRG and PKG_NFO_CATG_DML.DEL, which reject duplicate names and deletion of categories that still have features.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: ADMINISTRATOR
+  - Notes: Only administrators create, rename and delete categories.
+#### Regions
+##### Region: Category Form
+- Comments: Edits the German and English category names and the sort order.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: V_NFO_UI_CATEGORIES
+  - Primary Keys: CATG_ID
+  - Summary: Updatable category view used as form source; DML goes through PKG_NFO_CATG_DML.
+- Columns:
+  - Column Name: CATG_ID
+    - Label: Category ID
+    - Datatype: number
+    - Page Item Name: P7_CATG_ID
+    - Render As: hidden
+  - Column Name: CATG_NAME_EN
+    - Label: Name (en)
+    - Datatype: varchar2
+    - Page Item Name: P7_CATG_NAME_EN
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: CATG_NAME_DE
+    - Label: Name (de)
+    - Datatype: varchar2
+    - Page Item Name: P7_CATG_NAME_DE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: CATG_SORT_ORDER
+    - Label: Sort Order
+    - Datatype: number
+    - Page Item Name: P7_CATG_SORT_ORDER
+    - Render As: numberField
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+### Page 8: Releases
+- Description: Contributor report of all releases with the links to the Oracle new features page and PDF.
+- Comments: Supports requirements 420 to 430 and 610 to 650 by maintaining the release master data before a CSV import.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Feature Maintenance
+- Security Requirements:
+  - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+  - Notes: Contributors and administrators maintain releases.
+#### Regions
+##### Region: Release List
+- Comments: Lists releases newest first and links each row to the release form.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: View
+  - Name: V_NFO_UI_RELEASES
+  - Primary Keys: REL_ID
+  - Order By: REL_VERSION desc
+  - Summary: Release view ordered by version descending.
+- Columns:
+  - Column Name: REL_ID
+    - Label: Release ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: REL_VERSION
+    - Label: Release
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: REL_NEW_FEATURES_URL
+    - Label: New Features Page
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: REL_PDF_URL
+    - Label: New Features PDF
+    - Datatype: varchar2
+    - Render As: plainText
+- Links: 
+  - Link:
+    - Link To: Page 9
+    - Link Passing: REL_ID
+    - Link Target Items: P9_REL_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+- Actions:
+  - Action
+    - Label: Create Release
+    - Link To: Page 9
+    - slot: CREATE
+    - Action Type: navigate
+### Page 9: Release Form
+- Description: Modal form for creating, editing and deleting a release.
+- Comments: After import the generated DML process is replaced by PKG_NFO_REL_DML.MRG and PKG_NFO_REL_DML.DEL.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Feature Maintenance
+- Security Requirements:
+  - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+  - Notes: Contributors and administrators maintain releases.
+#### Regions
+##### Region: Release Form
+- Comments: Edits the release version and the Oracle documentation links.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: V_NFO_UI_RELEASES
+  - Primary Keys: REL_ID
+  - Summary: Updatable release view used as form source; DML goes through PKG_NFO_REL_DML.
+- Columns:
+  - Column Name: REL_ID
+    - Label: Release ID
+    - Datatype: number
+    - Page Item Name: P9_REL_ID
+    - Render As: hidden
+  - Column Name: REL_VERSION
+    - Label: Release
+    - Datatype: varchar2
+    - Page Item Name: P9_REL_VERSION
+    - Render As: textField
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REL_NEW_FEATURES_URL
+    - Label: New Features Page
+    - Datatype: varchar2
+    - Page Item Name: P9_REL_NEW_FEATURES_URL
+    - Render As: textField
+    - MaxLength: 1000
+  - Column Name: REL_PDF_URL
+    - Label: New Features PDF
+    - Datatype: varchar2
+    - Page Item Name: P9_REL_PDF_URL
+    - Render As: textField
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+### Page 10: Video Form
+- Description: Modal form for creating, editing and deleting a YouTube video of a release.
+- Comments: Implements requirements 200 to 240. After import the generated DML process is replaced by PKG_NFO_VID_DML.MRG and PKG_NFO_VID_DML.DEL, and the chapter extraction PKG_NFO_CHAPTER_EXTRACTOR is called after saving a video.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Feature Maintenance
+- Security Requirements:
+  - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+  - Notes: Contributors and administrators maintain videos.
+#### Regions
+##### Region: Video Form
+- Comments: Edits the release assignment, YouTube link, video key, main video flag and description text of a video.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: V_NFO_UI_RELEASE_VIDEOS
+  - Primary Keys: VID_ID
+  - Summary: Release video view used as form source; DML goes through PKG_NFO_VID_DML.
+- Columns:
+  - Column Name: VID_ID
+    - Label: Video ID
+    - Datatype: number
+    - Page Item Name: P10_VID_ID
+    - Render As: hidden
+  - Column Name: VID_REL_ID
+    - Label: Release
+    - Datatype: number
+    - Page Item Name: P10_VID_REL_ID
+    - Render As: selectList
+    - LOV: LOV_RELEASES
+    - Required: true
+  - Column Name: VID_TITLE
+    - Label: Video Title
+    - Datatype: varchar2
+    - Page Item Name: P10_VID_TITLE
+    - Render As: textField
+    - MaxLength: 500
+  - Column Name: VID_YOUTUBE_URL
+    - Label: YouTube Link
+    - Datatype: varchar2
+    - Page Item Name: P10_VID_YOUTUBE_URL
+    - Render As: textField
+    - Required: true
+    - MaxLength: 500
+  - Column Name: VID_YOUTUBE_KEY
+    - Label: YouTube Video ID
+    - Datatype: varchar2
+    - Page Item Name: P10_VID_YOUTUBE_KEY
+    - Render As: textField
+    - Required: true
+    - MaxLength: 11
+  - Column Name: VID_IS_MAIN
+    - Label: Main Video
+    - Datatype: varchar2
+    - Page Item Name: P10_VID_IS_MAIN
+    - Render As: selectList
+    - LOV: LOV_YES_NO
+    - Required: true
+    - MaxLength: 1
+  - Column Name: VID_DESCRIPTION
+    - Label: Video Description
+    - Datatype: clob
+    - Page Item Name: P10_VID_DESCRIPTION
+    - Render As: textarea
+  - Column Name: VID_FETCHED_AT
+    - Label: Description Fetched At
+    - Datatype: date
+    - Page Item Name: P10_VID_FETCHED_AT
+    - Render As: datePicker
+    - Format Mask: YYYY-MM-DD HH24:MI
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+### Page 11: Chapter Form
+- Description: Modal form for correcting, adding and deleting a video chapter.
+- Comments: Chapters are normally extracted automatically from the video description; this form corrects titles and start positions. After import the generated DML process is replaced by PKG_NFO_CHAP_DML.MRG and PKG_NFO_CHAP_DML.DEL.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Feature Maintenance
+- Security Requirements:
+  - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+  - Notes: Contributors and administrators maintain chapters.
+#### Regions
+##### Region: Chapter Form
+- Comments: Edits the video assignment, start position, title and link of a chapter.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: V_NFO_UI_VIDEO_CHAPTERS
+  - Primary Keys: CHAP_ID
+  - Summary: Video chapter view used as form source; DML goes through PKG_NFO_CHAP_DML.
+- Columns:
+  - Column Name: CHAP_ID
+    - Label: Chapter ID
+    - Datatype: number
+    - Page Item Name: P11_CHAP_ID
+    - Render As: hidden
+  - Column Name: CHAP_VID_ID
+    - Label: Video
+    - Datatype: number
+    - Page Item Name: P11_CHAP_VID_ID
+    - Render As: selectList
+    - LOV: LOV_RELEASE_VIDEOS
+    - Required: true
+  - Column Name: CHAP_START_SECONDS
+    - Label: Start Seconds
+    - Datatype: number
+    - Page Item Name: P11_CHAP_START_SECONDS
+    - Render As: numberField
+    - Required: true
+  - Column Name: CHAP_TITLE
+    - Label: Chapter
+    - Datatype: varchar2
+    - Page Item Name: P11_CHAP_TITLE
+    - Render As: textField
+    - MaxLength: 500
+  - Column Name: CHAP_LINK_URL
+    - Label: Chapter Link
+    - Datatype: varchar2
+    - Page Item Name: P11_CHAP_LINK_URL
+    - Render As: textField
+    - Required: true
+    - MaxLength: 500
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+### Page 12: Import Log
+- Description: Contributor page that shows the result of every CSV import run with release, status and message.
+- Comments: Implements requirement 430 for the import history. The CSV file upload item and the process that calls the import package are added manually after import because the blueprint has no file upload process.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Feature Maintenance
+- Security Requirements:
+  - Authorized Roles: CONTRIBUTOR, ADMINISTRATOR
+  - Notes: Contributors and administrators upload CSV files and review import results.
+#### Regions
+##### Region: Import Runs
+- Comments: Lists import runs newest first with the release, type, status and result message.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: View
+  - Name: V_NFO_UI_IMPORT_LOGS
+  - Primary Keys: IMP_ID
+  - Order By: IMP_STARTED_AT desc
+  - Summary: Import log view ordered by start time descending.
+- Columns:
+  - Column Name: IMP_ID
+    - Label: Import ID
+    - Datatype: number
+    - Render As: hidden
+  - Column Name: IMP_STARTED_AT
+    - Label: Started At
+    - Datatype: date
+    - Render As: plainText
+    - Format Mask: YYYY-MM-DD HH24:MI
+  - Column Name: IMP_FINISHED_AT
+    - Label: Finished At
+    - Datatype: date
+    - Render As: plainText
+    - Format Mask: YYYY-MM-DD HH24:MI
+  - Column Name: REL_VERSION
+    - Label: Release
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: IMP_IMPORT_TYPE
+    - Label: Import Type
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: IMP_STATUS
+    - Label: Status
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: IMP_STARTED_BY
+    - Label: Started By
+    - Datatype: varchar2
+    - Render As: plainText
+  - Column Name: IMP_MESSAGE
+    - Label: Message
+    - Datatype: varchar2
+    - Render As: plainText

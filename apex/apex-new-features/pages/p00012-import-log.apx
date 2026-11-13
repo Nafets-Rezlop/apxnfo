@@ -1,0 +1,212 @@
+page 12 (
+    name: Import Log
+    alias: IMPORT-LOG
+    title: Import Log
+    pageGroup: @feature-maintenance
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administrator-or-contributor
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        enableDuplicatePageSubmissions: false
+    }
+    comments {
+        comments: Implements requirement 430 for the import history. The CSV file upload item and the process that calls the import package are added manually after import because the blueprint has no file upload process.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region import-runs (
+        name: Import Runs
+        type: classicReport
+        source {
+            location: localDatabase
+            tableName: V_NFO_UI_IMPORT_LOGS
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: IMP_STARTED_AT desc
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Region--noBorder
+            ]
+        }
+        comments {
+            comments: Lists import runs newest first with the release, type, status and result message.
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column IMP_FINISHED_AT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Finished At
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: YYYY-MM-DD HH24:MI
+            }
+        )
+
+        column IMP_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column IMP_IMPORT_TYPE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Import Type
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column IMP_MESSAGE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Message
+            }
+            layout {
+                sequence: 80
+            }
+        )
+
+        column IMP_STARTED_AT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Started At
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: YYYY-MM-DD HH24:MI
+            }
+        )
+
+        column IMP_STARTED_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Started By
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column IMP_STATUS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column REL_VERSION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+    )
+
+    dynamicAction dialog-refresh-import-runs (
+        name: Refresh on dialog close Import Runs
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @import-runs
+        }
+
+        action refresh (
+            action: refresh
+            settings {
+                maintainPagination: true
+            }
+            affectedElements {
+                selectionType: region
+                region: @import-runs
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -74,7 +74,9 @@ anforderungen
 |820 | es soll ein dashboard geben, das die Anzahl der Features pro Release und pro Kategorie anzeigt. |
 |830 | Das dashboard soll auch das Youtube Video des Releases anzeigen, falls vorhanden.|
 |840 | das dashboard soll die Sprungmarken des Youtube Videos anzeigen, falls vorhanden.| 
-|850| für die pflege der sprungmarken zu features soll eine LOV (list of values) erstellt werden, die die Sprungmarken des Youtube Videos anzeigt. Der Contributor kann dann die Sprungmarke einem Feature zuordnen. |
+|850| für die pflege der sprungmarken zu features soll eine LOV (list of values) erstellt werden, die die Sprungmarken des Youtube Videos anzeigt. Der Contributor kann dann die Sprungmarke einem Feature zuordnen. | 
+|860 | die new features sollen pro Releaes und pro Kategorie (je eine Filtermöglichkeit) auf einer separaten seite als Cards dargestellt werden
+
 
 # migration zur befüllung
 | Nr. | Anforderung |

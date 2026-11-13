@@ -1,0 +1,17 @@
+genAIService freetier (
+    name: freetier
+    provider: googleGemini
+    endpointUrl {
+        url: https://generativelanguage.googleapis.com/v1beta
+    }
+    authentication {
+        credentials: @credentials-for-freetier
+    }
+    appBuilder {
+        defaultForNewApps: true
+    }
+    advanced {
+        modelName: gemini-3.8-flash
+    }
+)
+

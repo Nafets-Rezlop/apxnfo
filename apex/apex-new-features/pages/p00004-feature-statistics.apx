@@ -1,0 +1,373 @@
+page 4 (
+    name: Feature Statistics
+    alias: FEATURE-STATISTICS
+    title: Feature Statistics
+    pageGroup: @overview
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        enableDuplicatePageSubmissions: false
+    }
+    comments {
+        comments: Implements requirement 820. Release videos and chapters are on the Dashboard page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region categories-kpi (
+        name: name: Categories KPI
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select count(*) as CATEGORY_COUNT
+                from V_NFO_UI_CATEGORIES c
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+                margin-bottom-md
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments: Shows the number of categories used to classify features.
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: Categories
+            metric: &CATEGORY_COUNT.
+            metricCssClasses: u-text-subheading-md
+            meta: Number of feature categories.
+            layout: stacked
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: fa-tags
+            style: subtle
+            size: medium
+            position: inline
+        }
+
+        column CATEGORY_COUNT (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: CATEGORY_COUNT
+                dataType: number
+            }
+            appearance {
+                formatMask: 999G999G990
+            }
+        )
+
+    )
+
+    region features-kpi (
+        name: name: Features KPI
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select count(*) as FEATURE_COUNT
+                from V_NFO_UI_FEATURES f
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+                margin-bottom-md
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments: Shows the total number of features across all releases for a quick size indicator.
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: Features
+            metric: &FEATURE_COUNT.
+            metricCssClasses: u-text-subheading-md
+            meta: Number of features across all releases.
+            layout: stacked
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: fa-star
+            style: subtle
+            size: medium
+            position: inline
+        }
+
+        column FEATURE_COUNT (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: FEATURE_COUNT
+                dataType: number
+            }
+            appearance {
+                formatMask: 999G999G990
+            }
+        )
+
+    )
+
+    region features-per-category-chart (
+        name: Features per Category Chart
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments: Shows how many features belong to each category, largest category first.
+        }
+        title {
+            title: Features per Category Chart
+        }
+        legend {
+            show: false
+        }
+
+        series features-per-category-chart (
+            name: Features per Category Chart
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select f.CATG_NAME_EN as label
+                         , count(*) as value
+                    from V_NFO_UI_FEATURES f
+                    group by f.CATG_NAME_EN
+                    order by value desc
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+        )
+
+    )
+
+    region features-per-release-chart (
+        name: Features per Release Chart
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments: Shows how many features each release introduced, ordered by release version.
+        }
+        title {
+            title: Features per Release Chart
+        }
+        legend {
+            show: false
+        }
+
+        series features-per-release-chart (
+            name: Features per Release Chart
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select f.REL_VERSION as label
+                         , count(*) as value
+                    from V_NFO_UI_FEATURES f
+                    group by f.REL_VERSION
+                    order by label
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+        )
+
+    )
+
+    region releases-kpi (
+        name: name: Releases KPI
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select count(*) as RELEASE_COUNT
+                from V_NFO_UI_RELEASES r
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+                margin-bottom-md
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments: Shows the number of releases stored in the system so users see how far back the history goes.
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: Releases
+            metric: &RELEASE_COUNT.
+            metricCssClasses: u-text-subheading-md
+            meta: Number of APEX releases in the system.
+            layout: stacked
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: fa-rocket
+            style: subtle
+            size: medium
+            position: inline
+        }
+
+        column RELEASE_COUNT (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: RELEASE_COUNT
+                dataType: number
+            }
+            appearance {
+                formatMask: 999G999G990
+            }
+        )
+
+    )
+
+)
+

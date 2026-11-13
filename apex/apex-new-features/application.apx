@@ -1,0 +1,52 @@
+app APEX-NEW-FEATURES (
+    name: APEX New Features
+    genAI {
+        service: @freetier
+    }
+    logo {
+        type: text
+        text: APEX New Features
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            t-TreeNav--styleA
+            js-navCollapsed--hidden
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+    }
+    authorization {
+        scheme: mustNotBePublicUser
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 2026-11-13T10:10:19
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: APEX New Features
+        }
+    )
+
+)
+

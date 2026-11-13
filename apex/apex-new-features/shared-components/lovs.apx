@@ -1,0 +1,91 @@
+lov lov-categories (
+    name: LOV_CATEGORIES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select c.DISPLAY_VALUE_EN display
+                 , c.RETURN_VALUE return
+            from V_NFO_LOV_CATEGORIES c
+            order by c.SORT_ORDER
+                 , c.DISPLAY_VALUE_EN
+            ```
+    }
+    columnMapping {
+        return: RETURN
+        display: DISPLAY
+    }
+)
+
+lov lov-release-videos (
+    name: LOV_RELEASE_VIDEOS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select v.REL_VERSION || ' - ' || v.VID_TITLE display
+                 , v.VID_ID return
+            from V_NFO_UI_RELEASE_VIDEOS v
+            order by v.REL_VERSION desc
+                 , v.VID_IS_MAIN desc
+                 , v.VID_TITLE
+            ```
+    }
+    columnMapping {
+        return: RETURN
+        display: DISPLAY
+    }
+)
+
+lov lov-releases (
+    name: LOV_RELEASES
+    source {
+        tableName: V_NFO_UI_RELEASES
+    }
+    columnMapping {
+        return: REL_ID
+        display: REL_VERSION
+    }
+)
+
+lov lov-video-chapters (
+    name: LOV_VIDEO_CHAPTERS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select v.REL_VERSION || ' - ' || c.CHAP_TITLE display
+                 , c.CHAP_ID return
+            from V_NFO_UI_VIDEO_CHAPTERS c
+            join V_NFO_UI_RELEASE_VIDEOS v
+                on v.VID_ID = c.CHAP_VID_ID
+            order by v.REL_VERSION desc
+                 , c.CHAP_START_SECONDS
+            ```
+    }
+    columnMapping {
+        return: RETURN
+        display: DISPLAY
+    }
+)
+
+lov lov-yes-no (
+    name: LOV_YES_NO
+    source {
+        location: staticValues
+    }
+
+    entry n (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry y (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

@@ -1,0 +1,14 @@
+role administrator (
+    name: ADMINISTRATOR
+    description {
+        description: Has all contributor rights and additionally creates, renames and deletes categories.
+    }
+)
+
+role contributor (
+    name: CONTRIBUTOR
+    description {
+        description: Creates features, assigns categories and video chapters, maintains releases, videos and chapters, imports CSV files.
+    }
+)
+
