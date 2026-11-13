@@ -19,12 +19,14 @@ create or replace view v_nfo_ui_categories (
    catg_id         annotations (description 'Surrogate key of the category.', ai_relationship_primary_key),
    catg_name_de    annotations (description 'Category name in German. Unique.', ai_analytics_dimension),
    catg_name_en    annotations (description 'Category name in English. Unique.', ai_analytics_dimension),
-   catg_sort_order annotations (description 'Position of the category in sorted lists. Lower values come first.')
+   catg_sort_order annotations (description 'Position of the category in sorted lists. Lower values come first.'),
+   catg_icon       annotations (description 'Font APEX icon class shown for the category, for example fa-database. Defaults to fa-tag.')
 ) annotations (description 'Thematic categories used to classify APEX new features, such as "Security and Authentication". One row per category with German and English names. Updatable view on T_NFO_CATEGORIES.') as
 select catg_id,
        catg_name_de,
        catg_name_en,
-       catg_sort_order
+       catg_sort_order,
+       catg_icon
   from t_nfo_categories;
 
 create or replace view v_nfo_ui_releases (
@@ -106,6 +108,7 @@ create or replace view v_nfo_ui_features (
    feat_catg_id                 annotations (description 'Category of the feature.', ai_relationship_join 'V_NFO_UI_CATEGORIES.CATG_ID'),
    catg_name_de                 annotations (description 'Category name in German. Resolved from the category.', ai_analytics_dimension),
    catg_name_en                 annotations (description 'Category name in English. Resolved from the category.', ai_analytics_dimension),
+   catg_icon                    annotations (description 'Font APEX icon class of the category, for example fa-database. Resolved from the category.'),
    feat_chap_id                 annotations (description 'Video chapter that presents the feature. Empty if the feature is not assigned to a chapter.', ai_relationship_join 'V_NFO_UI_VIDEO_CHAPTERS.CHAP_ID'),
    feat_chapter_match_score     annotations (description 'Quality of the assignment to the video chapter, from 0 (lowest) to 1 (highest). Empty if the feature is not assigned to a chapter.', ai_analytics_agg 'AVG'),
    feat_title                   annotations (description 'Title of the feature, in English as published by Oracle.'),
@@ -121,6 +124,7 @@ select f.feat_id,
        f.feat_catg_id,
        (select c.catg_name_de from t_nfo_categories c where c.catg_id = f.feat_catg_id) as catg_name_de,
        (select c.catg_name_en from t_nfo_categories c where c.catg_id = f.feat_catg_id) as catg_name_en,
+       (select c.catg_icon    from t_nfo_categories c where c.catg_id = f.feat_catg_id) as catg_icon,
        f.feat_chap_id,
        f.feat_chapter_match_score,
        f.feat_title,

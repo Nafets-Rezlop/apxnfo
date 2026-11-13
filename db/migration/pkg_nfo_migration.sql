@@ -32,7 +32,7 @@ create or replace package body pkg_nfo_migration is
    -- 1. Kategorien
    ---------------------------------------------------------------------------
 
-   procedure mrg_category (p_name_de in varchar2, p_name_en in varchar2, p_sort_order in number) is
+   procedure mrg_category (p_name_de in varchar2, p_name_en in varchar2, p_sort_order in number, p_icon in varchar2) is
       l_rec v_nfo_ui_categories%rowtype;
       l_md5 varchar2(32767);
    begin
@@ -45,22 +45,23 @@ create or replace package body pkg_nfo_migration is
       l_rec.catg_name_de    := p_name_de;
       l_rec.catg_name_en    := p_name_en;
       l_rec.catg_sort_order := p_sort_order;
+      l_rec.catg_icon       := p_icon;
       pkg_nfo_catg_dml.mrg(l_rec, l_md5);
    end mrg_category;
 
    procedure migrate_categories is
    begin
-      mrg_category('Administration und Betrieb',           'Administration and Operations',      10);
-      mrg_category('APIs und JavaScript-Bibliotheken',     'APIs and JavaScript Libraries',      20);
-      mrg_category('Charts, Maps und Kalender',            'Charts, Maps and Calendars',         30);
-      mrg_category('Entwicklung und Lifecycle',            'Development and Lifecycle',          40);
-      mrg_category('Items, Formulare und Dynamic Actions', 'Items, Forms and Dynamic Actions',   50);
-      mrg_category('KI und Generative AI',                 'AI and Generative AI',               60);
-      mrg_category('Reports, Grids und Suche',             'Reports, Grids and Search',          70);
-      mrg_category('REST, Datenquellen und Daten-Import',  'REST, Data Sources and Data Loading', 80);
-      mrg_category('Security und Authentifizierung',       'Security and Authentication',        90);
-      mrg_category('Universal Theme, UI und PWA',          'Universal Theme, UI and PWA',       100);
-      mrg_category('Workflow, Tasks und Automations',      'Workflow, Tasks and Automations',   110);
+      mrg_category('Administration und Betrieb',           'Administration and Operations',      10,   'fa-server');
+      mrg_category('APIs und JavaScript-Bibliotheken',     'APIs and JavaScript Libraries',      20,   'fa-code');
+      mrg_category('Charts, Maps und Kalender',            'Charts, Maps and Calendars',         30,   'fa-bar-chart');
+      mrg_category('Entwicklung und Lifecycle',            'Development and Lifecycle',          40,   'fa-code-fork');
+      mrg_category('Items, Formulare und Dynamic Actions', 'Items, Forms and Dynamic Actions',   50,   'fa-forms');
+      mrg_category('KI und Generative AI',                 'AI and Generative AI',               60,   'fa-sparkles');
+      mrg_category('Reports, Grids und Suche',             'Reports, Grids and Search',          70,   'fa-table');
+      mrg_category('REST, Datenquellen und Daten-Import',  'REST, Data Sources and Data Loading', 80,   'fa-database');
+      mrg_category('Security und Authentifizierung',       'Security and Authentication',        90,   'fa-shield');
+      mrg_category('Universal Theme, UI und PWA',          'Universal Theme, UI and PWA',       100,  'fa-paint-brush');
+      mrg_category('Workflow, Tasks und Automations',      'Workflow, Tasks and Automations',   110,  'fa-workflow');
    end migrate_categories;
 
    ---------------------------------------------------------------------------

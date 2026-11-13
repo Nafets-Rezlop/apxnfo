@@ -63,6 +63,7 @@ create table t_nfo_categories (
    catg_name_de     varchar2(200 char)             not null,
    catg_name_en     varchar2(200 char)             not null,
    catg_sort_order  number,
+   catg_icon        varchar2(100 char) default on null 'fa-tag' not null,
    catg_ins_date    date default on null sysdate   not null,
    catg_ins_user    varchar2(128 byte)             not null,
    catg_upd_date    date,
@@ -77,6 +78,7 @@ comment on column t_nfo_categories.catg_id         is 'Surrogate key of the cate
 comment on column t_nfo_categories.catg_name_de    is 'Category name in German. Unique.';
 comment on column t_nfo_categories.catg_name_en    is 'Category name in English. Unique.';
 comment on column t_nfo_categories.catg_sort_order is 'Position of the category in sorted lists. Lower values come first.';
+comment on column t_nfo_categories.catg_icon       is 'Font APEX icon class shown for the category, for example fa-database. Defaults to fa-tag.';
 
 --------------------------------------------------------------------------------
 -- t_nfo_release_videos

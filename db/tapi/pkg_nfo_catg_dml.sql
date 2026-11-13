@@ -65,7 +65,8 @@ create or replace package body pkg_nfo_catg_dml is
             catg_name_en    = p_rec.catg_name_en,
             catg_sort_order = p_rec.catg_sort_order,
             catg_upd_date   = sysdate,
-            catg_upd_user   = coalesce(sys_context('APEX$SESSION', 'APP_USER'), sys_context('USERENV', 'SESSION_USER'))
+            catg_upd_user   = coalesce(sys_context('APEX$SESSION', 'APP_USER'), sys_context('USERENV', 'SESSION_USER')),
+            catg_icon       = p_rec.catg_icon
       when not matched then
          insert (
             catg_id,
@@ -73,14 +74,16 @@ create or replace package body pkg_nfo_catg_dml is
             catg_name_en,
             catg_sort_order,
             catg_ins_date,
-            catg_ins_user
+            catg_ins_user,
+            catg_icon
          ) values (
             src.catg_id,
             p_rec.catg_name_de,
             p_rec.catg_name_en,
             p_rec.catg_sort_order,
             sysdate,
-            coalesce(sys_context('APEX$SESSION', 'APP_USER'), sys_context('USERENV', 'SESSION_USER'))
+            coalesce(sys_context('APEX$SESSION', 'APP_USER'), sys_context('USERENV', 'SESSION_USER')),
+            p_rec.catg_icon
          );
 
       select *
@@ -139,7 +142,8 @@ create or replace package body pkg_nfo_catg_dml is
             to_char(p_row.catg_ins_date, 'yyyymmddhh24miss'),
             p_row.catg_ins_user,
             to_char(p_row.catg_upd_date, 'yyyymmddhh24miss'),
-            p_row.catg_upd_user),
+            p_row.catg_upd_user,
+            p_row.catg_icon),
          p_salted => true);
    end build_md5;
 

@@ -117,6 +117,25 @@ page 6 (
             }
         )
 
+        column CATG_ICON (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Icon
+                alignment: center
+            }
+            layout {
+                sequence: 25
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression: <span class="fa #CATG_ICON#" aria-hidden="true" title="#CATG_ICON#"></span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
         column CATG_SORT_ORDER (
             reportColumnQueryId: 5
             derivedColumn: N

@@ -23,6 +23,7 @@ erDiagram
         varchar name_de UK "Anf. 170"
         varchar name_en UK "Anf. 170"
         number sort_order
+        varchar icon "Font APEX Icon-Klasse, Default fa-tag"
     }
     FEATURE {
         number feature_id PK

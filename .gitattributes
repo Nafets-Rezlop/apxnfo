@@ -1,0 +1,5 @@
+# APEXlang-Dateien und Blueprint brauchen LF, sonst scheitern
+# "apex validate", "apex import" und der Blueprint-Import
+apex/**/*.apx  text eol=lf
+apex/**/*.json text eol=lf
+blueprint_nfo.md text eol=lf

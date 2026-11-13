@@ -183,6 +183,43 @@ page 7 (
         }
     )
 
+    pageItem P7_CATG_ICON (
+        type: textField
+        label {
+            label: Icon
+            alignment: right
+        }
+        layout {
+            sequence: 50
+            region: @category-form
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @category-form
+            column: CATG_ICON
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: fa-tag
+        }
+        help {
+            inlineHelpText: Font APEX icon class, for example fa-database.
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
     button apply-changes (
         buttonName: APPLY-CHANGES
         label: Apply Changes

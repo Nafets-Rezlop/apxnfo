@@ -106,6 +106,7 @@ create or replace package body pkg_nfo_tapi_test is
       l_rec.catg_name_de    := p_name || ' (de)';
       l_rec.catg_name_en    := p_name || ' (en)';
       l_rec.catg_sort_order := 10;
+      l_rec.catg_icon       := 'fa-tag';
       pkg_nfo_catg_dml.mrg(l_rec, l_md5);
       return l_rec;
    end new_category;
@@ -174,6 +175,7 @@ create or replace package body pkg_nfo_tapi_test is
       assert_eq(l_row.catg_name_de, 'Test Insert de', 'name_de');
       assert_eq(l_row.catg_name_en, 'Test Insert en', 'name_en');
       assert_eq(l_row.catg_sort_order, 5, 'sort_order');
+      assert_eq(l_row.catg_icon, 'fa-tag', 'icon default');
       assert_true(l_row.catg_ins_date is not null, 'ins_date gesetzt');
       assert_eq(l_row.catg_ins_user, user, 'ins_user');
       assert_true(l_row.catg_upd_date is null, 'upd_date leer');

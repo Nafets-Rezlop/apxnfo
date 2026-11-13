@@ -192,6 +192,11 @@ page 3 (
             advancedFormatting: true
             htmlExpression: Release: &REL_VERSION.
         }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: CATG_ICON
+            iconPosition: start
+        }
         pagination {
             showTotalCount: true
         }
