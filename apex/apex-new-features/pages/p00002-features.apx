@@ -276,6 +276,17 @@ page 2 (
             }
         )
 
+        column FEAT_SUMMARY_EN (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Feature Summary (en)
+            }
+            layout {
+                sequence: 85
+            }
+        )
+
         column FEAT_TITLE (
             reportColumnQueryId: 7
             derivedColumn: N

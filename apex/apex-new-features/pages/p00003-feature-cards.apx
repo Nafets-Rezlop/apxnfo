@@ -195,6 +195,7 @@ page 3 (
         iconAndBadge {
             iconSource: iconClassColumn
             iconColumn: CATG_ICON
+            iconCssClasses: fa
             iconPosition: start
         }
         pagination {
