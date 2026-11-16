@@ -11,7 +11,7 @@ page 14 (
         cursorFocus: doNotFocusCursor
     }
     security {
-        authorizationScheme: mustNotBePublicUser
+        authentication: public
         pageAccessProtection: argumentsMustHaveChecksum
         formAutoComplete: false
     }
@@ -176,6 +176,9 @@ page 14 (
             }
             sorting {
                 sortable: false
+            }
+            security {
+                authorizationScheme: @administrator-or-contributor
             }
         )
 
@@ -447,6 +450,9 @@ page 14 (
             }
             sorting {
                 sortable: false
+            }
+            security {
+                authorizationScheme: @administrator-or-contributor
             }
         )
 

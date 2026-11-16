@@ -11,7 +11,7 @@ page 4 (
         cursorFocus: doNotFocusCursor
     }
     security {
-        authorizationScheme: mustNotBePublicUser
+        authentication: public
         pageAccessProtection: argumentsMustHaveChecksum
         formAutoComplete: false
     }

@@ -11,7 +11,7 @@ page 2 (
         cursorFocus: doNotFocusCursor
     }
     security {
-        authorizationScheme: mustNotBePublicUser
+        authentication: public
         pageAccessProtection: argumentsMustHaveChecksum
         formAutoComplete: false
     }
@@ -224,6 +224,9 @@ page 2 (
             }
             sorting {
                 sortable: false
+            }
+            security {
+                authorizationScheme: @administrator-or-contributor
             }
         )
 

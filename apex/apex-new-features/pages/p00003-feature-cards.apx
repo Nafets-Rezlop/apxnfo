@@ -21,7 +21,7 @@ page 3 (
             ```
     }
     security {
-        authorizationScheme: mustNotBePublicUser
+        authentication: public
         pageAccessProtection: argumentsMustHaveChecksum
         formAutoComplete: false
     }

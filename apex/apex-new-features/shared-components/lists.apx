@@ -35,6 +35,27 @@ list navigation-bar (
         userDefinedAttributes {
             2: has-username
         }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry sign-in (
+        label: Sign In
+        icon {
+            imageIconCssClasses: fa-sign-in
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: LOGIN
+            }
+        }
+        serverSideCondition {
+            type: userIsPublicUser
+        }
     )
 
     entry lang-de (
