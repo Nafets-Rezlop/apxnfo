@@ -26,7 +26,7 @@ page 5 (
         enableDuplicatePageSubmissions: false
     }
     comments {
-        comments: Implements requirements 310, 850 and 1010. After import the generated DML process is replaced by calls to PKG_NFO_FEAT_DML.MRG and PKG_NFO_FEAT_DML.DEL with the MD5 checksum item.
+        comments: Implements requirements 310, 850 and 1010. The process Save Feature calls PKG_NFO_FEAT_DML.MRG and PKG_NFO_FEAT_DML.DEL with the MD5 checksum item.
     }
 
     region buttons (
@@ -156,6 +156,21 @@ page 5 (
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P5_MD5 (
+        type: hidden
+        layout {
+            sequence: 15
+            region: @feature-form
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: MD5 checksum of the feature row when the form was loaded. PKG_NFO_FEAT_DML.MRG compares it to prevent lost updates (requirement 1000).
         }
     )
 
@@ -430,15 +445,77 @@ page 5 (
         }
     )
 
-    process process-form-feature-form (
-        name: Process form Feature Form
-        type: formAutoRowProcessing
-        formRegion: @feature-form
+    process load-checksum (
+        name: Load Checksum
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_rec v_nfo_ui_features%rowtype;
+                   l_md5 varchar2(32767);
+                begin
+                   l_rec.feat_id := :P5_FEAT_ID;
+                   pkg_nfo_feat_dml.get(l_rec, l_md5);
+                   :P5_MD5 := l_md5;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_FEAT_ID
+        }
+    )
+
+    process save-feature (
+        name: Save Feature
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_rec v_nfo_ui_features%rowtype;
+                   l_md5 varchar2(32767) := :P5_MD5;
+                   l_dummy varchar2(32767);
+                begin
+                   l_rec.feat_id := :P5_FEAT_ID;
+                   if :REQUEST = 'DELETE' then
+                      pkg_nfo_feat_dml.del(l_rec);
+                   else
+                      if l_rec.feat_id is not null then
+                         pkg_nfo_feat_dml.get(l_rec, l_dummy);
+                      end if;
+                      -- a chapter chosen in the form is a manual assignment: score empty
+                      if nvl(l_rec.feat_chap_id, -1) != nvl(to_number(:P5_FEAT_CHAP_ID), -1) then
+                         l_rec.feat_chapter_match_score := null;
+                      end if;
+                      l_rec.feat_rel_id                  := :P5_FEAT_REL_ID;
+                      l_rec.feat_catg_id                 := :P5_FEAT_CATG_ID;
+                      l_rec.feat_chap_id                 := :P5_FEAT_CHAP_ID;
+                      l_rec.feat_title                   := :P5_FEAT_TITLE;
+                      l_rec.feat_summary_de              := :P5_FEAT_SUMMARY_DE;
+                      l_rec.feat_summary_en              := :P5_FEAT_SUMMARY_EN;
+                      l_rec.feat_link_feature_oracle_doc := :P5_FEAT_LINK_FEATURE_ORACLE_DOC;
+                      pkg_nfo_feat_dml.mrg(l_rec, l_md5);
+                      :P5_FEAT_ID := l_rec.feat_id;
+                      :P5_MD5     := l_md5;
+                   end if;
+                end;
+                ```
+        }
         execution {
             sequence: 10
         }
-        advanced {
-            executionMappingIdentifier: 25305109194960806
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,APPLY-CHANGES,DELETE
+        }
+        comments {
+            comments: Replaces the generated form DML process (requirement 1000 to 1030). Columns not shown in the form, such as FEAT_RAW_TEXT_EN, are read with GET first, so MRG does not overwrite them with NULL. Changing the chapter clears the match score, which marks the assignment as manual for PKG_NFO_CHAPTER_MATCHER.
         }
     )
 

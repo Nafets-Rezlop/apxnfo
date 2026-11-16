@@ -26,7 +26,7 @@ page 10 (
         enableDuplicatePageSubmissions: false
     }
     comments {
-        comments: Implements requirements 200 to 240. After import the generated DML process is replaced by PKG_NFO_VID_DML.MRG and PKG_NFO_VID_DML.DEL, and the chapter extraction PKG_NFO_CHAPTER_EXTRACTOR is called after saving a video.
+        comments: Implements requirements 200 to 240. The save process calls PKG_NFO_VID_DML.MRG and PKG_NFO_VID_DML.DEL with the MD5 checksum item and then PKG_NFO_CHAPTER_EXTRACTOR to extract the chapters.
     }
 
     region buttons (
@@ -151,6 +151,21 @@ page 10 (
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_MD5 (
+        type: hidden
+        layout {
+            sequence: 15
+            region: @video-form
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: MD5 checksum of the video row when the form was loaded. PKG_NFO_VID_DML.MRG compares it to prevent lost updates (requirement 1000).
         }
     )
 
@@ -434,15 +449,81 @@ page 10 (
         }
     )
 
-    process process-form-video-form (
-        name: Process form Video Form
-        type: formAutoRowProcessing
-        formRegion: @video-form
+    process load-checksum (
+        name: Load Checksum
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_rec v_nfo_ui_release_videos%rowtype;
+                   l_md5 varchar2(32767);
+                begin
+                   l_rec.vid_id := :P10_VID_ID;
+                   pkg_nfo_vid_dml.get(l_rec, l_md5);
+                   :P10_MD5 := l_md5;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_VID_ID
+        }
+    )
+
+    process save-video (
+        name: Save Video
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_rec     v_nfo_ui_release_videos%rowtype;
+                   l_md5     varchar2(32767) := :P10_MD5;
+                   l_dummy   varchar2(32767);
+                   l_count   pls_integer;
+                   l_message varchar2(4000);
+                begin
+                   l_rec.vid_id := :P10_VID_ID;
+                   if :REQUEST = 'DELETE' then
+                      pkg_nfo_vid_dml.del(l_rec);
+                   else
+                      if l_rec.vid_id is not null then
+                         pkg_nfo_vid_dml.get(l_rec, l_dummy);
+                      end if;
+                      l_rec.vid_rel_id      := :P10_VID_REL_ID;
+                      l_rec.vid_title       := :P10_VID_TITLE;
+                      l_rec.vid_youtube_url := :P10_VID_YOUTUBE_URL;
+                      l_rec.vid_youtube_key := :P10_VID_YOUTUBE_KEY;
+                      l_rec.vid_is_main     := :P10_VID_IS_MAIN;
+                      l_rec.vid_description := :P10_VID_DESCRIPTION;
+                      l_rec.vid_fetched_at  := to_date(:P10_VID_FETCHED_AT, 'YYYY-MM-DD HH24:MI');
+                      pkg_nfo_vid_dml.mrg(l_rec, l_md5);
+                      :P10_VID_ID := l_rec.vid_id;
+                      :P10_MD5    := l_md5;
+
+                      -- requirement 220: extract the chapters from the saved description
+                      if l_rec.vid_description is not null then
+                         pkg_nfo_chapter_extractor.extract_video(l_rec.vid_id, l_count, l_message);
+                         apex_application.g_print_success_message := l_message;
+                      end if;
+                   end if;
+                end;
+                ```
+        }
         execution {
             sequence: 10
         }
-        advanced {
-            executionMappingIdentifier: 25312221279960858
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,APPLY-CHANGES,DELETE
+        }
+        comments {
+            comments: Replaces the generated form DML process (requirement 1000 to 1030) and extracts the video chapters with PKG_NFO_CHAPTER_EXTRACTOR after saving (requirement 220).
         }
     )
 

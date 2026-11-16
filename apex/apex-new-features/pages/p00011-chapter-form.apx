@@ -26,7 +26,7 @@ page 11 (
         enableDuplicatePageSubmissions: false
     }
     comments {
-        comments: Chapters are normally extracted automatically from the video description; this form corrects titles and start positions. After import the generated DML process is replaced by PKG_NFO_CHAP_DML.MRG and PKG_NFO_CHAP_DML.DEL.
+        comments: Chapters are normally extracted automatically from the video description; this form corrects titles and start positions. The save process calls PKG_NFO_CHAP_DML.MRG and PKG_NFO_CHAP_DML.DEL with the MD5 checksum item.
     }
 
     region buttons (
@@ -93,6 +93,21 @@ page 11 (
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P11_MD5 (
+        type: hidden
+        layout {
+            sequence: 15
+            region: @chapter-form
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: MD5 checksum of the chapter row when the form was loaded. PKG_NFO_CHAP_DML.MRG compares it to prevent lost updates (requirement 1000).
         }
     )
 
@@ -343,15 +358,70 @@ page 11 (
         }
     )
 
-    process process-form-chapter-form (
-        name: Process form Chapter Form
-        type: formAutoRowProcessing
-        formRegion: @chapter-form
+    process load-checksum (
+        name: Load Checksum
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_rec v_nfo_ui_video_chapters%rowtype;
+                   l_md5 varchar2(32767);
+                begin
+                   l_rec.chap_id := :P11_CHAP_ID;
+                   pkg_nfo_chap_dml.get(l_rec, l_md5);
+                   :P11_MD5 := l_md5;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P11_CHAP_ID
+        }
+    )
+
+    process save-chapter (
+        name: Save Chapter
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_rec v_nfo_ui_video_chapters%rowtype;
+                   l_md5 varchar2(32767) := :P11_MD5;
+                   l_dummy varchar2(32767);
+                begin
+                   l_rec.chap_id := :P11_CHAP_ID;
+                   if :REQUEST = 'DELETE' then
+                      pkg_nfo_chap_dml.del(l_rec);
+                   else
+                      if l_rec.chap_id is not null then
+                         pkg_nfo_chap_dml.get(l_rec, l_dummy);
+                      end if;
+                      l_rec.chap_vid_id        := :P11_CHAP_VID_ID;
+                      l_rec.chap_start_seconds := :P11_CHAP_START_SECONDS;
+                      l_rec.chap_title         := :P11_CHAP_TITLE;
+                      l_rec.chap_link_url      := :P11_CHAP_LINK_URL;
+                      pkg_nfo_chap_dml.mrg(l_rec, l_md5);
+                      :P11_CHAP_ID := l_rec.chap_id;
+                      :P11_MD5     := l_md5;
+                   end if;
+                end;
+                ```
+        }
         execution {
             sequence: 10
         }
-        advanced {
-            executionMappingIdentifier: 25313861998960862
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,APPLY-CHANGES,DELETE
+        }
+        comments {
+            comments: Replaces the generated form DML process (requirement 1000 to 1030). Columns not shown in the form are read with GET first, so MRG does not overwrite them with NULL.
         }
     )
 
