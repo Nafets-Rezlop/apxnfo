@@ -35,9 +35,6 @@ app APEX-NEW-FEATURES (
     authentication {
         scheme: @oracle-apex-accounts
     }
-    authorization {
-        scheme: mustNotBePublicUser
-    }
     sessionStateProtection {
         allowUrlsCreatedAfter: 2026-11-13T10:10:19
     }
