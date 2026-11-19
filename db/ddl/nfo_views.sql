@@ -135,6 +135,32 @@ select f.feat_id,
        (select ch.chap_link_url from t_nfo_video_chapters ch where ch.chap_id = f.feat_chap_id) as chap_link_url
   from t_nfo_features f;
 
+
+create or replace view v_nfo_ui_feedbacks (
+   fdbk_id               annotations (description 'Surrogate key of the feedback.', ai_relationship_primary_key),
+   fdbk_feedback_date    annotations (description 'Date and time the feedback was submitted.', ai_analytics_dimension),
+   fdbk_feedback_text    annotations (description 'User feedback text or review.'),
+   fdbk_rating           annotations (description 'User rating from 1 (lowest) to 5 (highest).', ai_analytics_agg 'AVG'),
+   fdbk_first_name       annotations (description 'First name of the user submitting feedback. Optional.'),
+   fdbk_last_name        annotations (description 'Last name of the user submitting feedback. Optional.'),
+   fdbk_is_anonymous     annotations (description 'Flag indicating whether the user wants to remain anonymous (true) or show their name (false).'),
+   fdbk_name_abbreviated annotations (description 'Abbreviated name with initials (e.g. J. D.), automatically computed from first and last name.'),
+   fdbk_display_name     annotations (description 'Name to display publicly: abbreviated or Anonymous if fdbk_is_anonymous is true, full name otherwise.')
+) annotations (description 'User feedback and ratings for the application. Updatable view on T_NFO_FEEDBACKS.') as
+select fdbk_id,
+       fdbk_feedback_date,
+       fdbk_feedback_text,
+       fdbk_rating,
+       fdbk_first_name,
+       fdbk_last_name,
+       fdbk_is_anonymous,
+       fdbk_name_abbreviated,
+       case
+          when fdbk_is_anonymous then coalesce(fdbk_name_abbreviated, 'Anonymous')
+          else coalesce(trim(fdbk_first_name || ' ' || fdbk_last_name), fdbk_name_abbreviated, 'Anonymous')
+       end as fdbk_display_name
+  from t_nfo_feedbacks;
+
 -- LOV für Kategorien: Rückgabewert catg_id, Anzeige je Sprache (Issue #6)
 create or replace view v_nfo_lov_categories (
    return_value     annotations (description 'Surrogate key of the category, returned by the list of values.', ai_relationship_join 'V_NFO_UI_CATEGORIES.CATG_ID'),

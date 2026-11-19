@@ -29,6 +29,7 @@ exec pkg_nfo_tapi_gen.compile_api('T_NFO_FEATURES');
 exec pkg_nfo_tapi_gen.compile_api('T_NFO_IMPORT_LOGS');
 exec pkg_nfo_tapi_gen.compile_api('T_NFO_RELEASE_VIDEOS');
 exec pkg_nfo_tapi_gen.compile_api('T_NFO_VIDEO_CHAPTERS');
+exec pkg_nfo_tapi_gen.compile_api('T_NFO_FEEDBACKS');
 
 -- generierten Code zusätzlich als Skript ablegen
 set long 1000000 longchunksize 32767 pagesize 0 linesize 32767 trimspool on feedback off heading off termout off
@@ -44,6 +45,8 @@ spool tapi/pkg_nfo_vid_dml.sql
 select pkg_nfo_tapi_gen.get_script('T_NFO_RELEASE_VIDEOS') from dual;
 spool tapi/pkg_nfo_chap_dml.sql
 select pkg_nfo_tapi_gen.get_script('T_NFO_VIDEO_CHAPTERS') from dual;
+spool tapi/pkg_nfo_fdbk_dml.sql
+select pkg_nfo_tapi_gen.get_script('T_NFO_FEEDBACKS') from dual;
 spool off
 set pagesize 100 linesize 200 feedback on heading on termout on
 

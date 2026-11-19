@@ -8,6 +8,7 @@
 --   t_nfo_video_chapters chap
 --   t_nfo_features       feat
 --   t_nfo_import_logs    imp
+--   t_nfo_feedbacks      fdbk
 --
 -- Auditspalten (Anf. 850): Die Domänen dom_nfo_user / dom_nfo_date (Anf. 870,
 -- 890) setzen Oracle 23ai voraus. Die Ziel-DB ist 19c, daher werden die
@@ -231,3 +232,45 @@ comment on column t_nfo_import_logs.imp_status      is 'Result of the import. Va
 comment on column t_nfo_import_logs.imp_message     is 'Result message of the import run.';
 comment on column t_nfo_import_logs.imp_started_at  is 'Date and time the import started.';
 comment on column t_nfo_import_logs.imp_finished_at is 'Date and time the import finished. Empty while it is still running.';
+
+--------------------------------------------------------------------------------
+-- t_nfo_feedbacks
+--------------------------------------------------------------------------------
+create sequence s_nfo_feedbacks_fdbk_id;
+
+create table t_nfo_feedbacks (
+   fdbk_id               number                         not null,
+   fdbk_feedback_date    date default on null sysdate   not null,
+   fdbk_feedback_text    varchar2(4000 char)            not null,
+   fdbk_rating           number(1)                      not null,
+   fdbk_first_name       varchar2(100 char),
+   fdbk_last_name        varchar2(100 char),
+   fdbk_is_anonymous     boolean default on null false  not null,
+   fdbk_name_abbreviated varchar2(10 char) generated always as (
+      case
+         when fdbk_first_name is not null and fdbk_last_name is not null
+         then substr(trim(fdbk_first_name), 1, 1) || '. ' || substr(trim(fdbk_last_name), 1, 1) || '.'
+         when fdbk_first_name is not null
+         then substr(trim(fdbk_first_name), 1, 1) || '.'
+         when fdbk_last_name is not null
+         then substr(trim(fdbk_last_name), 1, 1) || '.'
+         else null
+      end
+   ) virtual,
+   fdbk_ins_date         date default on null sysdate   not null,
+   fdbk_ins_user         varchar2(128 byte)             not null,
+   fdbk_upd_date         date,
+   fdbk_upd_user         varchar2(128 byte),
+   constraint cp_nfo_fdbk        primary key (fdbk_id),
+   constraint cc_nfo_fdbk_rating check (fdbk_rating between 1 and 5)
+);
+
+comment on table  t_nfo_feedbacks                         is 'User feedback and app ratings submitted by users, one row per feedback entry.';
+comment on column t_nfo_feedbacks.fdbk_id                 is 'Surrogate key of the feedback.';
+comment on column t_nfo_feedbacks.fdbk_feedback_date      is 'Date and time the feedback was submitted.';
+comment on column t_nfo_feedbacks.fdbk_feedback_text      is 'User feedback text or review.';
+comment on column t_nfo_feedbacks.fdbk_rating             is 'User rating from 1 (lowest) to 5 (highest).';
+comment on column t_nfo_feedbacks.fdbk_first_name         is 'First name of the user submitting feedback. Optional.';
+comment on column t_nfo_feedbacks.fdbk_last_name          is 'Last name of the user submitting feedback. Optional.';
+comment on column t_nfo_feedbacks.fdbk_is_anonymous       is 'Flag indicating whether the user wants to remain anonymous (true) or show their name (false).';
+comment on column t_nfo_feedbacks.fdbk_name_abbreviated   is 'Abbreviated name with initials (e.g. J. D.), automatically computed from first and last name.';

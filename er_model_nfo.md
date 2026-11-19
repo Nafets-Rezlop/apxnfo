@@ -66,6 +66,16 @@ erDiagram
         timestamp started_at
         timestamp finished_at
     }
+    FEEDBACK {
+        number feedback_id PK
+        date feedback_date "Default SYSDATE"
+        varchar feedback_text "VARCHAR2(4000)"
+        number rating "1-5"
+        varchar first_name "optional"
+        varchar last_name "optional"
+        boolean is_anonymous "Oracle 26ai native BOOLEAN"
+        varchar name_abbreviated "Virtual Column, z.B. J. D."
+    }
 ```
 
 ## Entwurfsentscheidungen
@@ -76,3 +86,4 @@ erDiagram
 - **Eindeutigkeit:** Kategorienamen (170), Feature-Beschreibungen (450) sowie YouTube-Links von Release-Videos und Sprungmarken (240) sind jeweils eindeutig. `feature_summary_de`/`feature_summary_en` sind deshalb `VARCHAR2(4000)` statt CLOB, denn auf CLOB-Spalten erlaubt Oracle keinen Unique Constraint.
 - **Kein Überschreiben:** `feature_summary_de`/`feature_summary_en` sind NOT NULL mit dem Initialwert `'empty'`. Ein Update mit leerem Wert, etwa von einer Seite ohne dieses Feld, scheitert, statt den gespeicherten Text zu löschen. Die Eindeutigkeit (450) gilt für alle Werte außer `'empty'` (funktionsbasierter Unique Index).
 - **Rollen:** Benutzer und Rollen (Anf. 300) verwaltet die in APEX integrierte Application Access Control mit den Rollen `CONTRIBUTOR` und `ADMINISTRATOR`. Eine eigene Benutzertabelle entfällt. Seiten und Komponenten werden über Authorization Schemes abgesichert, die auf diese Rollen prüfen. Die Zuordnungen stehen in den Views `APEX_APPL_ACL_USERS` und `APEX_APPL_ACL_USER_ROLES`. Gepflegt werden sie über die Access-Control-Seiten der App oder per `APEX_ACL`. `IMPORT_LOG.started_by` speichert deshalb nur den APEX-Benutzernamen (`APP_USER`) und hat keinen Fremdschlüssel.
+- **User Feedback:** Benutzer-Feedback und Bewertungen (1-5) werden in der eigenständigen Tabelle `t_nfo_feedbacks` (`FEEDBACK`) gespeichert. Für den Schutz der Privatsphäre steht das native Oracle 26ai Boolean-Feld `fdbk_is_anonymous` zur Verfügung. Eine virtuelle Spalte `fdbk_name_abbreviated` generiert automatisch die Initialen (z.B. "M. M."), die bei gesetztem Anonymitäts-Flag in der UI-View `v_nfo_ui_feedbacks` als `fdbk_display_name` angezeigt werden.
